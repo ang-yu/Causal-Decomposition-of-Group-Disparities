@@ -362,9 +362,9 @@ Therefore, the reduction in disparity is a mixture of the conditional prevalence
 A similar case can be shown for the reduction in disparity in the CRED of \citet{lundberg_gap-closing_2022}.
 \begin{align}
 &\phantom{{}={}} \E_a(Y)-\E_b(Y) \nonumber \\ 
-&\phantom{{}={}} \left\lbrace \E_a[P(D=0 \mid \Q) Y_0 + P(D=1 \mid \Q) Y_1] - \E_b[P(D=0 \mid \Q) Y_0 + P(D=1 \mid \Q) Y_1] \right\rbrace \nonumber \\
+&\phantom{{}={}} \left\lbrace \E_a[\Pro(D=0 \mid \Q) Y_0 + \Pro(D=1 \mid \Q) Y_1] - \E_b[\Pro(D=0 \mid \Q) Y_0 + \Pro(D=1 \mid \Q) Y_1] \right\rbrace \nonumber \\
 &= \E_a[\Cov_a(D,\tau \mid \Q)] - \E_b[\Cov_b(D,\tau \mid \Q)] + \int [\E_a(D \mid \Q=\q) - \E_b(D \mid \Q=\q)] \nonumber \\
-&\phantom{{}={}} [\E_a(\tau \mid \Q=\q)f_a(\q)P(G=b \mid \Q=\q) + \E_b(\tau \mid \Q=\q)f_b(\q)P(G=a \mid \Q=\q)] \dd \q,
+&\phantom{{}={}} [\E_a(\tau \mid \Q=\q)f_a(\q)\Pro(G=b \mid \Q=\q) + \E_b(\tau \mid \Q=\q)f_b(\q)\Pro(G=a \mid \Q=\q)] \dd \q,
 \end{align}
 where the left hand side is the reduction in disparity in Lundberg's CRED. Hence, the reduction in disparity again involves both a term for differential prevalence within $\Q$ levels and our conditional selection component. The CRED in this case posits an intervention where equalization across groups and randomization in both groups are conducted at each $\Q$ level. Consequently, both differential prevalence and differential selection would be reduced to zero conditional on $\Q$. Distinct from both versions of the CRED, the component of conditional prevalence in our decomposition is solely a measure of the impact of a conditional equalization intervention. By implication, only our conditional prevalence component can be interpreted as a pure measure of the contribution of differential treatment prevalence within $\Q$ levels to  outcome disparities. 
 
@@ -557,13 +557,23 @@ Finally, we also nonparametrically estimate the reduction in disparity component
 We provide a new decomposition approach for quantifying the  ways in which a treatment variable affects outcome disparities between ascriptive groups. Our decompositions improve on previous approaches of explaining group disparities and reveal novel policy levers for ameliorating disparities. Our decompositions are expressed as model-free estimands. We introduced nonparametric estimators that are efficient, asymptotically normal, and doubly robust. We applied our decompositions to study the role of college education in integenerational income persistence. 
 
 Our approach can be extended in multiple directions. 
-First, it is possible to develop analogous decompositions for continuous treatments, since the randomization and equalization interventions, as well as their conditional versions, remain well-defined for continuous treatments. 
+First, it is possible to develop analogous decompositions for non-binary treatments. For multi-valued categorical treatments, the basic form of equation (\ref{eqt1}) can be retained, with prevalence, effect, and selection components replaced with sums of category-specific contrasts.
+\begin{comment}
+\begin{align*}
+&\phantom{{}={}} \E_a(Y)-\E_b(Y) \\
+&= \E_a(Y_{D^0=1})-\E_b(Y_{D^0=1}) + \sum_{j=1}^{J-1} \E_b(\tau^j) \left[ \E_a(D^j)-\E_b(D^j) \right]  \\
+&\phantom{{}={}} + \sum_{j=1}^{J-1} \E_a(D^j) \left[\E_a(\tau^j) - \E_b(\tau^j) \right]
++ \sum_{j=1}^{J-1} \left[\Cov_a(D^j, \tau^j) - \Cov_b(D^j, \tau^j)\right],  
+\end{align*}
+\end{comment}
+For continuous treatments, the randomization and equalization interventions, as well as their conditional versions, remain well-defined and may serve as bases of decompositions. 
 Second, our framework can be extended to accommodate multiple temporally-ordered treatments. In the case of two treatments, $D_1$ and $D_2$, such extension can be based on the following decomposition of outcomes:
 \begin{equation*}
     Y= Y(0,0)+D_1(Y(1,0)-Y(0,0)) + D_2(Y(0,1)-Y(0,0)) + D_1 D_2 [Y(1,1)-Y(1,0)-(Y(0,1)-Y(0,0))],
 \end{equation*}
 where $Y(d_1,d_2)$ denotes the potential outcome of $Y$ under the assignment of $D_1=d_1$ and $D_2=d_2$.
-Third, as an alternative to the double ML-style estimator in this paper, targeted learning \citep{van_der_laan_targeted_2011} could also be employed in estimation, which may have better finite-sample performance when the outcome is bounded. 
+Third, as an alternative to the double ML-style estimators in this paper, targeted learning \citep{van_der_laan_targeted_2011} could also be employed for estimation, which may have better finite-sample performance when the outcome is bounded. 
+
 
 
 \section*{Appendices}
@@ -572,7 +582,7 @@ Third, as an alternative to the double ML-style estimator in this paper, targete
 Note that $R(D \mid  G=g')$ denotes a randomly drawn value of treatment $D$ from group $g'$.
 \begin{align*}
    &\phantom{{}={}}  \E_g \left(Y_{R(D \mid  G=g') } \right) \\
-   &= \E_g (Y_1  \mid  R(D  \mid  G=g')=1)P(R(D  \mid  G=g')=1) + \E_g (Y_0  \mid  R(D  \mid  G=g')=0)P(R(D  \mid  G=g')=0) \\
+   &= \E_g (Y_1  \mid  R(D  \mid  G=g')=1)\Pro_g(R(D  \mid  G=g')=1) + \E_g (Y_0  \mid  R(D  \mid  G=g')=0)\Pro_g(R(D  \mid  G=g')=0) \\
    &= \E_g (Y_1)\E_{g'}(D) + \E_g (Y_0)(1-\E_{g'}(D)) \\ 
    &= \E_g (Y_0) + \E_{g'}(D)\E_g(\tau).
 \end{align*}
@@ -589,14 +599,14 @@ where the first equality is by the unconditional ignorability of $G$, and the se
 For the RIA of PIE, 
 \begin{align*}
   &\phantom{{}={}} \E \left(Y_{G=b, R(D_{G=a})} \right)-\E \left(Y_{G=b, R(D_{G=b})} \right) \\
-  &= \E\left(Y_{G=b, D=1} \mid  R(D_{G=a})=1 \right)P(R(D_{G=a})=1) + \E\left(Y_{G=b, D=0} \mid  R(D_{G=a})=0 \right)P(R(D_{G=a})=0) \\
-  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \mid  R(D_{G=b})=1 \right)P(R(D_{G=b})=1) - \E\left(Y_{G=b, D=0} \mid  R(D_{G=b})=0 \right)P(R(D_{G=b})=0) \\
-  &= \E\left(Y_{G=b, D=1} \right)P(D_{G=a}=1) + \E\left(Y_{G=b, D=0} \right)P(D_{G=a}=0) \\
-  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \right)P(D_{G=b}=1) - \E\left(Y_{G=b, D=0} \right)P(D_{G=b}=0) \\
-  &= \E\left(Y_{G=b, D=1} \mid  G=b \right)P(D_{G=a}=1 \mid  G=a) + \E\left(Y_{G=b, D=0} \mid  G=b \right)P(D_{G=a}=0  \mid  G=a) \\
-  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \mid  G=b \right)P(D_{G=b}=1 \mid  G=b) - \E\left(Y_{G=b, D=0} \mid  G=b \right)P(D_{G=b}=0 \mid  G=b) \\
-  &= \E\left(Y_{D=1} \mid  G=b \right)P(D=1 \mid  G=a) + \E\left(Y_{D=0} \mid  G=b \right)P(D=0  \mid  G=a) \\
-  &\phantom{{}={}}-\E\left(Y_{D=1} \mid  G=b \right)P(D=1 \mid  G=b) - \E\left(Y_{D=0} \mid  G=b \right)P(D=0 \mid  G=b) \\
+  &= \E\left(Y_{G=b, D=1} \mid  R(D_{G=a})=1 \right)\Pro(R(D_{G=a})=1) + \E\left(Y_{G=b, D=0} \mid  R(D_{G=a})=0 \right)\Pro(R(D_{G=a})=0) \\
+  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \mid  R(D_{G=b})=1 \right)\Pro(R(D_{G=b})=1) - \E\left(Y_{G=b, D=0} \mid  R(D_{G=b})=0 \right)\Pro(R(D_{G=b})=0) \\
+  &= \E\left(Y_{G=b, D=1} \right)\Pro(D_{G=a}=1) + \E\left(Y_{G=b, D=0} \right)\Pro(D_{G=a}=0) \\
+  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \right)\Pro(D_{G=b}=1) - \E\left(Y_{G=b, D=0} \right)\Pro(D_{G=b}=0) \\
+  &= \E\left(Y_{G=b, D=1} \mid  G=b \right)\Pro(D_{G=a}=1 \mid  G=a) + \E\left(Y_{G=b, D=0} \mid  G=b \right)\Pro(D_{G=a}=0  \mid  G=a) \\
+  &\phantom{{}={}}-\E\left(Y_{G=b, D=1} \mid  G=b \right)\Pro(D_{G=b}=1 \mid  G=b) - \E\left(Y_{G=b, D=0} \mid  G=b \right)\Pro(D_{G=b}=0 \mid  G=b) \\
+  &= \E\left(Y_{D=1} \mid  G=b \right)\Pro(D=1 \mid  G=a) + \E\left(Y_{D=0} \mid  G=b \right)\Pro(D=0  \mid  G=a) \\
+  &\phantom{{}={}}-\E\left(Y_{D=1} \mid  G=b \right)\Pro(D=1 \mid  G=b) - \E\left(Y_{D=0} \mid  G=b \right)\Pro(D=0 \mid  G=b) \\
   &= \E_b(\tau)[\E_a(D)-\E_b(D)],
 \end{align*}
 where the third equality holds by the unconditional ignorability of $G$, and the fourth holds by the consistency assumptions. 
@@ -628,8 +638,8 @@ where the first equality holds by unconditional ignorability of $G$, and the sec
 \begin{align*}
     &\phantom{{}={}} \E_g(Y_{R(D \mid G=g',\Q)}) \\
     &= \int \E_g(Y_{R(D \mid G=g',\Q)} \mid \Q=\q) f_g(\q) \dd \q \\
-    &= \int \E_g(Y_1 \mid \Q=\q, R(D \mid G=g', \Q=\q)=1) P_g(R(D \mid G=g', \Q=\q)=1 \mid \Q=\q) f_g(\q) \dd \q \\
-    &\phantom{{}={}} + \int \E_g(Y_0 \mid \Q=\q, R(D \mid G=g', \Q=\q)=0) P_g(R(D \mid G=g', \Q=\q)=0 \mid \Q=\q) f_g(\q) \dd \q \\
+    &= \int \E_g(Y_1 \mid \Q=\q, R(D \mid G=g', \Q=\q)=1) \Pro_g(R(D \mid G=g', \Q=\q)=1 \mid \Q=\q) f_g(\q) \dd \q \\
+    &\phantom{{}={}} + \int \E_g(Y_0 \mid \Q=\q, R(D \mid G=g', \Q=\q)=0) \Pro_g(R(D \mid G=g', \Q=\q)=0 \mid \Q=\q) f_g(\q) \dd \q \\
     &= \int [\E_g(Y_1 \mid \Q=\q) \E_{g'}(D \mid \Q=\q) + \E_g(Y_0 \mid \Q=\q)(1-\E_{g'}(D \mid \Q=\q)) ] f_g(\q) \dd \q  \\
     &= \E_g(Y_0) + \int \E_g(\tau \mid \Q=\q) \E_{g'}(D \mid \Q=\q) f_g(\q) \dd \q .
 \end{align*}
@@ -656,7 +666,7 @@ Other results in Equation (5) follow directly from Equation (4).
 \subsubsection*{A.7. Equation (7)}
 \begin{align*}
 &\phantom{{}={}} \E_a(Y)-\E_b(Y) - \\ 
-&\phantom{{}={}} \lbrace \E_a[P(D=0 \mid \Q) Y_0 + P(D=1 \mid \Q) Y_1] - \E_b[P(D=0 \mid \Q) Y_0 + P(D=1 \mid \Q) Y_1] \rbrace \\
+&\phantom{{}={}} \lbrace \E_a[\Pro(D=0 \mid \Q) Y_0 + \Pro(D=1 \mid \Q) Y_1] - \E_b[\Pro(D=0 \mid \Q) Y_0 + \Pro(D=1 \mid \Q) Y_1] \rbrace \\
 &= \E_a(Y)-\E_b(Y) - \lbrace \E_a(Y_0) + \E_a[\E(D \mid \Q) \tau] - \E_b(Y_0) - \E_b[\E(D \mid \Q) \tau] \rbrace \\
 &= \E_a(D\tau)-\E_a[\E(D \mid \Q) \E_a(\tau \mid \Q)] - \lbrace \E_b(D\tau)-\E_b[\E(D \mid \Q) \E_b(\tau \mid \Q)] \rbrace \\
 &= \int [\E_a(D \tau \mid \Q=\q) - \E(D \mid \Q=\q) \E_a(\tau \mid \Q=\q)] f_a(\q) \dd \q\\
@@ -665,10 +675,10 @@ Other results in Equation (5) follow directly from Equation (4).
 &\phantom{{}={}} + \int [\E_a(D \mid \Q=\q) - \E(D \mid \Q=\q)] \E_a(\tau \mid \Q=\q) f_a(\q) \dd \q\\
 &\phantom{{}={}} - \int [\E_b(D \mid \Q=\q) - \E(D \mid \Q=\q)] \E_b(\tau \mid \Q=\q) f_b(\q) \dd \q\\
 &= \E_a[\Cov_a(D,\tau \mid \Q)] - \E_b[\Cov_b(D,\tau \mid \Q)] \\
-&\phantom{{}={}} + \int P(G=b \mid \Q=\q) [\E_a(D \mid \Q=\q) - \E_b(D \mid \Q=\q)] \E_a(\tau \mid \Q=\q) f_a(\q) \dd \q\\
-&\phantom{{}={}} - \int P(G=a \mid \Q=\q) [\E_b(D \mid \Q=\q) - \E_a(D \mid \Q=\q)] \E_b(\tau \mid \Q=\q) f_b(\q) \dd \q\\
+&\phantom{{}={}} + \int \Pro(G=b \mid \Q=\q) [\E_a(D \mid \Q=\q) - \E_b(D \mid \Q=\q)] \E_a(\tau \mid \Q=\q) f_a(\q) \dd \q\\
+&\phantom{{}={}} - \int \Pro(G=a \mid \Q=\q) [\E_b(D \mid \Q=\q) - \E_a(D \mid \Q=\q)] \E_b(\tau \mid \Q=\q) f_b(\q) \dd \q\\
 &= \E_a[\Cov_a(D,\tau \mid \Q)] - \E_b[\Cov_b(D,\tau \mid \Q)] + \int [\E_a(D \mid \Q=\q) - \E_b(D \mid \Q=\q)] \\
-&\phantom{{}={}} [\E_a(\tau \mid \Q=\q)f_a(\q)P(G=b \mid \Q=\q) + \E_b(\tau \mid \Q=\q)f_b(\q)P(G=a \mid \Q=\q)] \dd \q.
+&\phantom{{}={}} [\E_a(\tau \mid \Q=\q)f_a(\q)\Pro(G=b \mid \Q=\q) + \E_b(\tau \mid \Q=\q)f_b(\q)\Pro(G=a \mid \Q=\q)] \dd \q.
 \end{align*}
 
 
@@ -1054,7 +1064,7 @@ Third, a literature on effect heterogeneity by propensity score \citep{brand_who
 &= \E_g \lbrace \pi_g(\X) \E_g[\tau \mid \pi_g(\X)] \rbrace - \E_g[\pi_g(\X)]\E_g\lbrace\E_g[\tau \mid \pi_g(\X)]\rbrace \\
 &= \Cov_g [\pi_g(\X), \E_g(\tau \mid \pi_g(\X)].
 \end{align*}
-Hence, under conditional ignorability, our selectivity term equals the covariance between the propensity score and the mean treatment effect conditional on the propensity score. Due to this relationship, the estimators we developed for the generic functions underlying our decomposition can also be used to nonparametrically estimate effect heterogeneity by propensity score. 
+Hence, under conditional ignorability, our selectivity term equals the covariance between the propensity score and the mean treatment effect conditional on the propensity score. Due to this relationship, the estimators we developed for the generic functions underlying our unconditional decomposition can also be used to nonparametrically estimate effect heterogeneity by propensity score. 
 
 \subsection*{Appendix F. Supplemental empirical results}
 \begin{table}[htb]
@@ -1119,128 +1129,3 @@ Therefore, even if $\E_a(D \mid \Q=\q)-\E_b(D \mid \Q=\q) < \E_a(D)-\E_b(D)$ for
 
 \end{document}
 
-
-Under assumptions (A.1), (A.2), and (A.3), standard parametric estimators for ATT and ATE include inverse probability of treatment weighting (IPTW) \citep[e.g.][p.82]{angrist_mostly_2009}, and outcome regression (OR). When parametric OR is used to estimate the components of our decomposition, the researcher may first fit the following linear regression for each group $g$:
-\begin{equation*}
-Y= \alpha_g + \beta_g D + \boldsymbol{\gamma}_g^{\rm T} \X + \boldsymbol{\delta}_g^{\rm T} \boldsymbol M D + \epsilon,
-\end{equation*}
-where $\boldsymbol{\gamma}_g$ and $\boldsymbol{\delta}_g$ are two column vectors of coefficients, and $\boldsymbol M \in \X$ is a column vector of effect modifiers. Then the estimators for the group-specific $\ATT_g$ and $\ATE_g$ will be 
-\begin{gather*}
-\ATT_g=\hat{\beta}_g + \frac{1}{n_{g1}}\sum_{i:G_i=g} \hat{\boldsymbol{\delta}}_g^{\rm T} \boldsymbol M_i D_i \text{ and } \ATE_g=\hat{\beta}_g + \frac{1}{n_g} \sum_{i:G_i=g} \hat{\boldsymbol{\delta}}_g^{\rm T} \boldsymbol M_i,
-\end{gather*}
-where $n_g$ is the sample size of group $g$, and $n_{g1}$ is the number of treated individuals in group $g$. \footnote{Under the same three assumptions, plus a very stringent assumption of constant treatment effect, i.e., $\tau$ is the same for everyone in the sample, the exposure component can be estimated based on the following two regressions using the entire sample:
-\begin{gather*}
-Y= \alpha_1 + \beta_1 D + \boldsymbol{\gamma}^{\intercal} \boldsymbol X + \delta G + \epsilon, \\
-D = \alpha_2 + \beta_2 G + \zeta.
-\end{gather*}
-Then $\hat{\beta_1} \hat{\beta_2}$ is a valid estimate of the exposure component. This coincides with the traditional ``product method'' for indirect effect of $G$ through $D$ on $Y$ \citep{baron_moderator-mediator_1986}, explicating the kinship between our decomposition and the traditional mediation analysis literature. As shown by \citet{mackinnon_simulation_1995}, the product method estimate is also equal to the estimate of the ``difference method", which calculates the difference in coefficient on $G$ before and after $D$ is added into the linear regression for $Y$.
-}
-
-IPTW and OR rely on correct specification of the model for treatment and outcome, respectively. Parametric estimation is restrictive in functional form and likely leads to misspecification bias. It is also possible to use nonparametric estimators which are much more flexible. A classic nonparametric estimator for ATT and ATE is matching \citep[e.g.][p.158-9]{morgan_counterfactuals_2014}. We also develop a nonparametric estimator based on efficient influence functions (EIFs), which directly targets the components of our decomposition. 
-
-
-The DML estimators for ATT and ATE are based on augmented inverse-propensity weighting (AIPW) \citep{robins_estimation_1994} estimators. The AIPW estimators for $\E(Y_0)$, ATE, and ATT are all readily available \citep{hahn_role_1998}. We estimate these quantities separately in each group. The AIPW estimator for $\E_g(Y_0)$, $\E_g(\tau \mid D=1)$, and $\E_g(\tau)$ are, respectively,  
-\begin{equation*}
-\frac{1}{n_g}\sum_{i : G_i=g} \left[\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i) + (1-D_i) \frac{Y_i-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i)}{1-\hat{p}^{(-i)}(\boldsymbol{X_i}, G_i)}\right],
-\end{equation*}
-\begin{equation*}
-\frac{1}{n_g}\sum_{i : G_i=g} \left[ \left( \frac{D_i}{\hat{p}_g} - \frac{(1-D_i)}{\hat{p}_g}\frac{\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)}{1-\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)} \right)  \left(Y_i-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i)\right) \right] ,
-\end{equation*}
-and 
-\begin{equation*}
-\frac{1}{n_g}\sum_{i : G_i=g} \left[ \hat{m}_{1}^{(-i)}(\boldsymbol{X_i},G_i)-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i) + D_i \frac{Y_i-\hat{m}_{1}^{(-i)}(\boldsymbol{X_i},G_i)}{\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)} - (1-D_i) \frac{Y_i-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i)}{1-\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)} \right], 
-\end{equation*}
-$\hat{p}_g$ is the observed proportion of the treated in group $g$,  $\hat{p}^{(-i)}(\boldsymbol X,G)=\hat{P}(D=1 \mid \X, G)$ is the estimated propensity score, and $\hat{m}_{d}^{(-i)}(\X)=\hat{\E}(Y \mid \X, D=d, G)$ is the estimated conditional expectation of the outcome when $D$ is fixed at $d$. The $(-i)$ superscripts for the estimates indicate cross-fitting, i.e., the functions for each individual are fitted using a part of the sample not containing that individual. In the R package, we randomly split the data into two subsamples, then fit the functions for members of one subsample using the other subsample. When survey weights are used, we replace the DML estimators with those for the weighted versions of mean baseline potential outcome, ATE, and ATT. \cite{hirano_efficient_2003} provides the EIFs for the first two quantities. In appendix B, we derive the EIF and corresponding estimator for weighted ATT.
-
-The AIPW estimators are doubly robust, i.e., as long as either the propensity score function or the outcome conditional expectation function (CEF) is consistently estimated, the ATE and ATT estimation is consistent. Moreover, the AIPW estimators are derived from efficient influence functions (EIF), hence reaching the semiparametric efficiency bound. The DML approach builds on the classic AIPW estimator by integrating it with cross-fitting and Machine Learning (ML) estimation of the propensity score function and the outcome conditional expectation function. Given certain assumptions on the convergence rates of the ML methods used for these functions, cross-fitting guarantees that the asymptotic distributions of the ATT and ATE estimates remain the same despite the use of ML \citep{chernozhukov_double/debiased_2018}. This preserves the semiparametric efficiency of the AIPW .
-
-\begin{comment}
-\begin{gather*}
-\hat{\tau}^{(-i)}_G(\boldsymbol X) + \frac{D-\hat{p}^{(-i)}_G(\boldsymbol X)}{\hat{p}^{(-i)}_G(\boldsymbol X) [1 - \hat{p}^{(-i)}_G(\boldsymbol X)]} \left\lbrace  Y-\hat{m}^{(-i)}_G(\boldsymbol X)-[D-\hat{p}^{(-i)}_G(\boldsymbol X)] \hat{\tau}^{(-i)}_G(\boldsymbol X) \right\rbrace ,
-\end{gather*}
-where $\hat{p}^{(-i)}_G(\boldsymbol X)$ is the propensity score estimated via random forest, $\hat{m}^{(-i)}_G(\boldsymbol X)$ is the estimated outcome conditional expectations function $E_G(Y \mid \boldsymbol X)$, also by random forest, and $\hat{\tau}^{(-i)}_G(\boldsymbol X)$ is the causal forest estimate of treatment effect. Causal forest \citep{athey_generalized_2019, wager_estimation_2018} is a nonparametric algorithm for estimating the conditional average treatment effect function $E_G(\tau \mid \boldsymbol X)$ that performs well compared with other methods for the same purpose \citep{knaus_machine_2021}. And the $(-i)$ superscripts for the estimates mean that the $\tau$, $p$, and $m$ functions for each individual are fitted using data not including the individual. For example, the data may be split into two subsamples and the functions for members of one subsample is fitted using data of the other subsample. This practice is called cross-fitting and is crucial for obtaining valid inference results for machine learning-based estimators \citep{chernozhukov_double/debiased_2018}. After obtaining the effect estimates for all individuals, we simply average over the sample by treatment status and group membership to get the ATT and ATE estimates. Since the AIPW estimator above yields asymptotically normally distributed estimates, the confidence intervals for each component in the decomposition can be easily constructed. \footnote{We treat the $E_g(D)$ estimates $\overline{D}_g$ as non-stochastic. \cite[see][p.84]{greene_econometric_2018}}
-\end{comment}
-
-
-For the conditional decomposition in Theorem 4, we develop an imputation approach. First, we model $\E_g(D \mid \Q)$ and $\E_g(\tau \mid \Q)$ for each group $g$. Second, we plug the $\Q$ values of the relevant group in the estimated functions of interest, which are combinations of $\E_g(D \mid \Q)$ and $\E_g(\tau \mid \Q)$. Third, we obtain the averages of the evaluated functions at the plugged-in values. For example, for the conditional prevalence component, we first obtain the estimated function $\left[\hat{\E}_a(D \mid \Q=\q)-\hat{\E}_b(D \mid \Q=\q) \right]\hat{\E}_b(\tau \mid \Q=\q)$. Then, we plug all $\Q$ values of group $b$ in the estimated function $\left[\hat{\E}_a(D \mid \Q=\q)-\hat{\E}_b(D \mid \Q=\q) \right]\hat{\E}_b(\tau \mid \Q=\q)$ as this function is integrated over the distribution of $\Q$ in group $b$. Finally, the average of the evaluated function at each plugged-in $\Q$ value becomes our estimate for the conditional prevalence component. The estimation for the conditional effect and $\Q$ distribution components proceeds similarly, with different functions and plug-in values. After obtaining estimates for the conditional prevalence, conditional effect, and $\Q$ distribution components, we can take their sum with the baseline component estimated in the same way as in the unconditional case, then subtract the sum from the total disparity to obtain the estimated conditional selection component.
-
-The modelling of $\E_g(\tau \mid \Q)$ is based on regressing a pseudo outcome, the individual-level AIPW estimates for ATE, on $\Q$ in group $g$. The pseudo outcome for individual $i$ is 
-\begin{equation*}
-    \hat{m}_{1}^{(-i)}(\boldsymbol{X_i},G_i)-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i) + D_i \frac{Y_i-\hat{m}_{1}^{(-i)}(\boldsymbol{X_i},G_i)}{\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)} - (1-D_i) \frac{Y_i-\hat{m}_{0}^{(-i)}(\boldsymbol{X_i},G_i)}{1-\hat{p}^{(-i)}(\boldsymbol{X_i},G_i)}.
-\end{equation*}
-This approach is doubly robust for $\E_g(\tau \mid \Q)$ w.r.t. $m_d(\X, G)$ and $p(\X, G)$, and has been much studied in the semiparametric literature \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}. In particular, in order for the estimation to be flexible, we implement the pseudo outcome regression on $\Q$ also using ML. The same goes for $\E_g(D \mid \Q)$ where the outcome is the observed $D$.
-
-For the conditional decomposition with survey weights, we proceed as follows. For the weighted version of $\E_g(\tau \mid \Q)$, we use the the AIPW pseudo outcome for the weighted ATE but do not apply survey weights to the ML model for the relationship between the pseudo outcome and $\Q$. On the other hand, we apply survey weights to the ML classification model for the relationship between $D$ and $\Q$. Finally, we take weighted averages of the evaluated functions of interest with appropriately plugged-in $\Q$ values.
-
-Although it is possible to calculate analytical standard errors for the underlying elements of the unconditional case when they are estimated using double-ML on the basis of conditional ignorability, our components are nonlinear combinations of these elements. Moreover, analytical inference for the MTE-based estimator of the unconditional decomposition and the regression imputation estimator of the conditional decomposition is even less available. Therefore, to keep consistency, we use nonparametric bootstrap to obtain inference results for all estimates. 
-
-
-
-
-\subsection{Extensions to multi-category treatment and continuous treatment}
-So far, we have only discussed the case where the treatment is a binary variable. Now we present some extensions with respect to the type of the treatment variable. For these extensions, we focus on unconditional decomposition in this paper. First, still only using the consistency assumption (A.1), the decomposition for a treatment with $J$ categories, indexed by superscripts $j\in \lbrace 0..J-1 \rbrace$, naturally is
-\begin{align*}
-&\phantom{{}={}} E_a(Y)-E_b(Y) \\
-&= \underbrace{ \vphantom{\sum\limits_{j=1}^{J-1}} E_a(Y_{D^0=1})-E_b(Y_{D^0=1})}_{\text{baseline}} + \underbrace{\sum\limits_{j=1}^{J-1} (1/2) \left[ E_a(\tau^j)+E_b(\tau^j) \right] \left[ E_a(D^j)-E_b(D^j) \right]}_{\text{prevalence}}  \\
-&\phantom{{}={}} + \underbrace{\sum\limits_{j=1}^{J-1} (1/2) \left[E_a(D^j)+E_b(D^j) \right] \left[E_a(\tau^j) - E_b(\tau^j) \right]}_{\text{effect}} 
-+ \underbrace{\sum\limits_{j=1}^{J-1} \left[Cov_a(D^j, \tau^j) - Cov_b(D^j, \tau^j)\right]}_{\text{selection}},  
-\end{align*}
-where $j=0$ indicates the reference category and $\tau^j=Y_{D^j=1}-Y_{D^0=1}$.
-
-Second, for a continuous treatment $D$, in addition to the consistency assumption, we also need to parametrize conditional expectation of potential outcomes, $E_g(Y_d)$, as a function of $d$ for each $g$. The simplest parametrization is to linearize $E_g(Y_d)$ in $d$ under the assumption
-\begin{equation*}
-E_g(Y_d)=E_g(Y_0+d\tau), \forall d, g,
-\end{equation*}
-i.e., linearity of $Y_d$ in $d$. In the case of linear parametrization, the decomposition takes the exact same form as equation (\ref{eqt1}), except now $\tau$ is the linear treatment effect, namely, $\tau \coloneqq Y_{d+1}-Y_d$, $\forall d$. It is also possible to relax the linearity assumption and parametrize the potential outcome function more flexibly. For example, if we assume the conditional expectation function is  $E_g(Y_d)=E_g[Y_0+\gamma f(d)+ \delta g(d)]$, $\forall d, g$, where $f(d)$ and $g(d)$ are two researcher-specified functions of $d$, then the decomposition becomes
-\begin{align*}
-&\phantom{{}={}} E_a(Y)-E_b(Y) \\
-&= \underbrace{E_a(Y_0)-E_b(Y_0)}_{\text{basline}} \\
-&\phantom{{}={}} + \underbrace{(1/2)[E_a(\gamma)+E_b(\gamma)]\lbrace E_a[f(d)]-E_b[f(b)] \rbrace + (1/2)[E_a(\delta)+E_b(\delta)]\lbrace E_a[g(d)]-E_b[g(b)] \rbrace}_{\text{prevalence}} \\
-&\phantom{{}={}} + \underbrace{(1/2) \lbrace E_a[f(d)]+E_b[f(d)] \rbrace[E_a(\gamma)-E_b(\gamma)] + (1/2)\lbrace E_a[g(d)]+E_b[g(d)]\rbrace[E_a(\delta)-E_b(\delta)]}_{\text{effect}} \\
-&\phantom{{}={}} + \underbrace{Cov_a[f(d),\gamma] - Cov_b[f(d),\gamma] + Cov_a[g(d),\delta] - Cov_b[g(d),\delta]}_{\text{selection}}
-\end{align*}
-
-
-Therefore, the $1-\alpha$ asymptotic confidence interval for the baseline component is 
-$$
-\left\lbrace \hat{\E}_a(Y_0)-\hat{\E}_b(Y_0) - \frac{z_{1-\alpha/2} \cdot \sqrt{\hat{\sigma}^2_{Y0,a} + \hat{\sigma}^2_{Y0,b}}}{\sqrt{n/2}}, \hat{\E}_a(Y_0)-\hat{\E}_b(Y_0) + \frac{z_{1-\alpha/2} \cdot \sqrt{\hat{\sigma}^2_{Y0,a} + \hat{\sigma}^2_{Y0,b}}}{\sqrt{n/2}}, \right\rbrace
-$$
-where $z_{1-\alpha/2}$ is the $1-\alpha/2$ quantile of the standard normal distribution. The p-value corresponding to the null hypothesis $E_a(Y_0)-E_b(Y_0)=0$ is 
-$$
-2 \left[1-\Phi \left(\frac{\hat{\E}_a(Y_0)-\hat{\E}_b(Y_0)}{\sqrt{\frac{2}{n} \left(\hat{\sigma}^2_{Y0,a} + \hat{\sigma}^2_{Y0,b} \right) }} \right) \right],
-$$
-where $\Phi$ is the CDF of the standard normal distribution.
-
-
-
-
-To see this, note that
-\begin{align*}
-&\phantom{{}={}} E_g(D \epsilon) \\
-&= E_g[D (Y-E_g(Y_0)-E_g(\tau)D)] \\
-&= E_g[D (Y_0 + \tau D - E_g(Y_0)-E_g(\tau)D)] \\
-&= E_g\lbrace [Y_0-E_g(Y_0)]D \rbrace + E_g \lbrace [\tau-E_g(\tau)]D \\
-&= Cov_g(Y_0, D) + Cov_g(\tau, D).
-\end{align*}
-Hence, barring the knife-egde case where $Cov_g(Y_0, D) = - Cov_g(\tau, D)$, the exogeneity assumption implies both $Cov_g(Y_0, D)=0$ and $Cov_g(\tau, D)=0$.
-
-The exogeneity assumption should be $Cov_g(D, \tau)=0$. Then 
-\begin{align*}
-&\phantom{{}={}} Cov_g(D, \epsilon) \\
-&= E(D \epsilon)-E(D)E(\epsilon) \\
-&= Cov_g(Y_0, D) + Cov_g(\epsilon, D) - E_g(D)E_g(\epsilon) \\
-&= Cov_g(Y_0, D) + Cov_g(\epsilon, D) - E_g(D)E_g[Y_0+ \tau D -E_g(Y_0)-E_g(\tau)D] \\
-&= Cov_g(Y_0, D) + Cov_g(\epsilon, D) - E_g(D)Cov(\tau, D)
-\end{align*}
-So, unless $Cov_g(\tau,D)=\frac{Cov_g(Y_0,D)}{E(D)-1}$, $Cov_g(Y_0, D)=Cov_g(\tau, D)=0$.
-
-\begin{comment}
-\begin{align*}
-    \phi(\xi_{dg}) &= \partial \E_{\mathcal{P}_t} \left[\mu_{\mathcal{P}_t}(d,\X,g) \frac{w(\X,G)}{\E_{\mathcal{P}_t}(w(\X,G) \mid G=g)}  \mid G=g \right] \\
-    &= \frac{1}{h_g} \left\{ \frac{\one_{\Tilde{g}}(g)}{p_g} [\mu(d,\Tilde{\x},g)w(\Tilde{\x},g) -\E(\mu(d,\Tilde{\x},g)w(\Tilde{\x},\Tilde{g}))] + \E[\partial  \mu_{\mathcal{P}_t}(d,\X,g)w(\X,g) \mid G=g ] \right\} \\ 
-    &\phantom{{}={}} - \frac{1}{(h_g)^2}\frac{\one_{\Tilde{g}}(g)}{p_g}[w(\X,G)-\E(w(\X,G) \mid G=g)]\E[\mu(d,\X,g)w(\X,G) \mid G=g] \\
-    &= \frac{\one_{\Tilde{g}}(g)}{p_g}[\mu(d,\Tilde{\x},g)w(\Tilde{\x},g)-\xi_{dg}] + \E \left[ \frac{\one_{\Tilde{d},\Tilde{\x},\Tilde{g}}(d,\X,g)}{f(d,\X,g)} (Y-\mu(d,\X,g)) w(\X,g) \mid G=g \right] \\
-    &= \frac{\one_{\Tilde{g}}(g)}{p_g}[\mu(d,\Tilde{\x},g)w(\Tilde{\x},g)-\xi_{dg}] + \frac{\one_{\Tilde{g}}(g)}{p_g} \frac{\one_{\Tilde{d}}(d)}{\pi(\Tilde{\x},g)} (Y-\mu(d,\Tilde{\x},g)) w(\Tilde{\x},g) \\
-    &= \frac{\one(G=g)}{p_g} w(\X,g) \left[\frac{D}{\pi(\X,g)}(Y-\mu(d,\X,g)) + \mu(d,\X,g) \right] -  \frac{\one(G=g)}{p_g}\xi_{dg} . 
-\end{align*}
-\end{comment}
