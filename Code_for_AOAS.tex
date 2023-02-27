@@ -1,0 +1,143 @@
+\documentclass[aoas]{imsart}
+
+\RequirePackage{amsthm,amsmath,amsfonts,amssymb}
+\RequirePackage[authoryear]{natbib}
+
+\startlocaldefs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Uncomment next line to change            %%
+%% the type of equation numbering           %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\numberwithin{equation}{section}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% For Axiom, Claim, Corollary, Hypothesis, %%
+%% Lemma, Theorem, Proposition              %%
+%% use \theoremstyle{plain}                 %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\theoremstyle{plain}
+%\newtheorem{???}{???}
+%\newtheorem*{???}{???}
+%\newtheorem{???}{???}[???]
+%\newtheorem{???}[???]{???}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% For Assumption, Definition, Example,     %%
+%% Notation, Property, Remark, Fact         %%
+%% use \theoremstyle{remark}                %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\theoremstyle{remark}
+%\newtheorem{???}{???}
+%\newtheorem*{???}{???}
+%\newtheorem{???}{???}[???]
+%\newtheorem{???}[???]{???}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Please put your definitions here:        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\endlocaldefs
+
+\usepackage{titling}
+\usepackage{lipsum}
+\usepackage{comment}
+\usepackage{physics}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{matrix}
+\usepackage[normalsize]{subfigure}
+\usetikzlibrary{backgrounds,automata}
+\usepackage{caption}
+
+\usepackage{bbm}
+\usepackage{mathrsfs} 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\usepackage{mathtools, nccmath}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+
+\newtheorem{prop}{Theorem}
+\newtheorem{coro}{Corollary}[prop]
+
+\usepackage{graphicx}
+
+
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}  % the independence symbol
+
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\operatorname{E}}
+
+\newcommand{\ATE}{\text{ATE}}
+\newcommand{\ATT}{\text{ATT}}
+
+\def\X{{\boldsymbol X}}
+\def\x{{\boldsymbol x}}
+\def\Q{{\boldsymbol Q}}
+\def\q{{\boldsymbol q}}
+\def\Z{{\boldsymbol Z}}
+\def\z{{\boldsymbol z}}
+\newcommand{\A}{\mathrm{A}}
+\DeclareMathOperator{\Pro}{Pr}
+\def\one{\mathbbm{1}}
+\def\P{\mathbbm{P}}
+\newcommand{\defeq}{\vcentcolon=}
+
+\def\pheight{\frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')}}
+
+\usepackage{changepage}  % enables changing page margin for a specific part of the text
+
+\usepackage[colorlinks=true, allcolors=blue, hyperfootnotes=false]{hyperref}  % hyperlinks. And I turned off hyperlinks to footnotes. 
+
+\usepackage{makecell}
+\renewcommand{\cellalign}{tl}  % change the vertical and horizontal alignments within "makecell".
+
+\allowdisplaybreaks
+
+
+
+\begin{document}
+
+\begin{frontmatter}
+\title{Nonparametric Causal Decomposition of Group Disparities}
+%\title{A sample article title with some additional note\thanksref{T1}}
+\runtitle{Causal Decomposition of Disparities}
+%\thankstext{T1}{A sample of additional note to the title.}
+
+\begin{aug}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Only one address is permitted per author. %%
+%% Only division, organization and e-mail is %%
+%% included in the address.                  %%
+%% Additional information can be included in %%
+%% the Acknowledgments section if necessary. %%
+%% ORCID can be inserted by command:         %%
+%% \orcid{0000-0000-0000-0000}               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author[A]{\fnms{Ang}~\snm{Yu}\ead[label=e1]{ayu33@wisc.edu}}
+\and
+\author[B]{\fnms{Felix}~\snm{Elwert}\ead[label=e2]{???@???}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Addresses                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\address[A]{???\printead[presep={,\ }]d{e1}}
+
+\address[B]{???\printead[presep={,\ }]{e2,e3}}
+\end{aug}
+
+\begin{abstract}
+We propose a new non-parametric method for decomposing the causal effect of a variable on group disparities. Our main contribution is to separate neatly the roles of between-group and within-group effect heterogeneity in explaining group disparities, revealing a new lever for disparity reduction. Starting from an observed disparity, our decomposition contains four terms: (1) the \emph{baseline} disparity in outcomes if nobody were to receive the treatment; (2) the disparity due to the differential \emph{prevalence} of the treatment across groups; (3) the disparity due to the differential average \emph{effect} of the treatment across groups; and (4) the disparity due to the differential allocation of the treatment to individuals who benefit more or less from the treatment within groups. Our decomposition is a model-free causal generalization of the classic Kitagawa-Blinder-Oaxaca decomposition, unites prior approaches in the social sciences and epidemiology, and resolves conceptual difficulties of recent randomized-interventional decompositions. We propose various estimators to flexibly estimate the decomposition. We apply our framework to the causal role of education in intergenerational income mobility. 
+\end{abstract}
+
+\begin{keyword}
+\kwd{Causal Decomposition}
+\kwd{Group Disparity}
+\kwd{Nonparametric Inference}
+\end{keyword}
+
+\end{frontmatter}
