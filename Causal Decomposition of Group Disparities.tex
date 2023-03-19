@@ -473,7 +473,7 @@ We again construct one-step estimators based on the EIFs.
 \end{align*}
 For this estimator, there are five nuisance functions: $p_g(\Q)$, $\pi(d,\X,\Q,g)$, $\mu(d,\X,\Q,g)$, $\E(D \mid \Q, G=g)$, and $\E(Y_d \mid \Q,g)$, for any $d$ and $g$. We cross-fit these nuisance functions using nonparametric methods. This estimator can be weight-stabilized by dividing $\frac{\one(D=d)}{\pi(d,\X,\Q,g)}$, $\frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}}$, and $\frac{\one(G=g)p_{g''}(\Q)}{p_g(\Q)p_{g''}}$ by their respective sample averages. The estimation of $\E(Y_d \mid \Q,g)=\E[\mu(d,\X,\Q,g) \mid \Q,g]$ requires a more involved procedure. We adopt a pseudo-outcome approach \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}, where the pseudo outcome is defined as the decentered EIF for $\E(Y_d)$, i.e., 
 $$ \frac{\one(D=d)}{\pi(d, \X,G)} [Y-\mu(d,\X,G)] + \mu(d,\X,G).$$
-We first estimate $\pi(d, \X,G)$ and $\mu(d,\X,G)$ in the pseudo outcome for each individual within two random subsamples of the data \emph{without} cross-fitting. Then, using nonparametric regression methods, we flexibly predict the estimated pseudo outcome using $\Q$ and $G$. The resulting predictions become estimates of $\E(Y_d \mid \Q,g)$. We use cross-fitting in the second step, i.e., when one subsample is used to fit $\E(Y_d \mid \Q,g)$, the $\Q$ and $G$ values of the other subsample are plugged in to obtain predictions. Using this procedure, we ensure that the fitting of the function $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
+We first estimate $\pi(d, \X,G)$ and $\mu(d,\X,G)$ in the pseudo outcome for each individual within two random subsamples of the data \emph{without} cross-fitting. Then,  we nonparametrically regress the estimated pseudo outcome on $\Q$ and $G$. The resulting predictions become estimates of $\E(Y_d \mid \Q,g)$. We use cross-fitting in the second step, i.e., when one subsample is used to fit $\E(Y_d \mid \Q,g)$, the $\Q$ and $G$ values of the other subsample are plugged in to obtain predictions. Using this procedure, we ensure that the fitting of the function $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
 
 The asymptotic theory of the one-step estimator for $\xi_{dgg'g''}$ is less general than the theories for $\xi_{dg}$ and $\xi_{dgg'}$, in that some conditions differ by the specific configuration of $g, g'$ and $g''$. Note that  $g=g''$ for the conditional prevalence component, and $g'=g''$ for the conditional effect component. For $\sqrt{n}$-consistency, asymptotic normality, and efficiency, we need three assumptions. 
 
@@ -534,12 +534,12 @@ We fit the nuisance functions using three alternative ML methods, Gradient Boost
   \hline
    & GBM & Neural Networks & Random Forests & Parametric \\ 
   \hline
-  Total & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$  \\ 
-  Baseline & $0.276^{***}$ & $0.248^{***}$ & $0.255^{***}$ & $0.250^{***}$ \\ 
-  Prevalence & $0.116^{***}$ & $0.123^{***}$ & $0.099^{***}$ & $0.070^{***}$ \\ 
-  Effect & $0.053^{*}$ & $-0.008$ & $0.068^{*}$ & $-0.033$ \\ 
-  Selection & $-0.160^{***}$ & $-0.077^{***}$ & $-0.137^{***}$ & $-0.001$ \\ 
-  Jackson's reduction in disparity & $0.018$ & $0.066^{***}$ & $0.045^{***}$ & $0.069^{***}$ \\ 
+Total              & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ \\
+Baseline           & $0.241^{***}$ & $0.250^{***}$ & $0.246^{***}$ & $0.245^{***}$ \\
+Prevalence         & $0.054^{*}$   & $0.098^{**}$  & $0.065^{***}$ & $0.069^{**}$  \\
+Effect             & $-0.014$      & $-0.058$      & $-0.022$      & $-0.030$      \\
+Selection          & $0.004$       & $-0.005$      & $-0.003$      & $0.001$       \\
+Jackson reduction  & $0.060^{*}$   & $0.096^{**}$  & $0.065^{***}$ & $0.069^{**}$  \\
    \hline
   \multicolumn{5}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\ For ML-based estimators, cross-fitting is used.}}
 \end{tabular}
@@ -1076,21 +1076,21 @@ Hence, under conditional ignorability, our selectivity term equals the covarianc
   \hline
   Treatment proportion & $0.418^{***}$ & $0.041^{***}$ & $0.377^{***}$ \\ 
   & \multicolumn{3}{c}{Gradient Boosted Machine}  \\
-  Baseline outcome & $0.551^{***}$ & $0.275^{***}$ & $0.276^{***}$ \\ 
-  ATE & $0.436^{***}$ & $0.308^{***}$ & $0.128^{*}$ \\ 
-  $\Cov(D, \tau)$ & $-0.062^{**}$ & $0.099^{***}$ & $-0.160^{***}$ \\ 
+  Baseline outcome & $0.627^{***}$ & $0.386^{***}$ & $0.241^{***}$ \\ 
+  ATE & $0.111^{***}$ & $0.144^{*}$ & $-0.033$ \\ 
+  $\Cov(D, \tau)$ & $-0.002$ & $-0.005$ & $0.004$ \\ 
   & \multicolumn{3}{c}{Neural Networks}  \\
-  Baseline outcome & $0.564^{***}$ & $0.316^{***}$ & $0.248^{***}$ \\ 
-  ATE & $0.305^{***}$ & $0.325^{***}$ & $-0.020$ \\ 
-  $\Cov(D, \tau)$ & $-0.020$ & $0.057^{**}$ & $-0.077^{***}$ \\ 
+  Baseline outcome & $0.624^{***}$ & $0.374^{***}$ & $0.250^{***}$ \\ 
+  ATE & $0.122^{*}$ & $0.260^{**}$ & $-0.138$ \\ 
+  $\Cov(D, \tau)$ & $-0.003$ & $0.002$ & $-0.005$ \\ 
   & \multicolumn{3}{c}{Random Forests}  \\
-  Baseline outcome & $0.577^{***}$ & $0.321^{***}$ & $0.255^{***}$ \\ 
-  ATE & $0.426^{***}$ & $0.263^{***}$ & $0.163^{*}$ \\ 
-  $\Cov(D, \tau)$ & $-0.083^{**}$ & $0.054^{***}$ & $-0.137^{***}$ \\ 
+  Baseline outcome & $0.626^{***}$ & $0.379^{***}$ & $0.246^{***}$ \\ 
+  ATE & $0.119^{***}$ & $0.172^{***}$ & $-0.053$ \\ 
+  $\Cov(D, \tau)$ & $-0.003$ & $0.000$ & $-0.003$ \\ 
   & \multicolumn{3}{c}{Parametric Regressions}  \\
-  Baseline outcome & $0.629^{***}$ & $0.378^{***}$ & $0.250^{***}$ \\ 
-  ATE & $0.106^{*}$ & $0.185^{***}$ & $-0.079$ \\ 
-  $\Cov(D, \tau)$ & $-0.001$ & $0.000$ & $-0.001$ \\ 
+  Baseline outcome & $0.624^{***}$ & $0.379^{***}$ & $0.245^{***}$ \\ 
+  ATE & $0.113^{***}$ & $0.184^{**}$ & $-0.071$ \\ 
+  $\Cov(D, \tau)$ & $-0.001$ & $0.000$ & $0.001$ \\ 
    \hline
    \multicolumn{4}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\For ML-based estimators, cross-fitting is used.}} \\
 \end{tabular}
@@ -1105,14 +1105,13 @@ Hence, under conditional ignorability, our selectivity term equals the covarianc
   \hline
  & GBM & Neural Networks & Random Forests & Parametric \\ 
   \hline
-  Total & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ \\ 
-  Baseline & $0.276^{***}$ & $0.248^{***}$ & $0.259^{***}$ & $0.250^{***}$ \\ 
-  Conditional prevalence & $0.151^{***}$ & $0.213^{***}$ & $0.133^{***}$ & $0.015^{**}$ \\ 
-  Conditional effect & $-0.429^{***}$ & $-0.339^{***}$ & $-0.117^{**}$ & $-0.010$ \\ 
-  Conditional selection & $-0.038^{**}$ & $-0.029$ & $-0.082^{***}$ & $-0.002$ \\ 
-  $\Q$ distribution & $0.325^{***}$ & $0.192^{*}$ & $0.094^{**}$ & $0.034$ \\
-  Jackson's reduction in disparity & $0.100^{***}$ & $0.179^{***}$ & $0.089^{***}$ & $0.013^{***}$ \\ 
-   \hline
+Total                       & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ \\
+Baseline                    & $0.241^{***}$ & $0.250^{***}$ & $0.246^{***}$ & $0.245^{***}$ \\
+Conditional prevalence      & $0.016^{*}$   & $0.026^{**}$  & $0.031^{***}$ & $0.016^{**}$  \\
+Conditional effect          & $0.012$       & $-0.038$      & $-0.019$      & $-0.018$      \\
+Conditional selection       & $-0.001$      & $-0.006$      & $-0.011^{*}$  & $-0.001$      \\
+$\Q$ distribution              & $0.017$       & $0.053^{*}$   & $0.038$       & $0.044$       \\
+Conditional Jackson reduction & $0.019^{**}$  & $0.027^{**}$  & $0.031^{***}$ & $0.015^{**}$  \\ \hline
   \multicolumn{5}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\ For ML-based estimators, cross-fitting is used.}}
 \end{tabular}
 \end{table}
