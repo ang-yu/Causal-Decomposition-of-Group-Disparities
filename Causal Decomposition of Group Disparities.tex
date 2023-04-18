@@ -113,7 +113,7 @@ singlelinecheck=false
 \linespread{1.6}  % double spacing 
 \setlength{\parskip}{0em}  % no paragraph spacing
 
-\title{\Large Nonparametric Causal Decomposition of Group Disparities \thanks{We thank Paul Bauer, Eric Grodsky, Aleksei Opacic, Guanghui Pan, Chan Park, Ben Rosche, and Jiwei Zhao for helpful comments and suggestions. Earlier versions of this paper has been presented at Causality in the Social Sciences Workshop at GESIS in 2021, Population Association of America annual meeting in 2022, and American Causal Inference Conference in 2022. We thank participants at these conferences for constructive discussions, especially our discussant at the first two conferences, Xiang Zhou.}} 
+\title{\Large Nonparametric Causal Decompositions of Group Disparities \thanks{We thank Paul Bauer, Eric Grodsky, Aleksei Opacic, Guanghui Pan, Chan Park, Ben Rosche, and Jiwei Zhao for helpful comments and suggestions. Earlier versions of this paper has been presented at Causality in the Social Sciences Workshop at GESIS in 2021, Population Association of America annual meeting in 2022, and American Causal Inference Conference in 2022. We thank participants at these conferences for constructive discussions, especially our discussant at the first two conferences, Xiang Zhou.}} 
 
 \author{\large Ang Yu\thanks{Department of Sociology, University of Wisconsin-Madison. Email: ayu33@wisc.edu} \and Felix Elwert\thanks{Department of Sociology and Department of Biostatistics and Medical Informatics, University of Wisconsin-Madison}}
 \date{\large \today}
@@ -139,13 +139,13 @@ Questions about explanations, contributions, and attribution \citep[e.g.,][]{mor
 Three prior approaches are concerned with questions of attribution and explanation.  
 First, the Kitagawa-Blinder-Oaxaca (KBO) decomposition \citep{kitagawa_components_1955, blinder_wage_1973, oaxaca_male-female_1973} is a classic tool used for explaining group disparities and remains popular to this day \citep[e.g.,][]{barber_black-white_2015, mize_sexual_2016,laurison_class_2016, storer_what_2020, zajacova_pain_2021}. The KBO decomposition is based on group-specific linear regression models and decomposes the group disparity into an explained component and an unexplained component. The explained component reflects the differential averages of an intermediate variable by group, and the unexplained component captures differential slopes and intercepts. The classic KBO decomposition is thus defined in terms of regression coefficients and not nonparametrically formulated in causal terms. This renders the KBO decomposition inappropriate for explanation and attribution question. In fact, sociologists and economists alike have criticized the KBO decomposition for failing to answer any  counterfactual question by design (\citeauthor{fortin_decomposition_2011}, \citeyear{fortin_decomposition_2011}, p.13; \citeauthor{lundberg_what_2021}, \citeyear{lundberg_what_2021}, p.542). 
 
-Second, causal mediation analysis is also used to attribute the relationship between two variables to an intermediate variable \citep{vanderweele_explanation_2015}. Causal mediation estimands are clearly defined in counterfactual terms, however, they are not designed for explaining group disparities. This is because what they decompose are summary measures of treatment effects, such as the Average Treatment Effect (ATE). However, the discussion of treatment effects is conceptually challenging when it comes to ascriptive variables such as race and gender, as it is not plausible to impose any intervention on these variables. Some group variables, such as early-life socioeconomic status, can theoretically be intervened upon, but not for people who are already later in their life course. Indeed, in numerous applications in social and health sciences, descriptive group disparities, rather than an effect, is what researchers seek to understand and explain. Causal attribution of group disparities thereby requires analytical frameworks more tailored to it than mediation analysis.  
+Second, causal mediation analysis is also used to attribute the relationship between two variables to an intermediate variable \citep{vanderweele_explanation_2015}. Causal mediation estimands are clearly defined in counterfactual terms, however, they are not designed for explaining group disparities. This is because what they decompose are summary measures of treatment effects, such as the average treatment effect (ATE). However, the discussion of treatment effects is conceptually challenging when it comes to ascriptive variables such as race and gender, as it is not plausible to impose any intervention on these variables \citep{rubin_estimating_1974}. Some group variables, such as early-life socioeconomic status, can theoretically be intervened upon, but not for people who are already later in their life course. Indeed, in numerous applications in social and health sciences, descriptive group disparities, rather than an effect, is what researchers seek to understand and explain. Causal attribution of group disparities thereby requires analytical frameworks more tailored to it than mediation analysis.  
 
 Third, more recently, epidemiologists have developed a causal decomposition of group disparities, which we call the random equalization decomposition \citep{vanderweele_causal_2014, jackson_decomposition_2018}. For this estimand, the extent to which the group disparity can be attributed to the differential prevalence of an intermediate variable is defined as the reduction in disparity brought about by a hypothetical intervention that randomly gives members of the disadvantaged group values of the intermediate variable according to the distribution of the advantaged group. The random equalization decomposition marks a important advancement towards establishing an appropriate framework for causal attribution of group disparities to an intermediate treatment variable. However, as we will show, the random equalization decomposition does not purely capture the contribution of differential prevalence of the intermediate variable. Instead, it also incorporates the influence of differential patterns of selection into treatment across groups, which complicates its interpretation.
 
 In this article, we develop a novel decomposition method for group disparities in terms of an intermediate treatment variable. Our decomposition is defined counterfactually with respect to the treatment variable and descriptively with respect to the group variable. This approach is consistent with common practices in the social sciences and focuses on more modifiable factors in terms of policy intervention. Our decomposition contains four components, respectively capturing the contributions of baseline differences unrelated to the treatment, differential treatment prevalence, differential ATE, and differential selection into the treatment. Compared with the KBO decomposition, our decomposition enables causal attribution and nonparametric estimation. It supplements causal mediation analysis by focusing on explaining group disparities instead of ``effects'' of the group variables. It also improves on the random equalization decomposition by providing components with unambiguous interpretations. The component in our decomposition that captures differential selection is a centerpiece in our contributions. First, this component reveals a novel policy lever for reducing disparities, and it did not appear in any of the previous decompositions. Second, by separating it from the component representing differential prevalence, we clarify the random equalization decomposition and provide a more clearly interpretable decomposition. 
 
-Our paper proceeds as follows. Section 2 formally introduces our decomposition and interventional interpretations. We also formally relate our decomposition to the classic KBO decomposition, a specific causal mediation estimand, and the random equalization decomposition, through which we explicate the contributions of our framework. We also extend the decomposition to a conditional version, which allows researchers to take pre-treatment covariates into account in defining the estimand and potential interventions. In section 3, under the conditional igorability assumption, we develop nonparametric estimators for the unconditional and conditional decompositions based on their efficient influence functions. These estimators can be implemented via data-adaptive methods such as ML and accommodate high-dimensional confounders. We also derive conditions under which the estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. In addition, they have double-robustness properties. In section 4, we apply our decompositions to study the causal role of college graduation in intergenerational income mobility. Section 5 concludes with possible extensions. 
+Our paper proceeds as follows. Section 2 formally introduces our decomposition and interventional interpretations. We also formally relate our decomposition to the classic KBO decomposition, a causal mediation estimand, and the random equalization decomposition, through which we explicate the contributions of our framework. We also extend the decomposition to a conditional version, which allows researchers to take pre-treatment covariates into account in defining the estimand and potential interventions. In section 3, under the conditional igorability assumption, we develop nonparametric estimators for the unconditional and conditional decompositions based on their efficient influence functions. These estimators can be implemented via data-adaptive methods such as ML and accommodate high-dimensional confounders. We also derive conditions under which the estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. In addition, they have double-robustness properties. In section 4, we apply our decompositions to study the causal role of college graduation in intergenerational income mobility. Section 5 concludes with possible extensions. 
 
 %[This para someplace] Intervening variables can ``contribute" to disparities in multiple ways. Prior to determining the value of the exposure, the groups may or may not already experience baseline disparities. Next, one can ask to what extent differences in the effect of the exposure on members of the two groups contribute to outcome disparities; how differences in the prevalence of the exposure in the two groups.... ; and to what extent it matters which members of each group are selected to receive the exposure.  
     %[OR:] Exposures can `contribute' to outcome disparities in several different ways. It matters how many members of each group receive the treatment, which members of each group receive the treatment, and what the effect of the treatment is on the outcome. 
@@ -153,15 +153,14 @@ Our paper proceeds as follows. Section 2 formally introduces our decomposition a
 
 %When asking about the ‘contribution’ of a variable to an ‘explanation’ of disparities, one needs to define contribution and explanation. Following a long tradition in sociology-reaching back to Weber—we believe that explanations call for a causal account. Contribution…  
 
-\section{The estimand}
+\section{The estimands}
 \subsection{Unconditional decomposition}
 For each individual $i$, consider a binary treatment variable $D_i \in \left\lbrace 0,1 \right\rbrace$. Let $Y_{i0}$ and $Y_{i1}$ be the potential outcomes \citep{rubin_estimating_1974} of $Y_i$ under the hypothetical intervention to set $D_i=0$ and $D_i=1$, respectively. Let $\tau_i \coloneqq Y_{i1} - Y_{i0}$ denote the individual-level treatment effect. Henceforth, we largely suppress individual level subscripts on all variables to unburden notation. Suppose that the population contains two disjoint groups, $g \in \left\lbrace a,b \right\rbrace$, where $a$ denotes the advantaged group and $b$ denotes the disadvantaged group. We use subscripts $g$ to indicate group-specific quantities, for example, $\E_g(Y) \coloneqq \E(Y \mid G=g)$.  
 
-We now only assume SUTVA, i.e.,
+We now only assume the stable unit treatment value assumption (SUTVA) \citep{rubin_randomization_1980}, 
 \begin{itemize}
-     \item[] (A.1) $Y=D Y_1 + (1-D) Y_0$,
+     \item[] Assumption 1 (SUTVA). $Y=D Y_1 + (1-D) Y_0$.
 \end{itemize}
-so that the observed outcome equals the potential outcome under the treatment that was actually assigned.
 Then, the observed outcomes disparity between group $a$ and $b$ can be decomposed into four components: 
 \begin{align}
 &\phantom{{}={}} \E_a(Y)-\E_b(Y)   \nonumber  \\
@@ -171,32 +170,30 @@ Then, the observed outcomes disparity between group $a$ and $b$ can be decompose
 + \underbrace{\Cov_a(D, \tau) -  \Cov_b(D, \tau)}_{\text{\normalsize  selection}}. \label{eqt1}
 \end{align}
 The ``baseline" component reflects the difference in average baseline potential outcome $Y_0$ between groups, i.e., the difference in outcomes if nobody received treatment. The ``prevalence" component indicates how much of the group disparity is due to differential prevalence of treatment. The ``effect" component reflects unequal average treatment effects (ATE) across groups. Finally, the ``selection" component captures the contribution of the differential selection into treatment based on the treatment effect, $\tau$,  to the group disparity. 
-For each group, if group members who would gain more from treatment are more likely to receive the treatment than those who would gain less, there will be a positive covariance between $D$ and $\tau$. To our knowledge, none of prior decompositions of group disparities includes a selection component. \footnote{\citet{zhou_attendance_2022} recently developed a causal decomposition method for a special case of mediation analysis, which contains a similar covariance component capturing selection into a mediator.} 
+For each group, if group members who would gain more from treatment are more likely to receive the treatment than those who would gain less, there will be a positive covariance between $D$ and $\tau$. To our knowledge, none of prior decompositions of group disparities includes a selection component.\footnote{\citet{zhou_attendance_2022} recently developed a causal decomposition method for a special case of mediation analysis, which contains a similar covariance component capturing selection into a mediator.} 
 Both the effect and the selection components account for the relationship between heterogeneous effects and group disparities. But the ``effect" component captures the contribution of \emph{between}-group effect heterogeneity; and the ``selection" component captures the contribution of \emph{within}-group effect heterogeneity. In summary, a group will be more advantaged in the outcome if its members have a higher average baseline potential outcome, a higher prevalence of treatment (given a positive ATE), a higher ATE, or a higher level of selection into treatment based on treatment effect.
 
-Our decomposition is formulated in counterfactual terms, hence is prescriptive for future interventions. The decomposition reveals three levers by which a policy may affect inter-group disparities through the treatment. First, policy makers could manipulate the prevalence of the treatment in each of the two groups. Second, they could manipulate who within each group receives treatment. For example, they could facilitate the matching of high-return individuals to treatment receipt in the disadvantaged group. Third, they might even be able to manipulate the effect of exposure on each individual. \footnote{It is more unconventional to discuss interventions on treatment effects than on treatments. However, interventions on effects have appeared in both methodological \citep{malinsky_intervening_2018} and empirical \citep{brady_rethinking_2017} literatures.
+\subsection{Interventional interpretations}
+Our decomposition is formulated in counterfactual terms, hence is prescriptive for future interventions. The decomposition reveals three levers by which a policy may affect inter-group disparities through the treatment. First, policy makers could manipulate the prevalence of the treatment in each of the two groups. Second, they could manipulate who within each group receives treatment. For example, they could facilitate the matching of high-return individuals to treatment receipt in the disadvantaged group. Third, they might even be able to manipulate the average effect of the treatment for each group.\footnote{It is more unconventional to discuss interventions on treatment effects than on treatments. However, interventions on effects have appeared in both methodological \citep{malinsky_intervening_2018} and empirical \citep{brady_rethinking_2017} literatures.
 Our notion of interventions on effects is a generalization of Malinsky's (\citeyear{malinsky_intervening_2018}) interventions on ``structural features'', as we allow for heterogeneous effects.} Specifically, each of our decomposition component quantifies the part of the outcome disparity that could be eliminated if the two groups were equalized with respect to that component while other characteristics were held unchanged.
 
-To further fix ideas, we may more exactly pin down the equalization intervention implicated by each decomposition component. The prevalence component indicates the part of the disparity that would be eliminated by giving group $b$ the treatment prevalence of group $a$, which can be seen by replacing $\E_b(D)$ with $\E_a(D)$ in equation (\ref{eqt1}). In the same vein, the effect component is the part of the disparity that would disappear if group $a$ was given the ATE of group $b$. Finally, the disparity would be reduced by the amount of the selection component if the two groups were made to have the same selection level, regardless of the specific level at which their selection would be fixed. However, given that the prevalence, effect, and selection components are determined only by two variables, the treatment and the treatment effect, it is not always possible to intervene on a single component without changing the values of other components. Nevertheless, we may alternatively conceive of a whole-package intervention. A whole-package intervention transfers the joint distribution of $D$ and $\tau$ from one group to the other. Our prevalence, effect, and selection components then add to the reduction in disparity of the whole-package intervention, and each of them can be interpreted as a substantive aspect of the intervention.
+To further fix ideas, we may more exactly pin down the equalization intervention implicated by each decomposition component. The prevalence component indicates the part of the disparity that would be eliminated by giving group $b$ the treatment prevalence of group $a$, which can be seen by replacing $\E_b(D)$ with $\E_a(D)$ in equation (\ref{eqt1}). In the same vein, the effect component is the part of the disparity that would disappear if group $a$ was given the ATE of group $b$. Finally, the disparity would be reduced by the amount of the selection component if the two groups were made to have the same selection level, regardless of the specific level at which their selection would be fixed. However, given that the prevalence, effect, and selection components are determined only by two variables, the treatment and the treatment effect, it is not always possible to intervene on a single component without changing the values of the other components. Nevertheless, we may alternatively conceive of a whole-package intervention. A whole-package intervention transfers the joint distribution of $D$ and $\tau$ from one group to the other. Our prevalence, effect, and selection components then add to the reduction in disparity of this whole-package intervention, and each of them can be interpreted as a distinct aspect of the intervention.
 
-Using the randomized intervention notation proposed by Didelez et al. (\citeyear{didelez_direct_2006}), there is another way to interpret the decomposition components from an interventional perspective. Extended versions of the randomized intervention notation have been used to define randomized interventional mediation estimands and random equalization decompositions, which we address later. 
-Under the randomized intervention notation, for any two groups $g$ and $g'$, the post-intervention mean outcome for group $g$ is denoted $\E_g \left(Y_{R(D \mid  G=g') } \right)$ when each member of group $g$ is counterfactually given a treatment value of $R(D \mid  G=g')$, which is defined to be a randomly drawn value of treatment from group $g'$. When $g=g'$, the intervention amounts to a random permutation of treatment status within the group. Then, only using its definition, we can rewrite the post-intervention mean as follows.
+Even if one is not willing to consider interventions on treatment effects, the decomposition components can still be interpreted in terms of a two-step intervention. Under the randomized intervention notation proposed by \citet{didelez_direct_2006}, $R(D \mid  G=g')$ is defined to be a randomly drawn value of treatment from group $g'$. Then, $\E_g \left(Y_{R(D \mid  G=g') } \right)$ denotes the mean outcome for group $g$ after each member of group $g$ is counterfactually given a treatment value randomly drawn from  group $g'$. When $g=g'$, the intervention amounts to a random permutation of treatment status within the group. Using its definition, we can rewrite the post-intervention mean as follows.
 \begin{align}
     \E_g \left(Y_{R(D \mid  G=g') } \right) = \E_g (Y_0) + \E_{g'}(D)\E_g(\tau). \label{eqt2}
 \end{align}
-Then it follows that our decomposition components can be re-written in terms of the randomized intervention notation.
+Then it follows that our decomposition components can be re-written in the randomized intervention notation.
 \begin{align*}
    \E_a(Y) - \E_b(Y) - \left[ \E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right) \right] &= \text{selection} \\
    \E_b \left(Y_{R(D \mid G=a)} \right)-\E_b \left(Y_{R(D \mid G=b)} \right)  &= \text{prevalence} \\
    \E_a \left(Y_{R(D \mid G=a)} \right)-\E_b \left(Y_{R(D \mid G=a)} \right)  &= \text{baseline} + \text{effect} 
 \end{align*}
 
-First, the selection component has the interpretation of a reduction in disparity, where the pre-intervention disparity is $\E_a(Y) - \E_b(Y)$, and the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$. In the post-intervention world, selection into treatment would be eliminated in both groups as treatment was internally randomized in both groups. Hence, the selection component represents the contribution of within-group selection into treatment. Second, the prevalence component is also a reduction in disparity. Here, the pre-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$, and the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right)-\E_b \left(Y_{R(D \mid G=a)} \right)$, which is exactly the sum of the baseline and the effect components. Contrasting the pre- and post-intervention disparities, it is clear that the reduction in disparity captured by the prevalence component is due to giving group $b$ the treatment prevalence of group $a$, so that treatment prevalence is equalized between groups. Importantly, the prevalence component is associated with an equalization step independent of randomization, in the sense that the treatment has been randomized within each group before the equalization intervention.
-
-To summarize the interpretation based on the randomized intervention notation, we can conceive of a two-step intervention that underlies our decomposition. In the first step, the treatment is randomized in both groups without changing its prevalence in each group. In the second step, the treatment is equalized on the top of the first step. Sequentially, the selection component would first be removed from the outcome disparity, then the prevalence component would be removed, at which point the effect and baseline components would still remain. In this framework, the effect component is not mapped to a reduction in disparity because the randomized intervention notation, limited by its potential outcomes formulation, cannot denote interventions on treatment effects.
+This points to a two-step intervention. In the first step, the pre-intervention disparity is $\E_a(Y) - \E_b(Y)$, and the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$. Hence, this step internally randomizes the treatment in both groups without changing its prevalence, and the selection component represents the reduction in disparity resulting from this randomization intervention. In the second step, the pre-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$, while the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right)-\E_b \left(Y_{R(D \mid G=a)} \right)$. This step equalizes treatment prevalence by giving group $b$ the treatment prevalence of group $a$. Therefore, the prevalence component is the reduction in disparity of an equalization intervention. Importantly, this equalization intervention is independent of the randomization intervention in the first step. Finally, the remaining disparity at the end of the two-step intervention is the sum of the baseline and the effect components. 
 
 \subsection{Relation to the KBO decomposition}
-Our decomposition expands on the classic KBO decomposition in two ways. First, our decomposition is presented explicitly as a causal estimand, which can be estimated by various parametric, semiparametric, and nonparametric estimators. 
+Our decomposition expands on the classic KBO decomposition in two ways. First, our decomposition is presented explicitly as a causal estimand, which can be estimated nonparametrically. 
 By contrast, the KBO decomposition is defined in terms of linear regressions and coincides with our decomposition only under a very strong assumption. Second, our decomposition contains an additional selection component as a novel disparity-producing mechanism, which is assumed away in the KBO decomposition. 
 
 Consider a form of the KBO decomposition of the outcome disparity between groups $a$ and $b$ with respect to a treatment variable, $D$, 
@@ -210,12 +207,12 @@ which is based on estimates of the group-specific linear regressions:
 \begin{gather*}
 Y=\alpha_g+\beta_g D + \epsilon.
 \end{gather*}
-Under a strong ignorability assumption, $Y_d \indep D \mid  G=g$, $\forall d, g$, in addition to assumption (A.1), the intercept, characteristic, and slope components in the KBO decomposition are unbiased estimators for our baseline, prevalence, and effect components, respectively. However, the strong ignorability assumption requires random assignment of treatment conditional on group membership. It also directly rules out the selection component in group disparities.
+Under a strong ignorability assumption, $Y_d \indep D \mid  G=g$, $\forall d, g$, in addition to assumption 1, the intercept, characteristic, and slope components in the KBO decomposition are unbiased estimators for our baseline, prevalence, and effect components, respectively. However, the strong ignorability assumption requires random assignment of treatment conditional on group membership. It also directly rules out the selection component in group disparities.
 
-Before the current article, several studies have constructed or inferred causal estimands for the KBO decomposition. A methodological literature centers around the interpretation of the unexplained component as an estimator for the treatment effect on the treated (ATT) \citep{dinardo_labor_1996, kline_oaxaca-blinder_2011, yamaguchi_decomposition_2015}.\footnote{Also see \citet{chernozhukov_sorted_2018}, which interprets a version of the unexplained component as an average partial effect.} This literature addresses how an outcome difference associated with a treatment variable can be accounted for by \emph{pre}-treatment confounders. By contrast, our decomposition focuses on a very different question, i.e., the extent to which an outcome difference between groups is explained by a \emph{post}-group variable. \citet{huber_causal_2015} proposes another causal reformulation of the KBO decomposition, where the explained component is interpreted as the natural indirect effect of the group indicator via an intermediate variable and the unexplained component as the natural direct effect. This approach takes the ATE of the group variable as the target of the decomposition, hence is ill-fitted for disparities analysis.
+Before the current article, several studies have constructed or inferred causal estimands for the KBO decomposition. A methodological literature centers around interpreting the unexplained component (the sum of the intercept and the slope components) as an estimator for the treatment effect on the treated (ATT) \citep{fortin_decomposition_2011, kline_oaxaca-blinder_2011, yamaguchi_decomposition_2015}.\footnote{Also see \citet{chernozhukov_sorted_2018}, which interprets a version of the unexplained component as an average partial effect.} This literature addresses how an outcome difference associated with a treatment variable can be accounted for by \emph{pre}-treatment confounders. By contrast, our decomposition focuses on a very different question, i.e., the extent to which an outcome difference between groups is explained by a \emph{post}-group variable. \citet{huber_causal_2015} proposes an interpretation of the KBO components as causal mediation estimands, where the characteristic component is interpreted as the natural indirect effect \citep{pearl_direct_2001} of the group indicator via an intermediate variable and the unexplained component as the corresponding natural direct effect. The next section contrasts our decomposition with causal mediation analysis.
 
 \subsection{Relation to randomized interventional analogues of mediation estimands}
-Among the many causal mediation estimands, a four-way decomposition based on randomized interventional analogues (RIAs) of mediation estimands (VanderWeele,  \citeyear{vanderweele_explanation_2015}, p.619-21; see also VanderWeele and Tchetgen Tchetgen, \citeyear{vanderweele_mediation_2017}; VanderWeele et al., \citeyear{vanderweele_effect_2014}) is most akin to our decomposition. By showing how our decomposition relates to and differs from this decomposition, we highlight the unique advantages of our decomposition compared with all causal mediation estimands. A form of this decomposition can be written as 
+Among the many causal mediation estimands, a four-way decomposition based on randomized interventional analogues (RIAs) of mediation estimands (VanderWeele,  \citeyear{vanderweele_explanation_2015}, p.619-21; see also VanderWeele and Tchetgen Tchetgen, \citeyear{vanderweele_mediation_2017}; VanderWeele et al., \citeyear{vanderweele_effect_2014}) is most akin to our decomposition. By showing how our decomposition is related to but differs from this decomposition, we highlight the unique advantages of our decomposition compared with all causal mediation estimands. A form of this decomposition can be written as 
 
 \begin{align*}
     &\phantom{{}={}} \underbrace{\E \left(Y_{G=a, R(D_{G=a})} \right)-\E \left(Y_{G=b, R(D_{G=b})} \right)}_{\text{RIA of total effect}} \\
@@ -225,15 +222,13 @@ Among the many causal mediation estimands, a four-way decomposition based on ran
     & + \underbrace{\E(Y_{G=a, D=1}-Y_{G=a, D=0} - Y_{G=b, D=1} + Y_{G=b, D=0}) \E(D_{G=b})}_{\text{RIA of reference interaction effect (RIE)}} \\
     & + \underbrace{\E(Y_{G=a, D=1}-Y_{G=a, D=0} - Y_{G=b, D=1} + Y_{G=b, D=0}) \left(\E(D_{G=a})-\E(D_{G=b})\right)}_{\text{RIA of mediated interaction effect (MIE)}}, 
 \end{align*}
-where, for any $(g, g') \in (a,b)$, $\E \left(Y_{G=g, R(D_{G=g'})} \right)$ is the mean potential outcome of $Y$ under assigning group $g$ and a randomly drawn value of $D$ from the population when assigned group $g'$, and $\E(D_{G=g})$ is the the mean potential outcome of $D$ under assigning group $g$.
+where $\E \left(Y_{G=g, R(D_{G=g'})} \right)$ is the mean potential outcome of $Y$ under assigning group $g$ and a randomly drawn value of $D$ from the population when assigned group $g'$, and $\E(D_{G=g})$ is the the mean potential outcome of $D$ under assigning group $g$.
 
-Our decomposition is connected to the RIA-based decomposition but also differs from it in crucial ways. We first note the connections. 
-Under unconditional ignorability of $G$, i.e., $Y_{G=g,D=d} \indep G$, $\forall d,g$, and $D_{G=g} \indep G$, $\forall g$, and two SUTVA-type assumptions, $\E(Y_{G=g,D=d} \mid  G=g)=\E(Y_{D=d} \mid  G=g)$ and $\E(D_{G=g} \mid  G=g)=\E(D \mid  G=g), \forall d,g$, the CDE equals our baseline component, the RIA of PIE equals our prevalence component, and the sum of RIAs of RIE and MIE equals our effect component. 
+We first note the connections between our decomposition and the RIA-based decomposition. 
+Under unconditional ignorability of $G$, i.e., $Y_{G=g,D=d} \indep G$, $\forall d,g$, and $D_{G=g} \indep G$, $\forall g$, and two SUTVA-type assumptions, $\E(Y_{G=g,D=d} \mid  G=g)=\E(Y_{D=d} \mid  G=g)$ and $\E(D_{G=g} \mid  G=g)=\E(D \mid  G=g), \forall d,g$, the CDE equals our baseline component, the RIA of PIE equals our prevalence component, and the sum of RIAs of RIE and MIE equals our effect component. These connections are intuitive: both the CDE and the baseline component capture a group-based outcome difference when the intermediate treatment variable is held at $0$; both the RIA of PIE and the prevalence component address the role of the treatment in the relationship between the group and the outcome; also, the RIA of RIE, the RIA of MIE, and the effect component all, at least partly, reflect the heterogeneous effects of the treatment by group membership. Thus, as tools of causal explanation, our decomposition and causal mediation analysis are akin to each other.\footnote{These intuitions also carry over to VanderWeele's (\citeyear{vanderweele_unification_2014}) four-way decomposition that is not based on RIAs. However, in order to establish a similar connection between the conventional four-way decomposition and our decomposition, a cross-world independence assumption needs to be additionally imposed.}
 
-These connections are intuitive: both the CDE and the baseline component captures group-based difference in outcome when treatment is held at $0$; both RIA of PIE and the prevalence component address the role of an intermediate treatment variable in the relationship between group and outcome; also, the RIA of RIE, the RIA of MIE, and the effect component all, at least partly, reflect the heterogeneous effect of the treatment by group membership. In brief, as tools of causal explanation, our decomposition and causal mediation analysis are akin to each other. These intuitions also carry over to VanderWeele's (\citeyear{vanderweele_unification_2014})  four-way decomposition that is not based on RIAs. However, in order to establish a similar connection between the conventional  four-way decomposition and our decomposition, a cross-world independence assumption needs to be additionally imposed.
-
-However, our decomposition and the RIA-based decomposition differ in two important ways, which makes our decomposition advantageous for studying group disparities. First, unlike the RIA-based decomposition, we decompose a descriptive group disparity rather than a total effect of group membership. This is consequential for causal identification. In Figure \ref{fig:DAG}, we use directed acyclic graphs (DAGs) to illustrate the differences between causal mediation analysis and our decomposition in identification. Consequently, while our decomposition is explicitly designed for group disparities, causal mediation analysis can, at best, be forced to address group disparities when an unrealistic assumption, i.e., unconditional randomization of group membership, is imposed.
-Second, random drawing of $D$ is embedded in the RIA of the total effect. As a result, a component capturing selection into $D$ is, by construction, excluded from the RIA-based decomposition. In contrast, our decomposition makes a novel contribution by revealing selection into treatment based on within-group effect heterogeneity as a mechanism of group disparities.
+However, our decomposition and causal mediation analysis differ in two important ways, which makes our decomposition advantageous for studying group disparities. First, we decompose a descriptive group disparity rather than a total effect of group membership. This does not only  cater to the goal of studying group disparities but also requires fewer identifying assumptions than causal mediation analysis. We illustrate the difference in identifying assumptions in Figure 1. Consequently, although the components of the RIA-based decomposition can be forcibly equated to the components of our decomposition, it would require the impossible scenario where the group membership is randomly assigned.
+Second, there is no decomposition in the causal mediation literature that contains a selection component. In this regard, our decomposition makes a novel contribution.
 
 \begin{figure}
 \centering
@@ -291,41 +286,41 @@ Second, random drawing of $D$ is embedded in the RIA of the total effect. As a r
 \end{tikzpicture}
 }
 
-\caption{DAGs illustrating the difference in identification goals between causal mediation analysis and causal decomposition of group disparities. The highlighted edges are the paths each estimand seeks to identify. Causal mediation analysis aims to identify both the effects of group and treatment, hence requiring proper handling of all three types of confounders: $L_1$, $L_2$, and $L_3$. Our causal decomposition only needs to identify the effect of treatment, so only treatment-outcome confounders, i.e., $L_2$, are of concern.} \label{fig:DAG}
+\caption*{Figure 2. Causal graphs illustrating the difference in identification goals between causal mediation analysis and causal decomposition of group disparities. The highlighted edges are the paths each estimand seeks to identify. Causal mediation analysis aims to identify both the effects of group and treatment, hence requiring proper handling of all three types of confounders: $L_1$, $L_2$, and $L_3$. Our causal decomposition only needs to identify the effect of treatment, so only treatment-outcome confounders, i.e., $L_2$, are of concern.} 
 
 \end{figure}
 
 
 \subsection{Relation to unconditional random equalization}
-In recent years, a number of authors have proposed two variants of what we call the unconditional random equalization decomposition, which decomposes the observed disparity into two components. One is a reduction in disparity that can be eliminated by randomly reassign treatment $D$ so that the mean of $D$ becomes identical in both groups. The other is correspondingly a component of remaining disparity \citep{vanderweele_causal_2014, jackson_decomposition_2018, sudharsanan_educational_2021, lundberg_gap-closing_2022}. Like our approach, the random equalization decomposition seeks to identify the causal effect of $D$, not that of $G$. However, the random equalization decomposition is a two-way decomposition that contains less information than our four-way decomposition. Moreover, the reduction in disparity in random equalization combines the selection component and the prevalence component of the group disparity, impeding a clear interpretation.
+In recent years, there have emerged two variants of what we call the unconditional random equalization decomposition, which decomposes the observed disparity into two components. One is the reduction in disparity that could be brought about by randomly reassigning the treatment such that the treatment prevalence is equalized across groups. The other is correspondingly a component of remaining disparity \citep{vanderweele_causal_2014, jackson_decomposition_2018, sudharsanan_educational_2021, lundberg_gap-closing_2022}. Like our approach, the random equalization decomposition seeks to identify the causal effect of the treatment, not that of group membership. However, the random equalization decomposition is a two-way decomposition that contains less information than our four-way decomposition. Moreover, the reduction in disparity in the random equalization decomposition combines the selection component and the prevalence component of our decomposition, impeding a clear interpretation.
 
 %%%%% The random equalization decomposition was pioneered by \citet{vanderweele_causal_2014}. \citet{jackson_meaningful_2021} extended it to a conditional version, where the random equalization is only conceived within each level of some conditioning variables $\boldsymbol{Q}$. \citet{lundberg_gap-closing_2022} further proposed a slightly different estimand, where both group $a$ and group $b$ are given $D$ values randomly drawn from the entire sample. For the random equalization decomposition, estimators have been constructed based on regression \citep{vanderweele_causal_2014, jackson_decomposition_2018}, weighting \citep{jackson_meaningful_2021}, Monte Carlo integration \citep{sudharsanan_educational_2021}, as well as the doubly-robust augmented inverse probability weighting \citep{lundberg_gap-closing_2022}, which combines regression with weighting.  %%%%%
 
-The first variant of the random equalization decomposition is defined in terms of a random equalization intervention that randomly assigns $D$ values of the advantaged group to the disadvantaged group.
+The first variant of the random equalization decomposition is defined in terms of a random equalization intervention that randomly assigns treatment values of the advantaged group to the disadvantaged group.
 Using the randomized intervention notation introduced above, Jackson and VanderWeele 
- (\citeyear{jackson_decomposition_2018}) decompose the observed group disparities into two components:
+ (\citeyear{jackson_decomposition_2018}) decompose the observed group disparity into two components:
 \begin{gather}
-\E_a(Y)-\E_b(Y)=\underbrace{\E_a(Y)-\E_b \left(Y_{R(D \mid G=a)} \right)}_{\text{remaining disparity}} + \underbrace{\E_b \left(Y_{R(D \mid G=a)} \right)-\E_b(Y)}_{\text{reduction in disparity}}.  \nonumber 
+\E_a(Y)-\E_b(Y)=\underbrace{\E_b \left(Y_{R(D \mid G=a)} \right)-\E_b(Y)}_{\text{reduction in disparity}} + \underbrace{\E_a(Y)-\E_b \left(Y_{R(D \mid G=a)} \right)}_{\text{remaining disparity}} .  \nonumber 
 \end{gather}
-The reduction in disparity term indicates the extent to which the observed disparity would be reduced by the random equalization intervention. In the random equalization literature, this intervention is intended to quantify the contribution of the differential prevalence of $D$ across groups. 
-However, the random equalization not only equalizes the treatment prevalence across groups, but also randomizes the treatment within group $b$, making any selection into treatment disappear in group $b$. As a consequence, the reduction in disparity equals the combination of the prevalence component and the group $b$ part of the selection component, i.e., $\E_b(\tau)[\E_a(D)-\E_b(D)]-\Cov_b(D, \tau)$, which follows from equation (\ref{eqt2}). This leads to an undesirable result: If group $a$ is an exact replicate of group $b$, the random equalization decomposition would still contain a non-zero reduction in disparity, as long as $\Cov_b(D, \tau) \neq 0$.
+The reduction in disparity is intended to quantify the contribution of the differential prevalence of treatment across groups. 
+However, the random equalization intervention not only equalizes treatment prevalence across groups, but also randomizes the treatment within the disadvantaged group, making any selection into treatment disappear in that group. As a consequence, the reduction in disparity equals the combination of the prevalence component and the group $b$ part of the selection component, i.e., $\E_b(\tau)[\E_a(D)-\E_b(D)]-\Cov_b(D, \tau)$, which follows from equation (\ref{eqt2}). This leads to an interpretational difficulty that is reflected in an undesirable result: If group $a$ is an exact replicate of group $b$, the random equalization decomposition would still contain a non-zero reduction in disparity, as long as $\Cov_b(D, \tau) \neq 0$.
 
-The second variant of the random equalization decomposition takes a somewhat different form \citep{lundberg_gap-closing_2022}, whose hypothetical intervention matches each individual in both groups with a random draw of $D$ from the pooled population. Hence, this variant of random equalization changes the $D$ values in both groups instead of only in the disadvantaged group as in the first variant. The reduction in disparity of this variant  mixes the prevalence component with the selection component, too. To show this, we first note that the outcome disparity can also be decomposed as such: 
+The second variant of the random equalization decomposition takes a somewhat different form \citep{lundberg_gap-closing_2022}, whose hypothetical intervention assigns each individual in both groups a treatment value randomly drawn from the pooled population. Hence, this random equalization intervention changes the treatment values in both groups instead of only in the disadvantaged group as in the first variant. The reduction in disparity of this variant  mixes the prevalence component with the selection component, too. To show this, we first note that the outcome disparity can also be decomposed as such: 
 \begin{align*}
 &\phantom{{}={}} \E_a(Y)-\E_b(Y) \\
 &= \E_a(Y_{0})-\E_b(Y_{0}) + \E(\tau)[\E_a(D)-\E_b(D)] \\
 &\phantom{{}={}} + \E(D)[ \E_a(\tau) - \E_b(\tau)] + \Cov_a(D, \tau) - \Cov_b(D, \tau) \\
 &\phantom{{}={}} - [P_a-P_b][\E_a(D) - \E_b(D)][\E_a(\tau)-\E_b(\tau)], 
 \end{align*} 
-where $\E(\tau)$ and $\E(D)$ are the overall ATE and treatment prevalence, $P_a$ and $P_b$ are the proportion of the population in group $a$ and group $b$.
+where $\E(\tau)$ and $\E(D)$ are the overall ATE and treatment prevalence, $P_a$ and $P_b$ are the proportions of the population in group $a$ and group $b$.
 And the remaining disparity in Lundberg's (\citeyear{lundberg_gap-closing_2022}) unconditional decomposition equals 
-$\E_a(Y_{0})-\E_b(Y_{0}) + \E(D)[ \E_a(\tau) - \E_b(\tau)] \nonumber$. It then follows that the reduction in disparity in this case contains the selection component, $\Cov_a(D, \tau) -  \Cov_b(D, \tau)$, which does not involve the difference in treatment prevalence. The intuition is that in Lundberg's (\citeyear{lundberg_gap-closing_2022}) random equalization, both group $a$ and group $b$ would get random draws of $D$, thus  selection into treatment is eliminated in both groups, making $\Cov_a(D,\tau)=\Cov_b(D,\tau)=0$.
+$\E_a(Y_{0})-\E_b(Y_{0}) + \E(D)[ \E_a(\tau) - \E_b(\tau)] \nonumber$. It then follows that the reduction in disparity in this case contains the selection component, $\Cov_a(D, \tau) -  \Cov_b(D, \tau)$, which does not involve the difference in treatment prevalence. The intuition is that in the random equalization intervention, both group $a$ and group $b$ would get random draws of $D$, thus  selection into treatment is eliminated in both groups, making $\Cov_a(D,\tau)=\Cov_b(D,\tau)=0$.
 
-To conclude, the reduction in disparity in both variants of the random equalization decomposition is a mixture of the prevalent component and the selection component of group disparities. This is because its underlying intervention both equalizes and randomizes the treatment. In contrast, as discussed in Section 2.1,  the prevalence component in our decomposition is solely concerned with the disparity-reducing impact of an equalizing intervention and avoids the influence of a randomizing intervention. \footnote{This is also why the RIA of PIE can be translated to the prevalence component, but not to the reduction in disparity component in random equalization decompositions. Both the prevalence component and the RIA of PIE compare two quantities that likewise contain randomized $D$ values, so both estimands can represent the reduction in disparity resulting from a pure equalization intervention \emph{after} a randomization intervention.} If the goal is to capture the contribution of differential treatment prevalence to group disparities, one should prefer using the prevalence component in our decomposition.
+To conclude, the reduction in disparity in both variants of the random equalization decomposition is a mixture of the prevalent component and the selection component of group disparities. This is because its underlying intervention both equalizes and randomizes the treatment. In contrast, as explained in Section 2.1,  the prevalence component in our decomposition is solely concerned with the disparity-reducing impact of an equalization intervention and avoids the influence of a randomization intervention.\footnote{This is also why the RIA of PIE can be translated to the prevalence component, but not to the reduction in disparity component in random equalization decompositions. Both the prevalence component and the RIA of PIE are a difference between two quantities that both contain randomized $D$ values, so both estimands can represent the reduction in disparity resulting from a pure equalization intervention \emph{after} a randomization intervention.} If the goal is to capture the contribution of unequal treatment prevalence to group disparities, one should prefer using the prevalence component in our decomposition.
  
 \subsection{Conditional decomposition}
-In this subsection, we derive a decomposition method where the corresponding intervention is conditional on a vector of variables $\boldsymbol{Q}$, which is temporally precedent to $D$. The conditional decomposition is useful as it  can shed light on the impact of normatively more desirable or realistically more feasible interventions, when the unconditional intervention appears less so \citep{jackson_meaningful_2021}.  
-Assuming that the the support of $\Q$ is the same in the two groups and still under the SUTVA assumption (A.1),
+In this subsection, we derive a decomposition method where the corresponding interventions are conditional on a vector of variables $\boldsymbol{Q}$, which is temporally precedent to $D$. The conditional decomposition is useful as it can shed light on the impact of normatively more desirable or realistically more feasible interventions, when the unconditional intervention appears less so \citep{jackson_meaningful_2021}. For example, it may be meaningful to consider equalizing college admissions conditional on test scores or equalizing patient retention conditional on certain comorbilidities.
+Assuming that the the support of $\Q$ is the same in the two groups and still under Assumption 1,
 \begin{align}
     \E_a(Y)-\E_b(Y) &= \underbrace{\E_a(Y_0)-\E_b(Y_0)}_{\text{baseline}} \nonumber \\
     &\phantom{{}={}} + \underbrace{\int [\E_a(D \mid \Q=\q)-\E_b(D \mid \Q=\q)]\E_b(\tau \mid \Q=\q) f_b(\q) \dd \q}_{\text{conditional prevalence}} \nonumber \\
@@ -337,7 +332,7 @@ Assuming that the the support of $\Q$ is the same in the two groups and still un
 From an interventional perspective, now the conditional prevalence, effect, and selection components indicate the disparity-reducing impacts of equalizing the corresponding group characteristics within levels of $\Q$. These conditional equalizations are often substantively weaker than the marginal equalizations encoded in equation (\ref{eqt1}). For example, if marginally equalizing college access across SES backgrounds appears to be either normatively or practically too strong, a weaker intervention that equalizes college access within levels of prior achievement may still be of interest. In general, the conditional decomposition allows researchers to incorporate prior information about subjects when designing a re-distribution of treatments or their effects. Additionally, the ``$\Q$ distribution'' component captures the between-$\Q$ disparity, as opposed to within-$\Q$ disparities reflected in other components, but it should not be interpreted causally, as we do not make any causal identification assumptions for $\Q$.
 
 Similar to the unconditional case, we can also interpret the conditional decomposition from an interventional perspective using the randomized intervention notation. 
-Let $\E_g(Y_{R(D \mid G=g',\Q)})$ be the mean potential outcome of group $g$ when members of group $g$ were given treatment values randomly drawn from members of group $g'$ who share the same $\Q$ values with them. We can rewrite this mean potential outcome as such:
+Let $\E_g(Y_{R(D \mid G=g',\Q)})$ be the mean potential outcome of group $g$ when members of group $g$ were given treatment values randomly drawn from members of group $g'$ who share the same $\Q$ values with them. We can rewrite this mean potential outcome as follows.
 \begin{align}
     \E_g(Y_{R(D \mid G=g',\Q)}) = \E_g(Y_0) + \int \E_g(\tau \mid \Q=\q) \E_{g'}(D \mid \Q=\q) f_g(\q) \dd \q.
 \end{align}
@@ -370,16 +365,14 @@ where the left hand side is the reduction in disparity in Lundberg's CRED. Hence
 
 
 \section{Estimation and Inference}
-In this paper, we focus on identifying the components of our decompositions using two standard assumptions as follows. \footnote{Our unconditional decomposition can also be identified using the Marginal Treatment Effect approach based on an instrumental variable \citep{heckman_structural_2005, zhou_heterogeneous_2020}, as identifying group-specific ATTs and ATEs is sufficient.}
+We identify the components of our decompositions using two standard assumptions as follows.\footnote{Our unconditional decomposition can also be identified using the marginal treatment effect approach based on an instrumental variable \citep{heckman_structural_2005, zhou_heterogeneous_2020}, as identifying group-specific ATTs and ATEs is sufficient (see Appendix E).}
 \begin{itemize}
-    \item[] (A.2) (Conditional ignorability) $Y_d \indep D \mid \X=\x, \Q=\q, G=g$, $\forall d, \x, \q, g$;
-    \item[] (A.3) (Overlap) $0 < \E(D \mid \X=\x, \Q=\q, G=g) <1$, $\forall \x, \q, g$,
+    \item[] Assumption 2 (Conditional ignorability). $Y_d \indep D \mid \X=\x, \Q=\q, G=g$, $\forall d, \x, \q, g$;
+    \item[] Assumption 3 (Overlap). $0 < \E(D \mid \X=\x, \Q=\q, G=g) <1$, $\forall \x, \q, g$,
 \end{itemize}
 where $\Q$ is omitted for the unconditional decomposition. 
-We develop nonparametric and efficient estimators for components of our unconditional and conditional decompositions 
-\footnote{Various regression, weighting, or matching estimators can also be used. In particular, under constant treatment effect, the prevalence component in the unconditional decomposition can be estimated using the traditional ``product method'' for the indirect effect of $G$ through $D$ on $Y$ \citep{baron_moderator-mediator_1986}. This again explicates the kinship between our decomposition and the traditional mediation analysis. }. 
-These estimators are ``one-step'' estimators based on the EIFs of the decomposition components, which removes the bias from naive substitution estimators \citep{bickel_efficient_1998, van_der_vaart_asymptotic_2000,hines_demystifying_2022}. The estimators contain some nuisance functions, which can be estimated using flexible ML methods coupled with cross-fitting. Under specified conditions, our estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. Thus, we are able to construct asymptotically accurate Wald-type confidence intervals and hypothesis tests. Our estimators also have certain double robustness properties.  
-
+We develop nonparametric and efficient estimators for components of our unconditional and conditional decompositions.\footnote{Various regression, weighting, or matching estimators can also be used. In particular, under constant treatment effect, the prevalence component in the unconditional decomposition can be estimated using the traditional ``product method'' for the indirect effect of $G$ through $D$ on $Y$ \citep{baron_moderator-mediator_1986}. This again explicates the kinship between our decomposition and mediation analysis. }
+These estimators are ``one-step'' estimators based on the EIFs of the decomposition components, which remove the bias from naive substitution estimators \citep{bickel_efficient_1998, van_der_vaart_asymptotic_2000,hines_demystifying_2022}. The estimators contain some nuisance functions, which can be estimated using flexible ML methods coupled with cross-fitting. Under specified conditions, our estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. Thus, we are able to construct asymptotically accurate Wald-type confidence intervals and hypothesis tests. Our estimators also have double robustness properties.  
 
 To introduce the EIFs, we define the following functions:
 \begin{align*}
@@ -398,47 +391,47 @@ All components of the unconditional decomposition are simple linear combinations
     \text{Effect} &= \xi_{1aa}-\xi_{0aa} - \xi_{1ba}+\xi_{0ba} \\
     \text{Selection} &= \text{Total} - \text{Baseline} - \text{Prevalence} - \text{Effect} .
 \end{align*}
-Hence, the EIFs and one-step estimators for the decomposition components directly follow from the EIFs and one-step estimators of $\xi_{dg}$ and $\xi_{dgg'}$. The estimation of the total disparity is straightforward, so we will only present the estimators for $\xi_{dg}$ and $\xi_{dgg'}$. In addition, these generic functions also provide a basis for estimating Jackson's (\citeyear{jackson_decomposition_2018}) version of the unconditional equalization estimand, since its reduction in disparity component can be represented as $\xi_{0b} + \xi_{1ba}-\xi_{0ba}-\E_b(Y)$. Under assumptions A.1, A.2, and A.3, $\xi_{dg}$ and $\xi_{dgg'}$ can be identified as the following functions:
+Hence, the EIFs and one-step estimators for the decomposition components directly follow from those of $\xi_{dg}$ and $\xi_{dgg'}$. In addition, these generic functions also provide a basis for estimating Jackson's (\citeyear{jackson_decomposition_2018}) version of the unconditional equalization estimand, since its reduction in disparity component can be represented as $\xi_{0b} + \xi_{1ba}-\xi_{0ba}-\E_b(Y)$. Under assumptions 1, 2, and 3, $\xi_{dg}$ and $\xi_{dgg'}$ can be identified as the following quantities:
 \begin{align*}
     \xi_{dg} &= \E \left[\mu(d,\X,g) \mid G=g \right] \\
     \xi_{dgg'} &= \E \left[\mu(d,\X,g) \mid G=g \right] \E \left[D \mid G=g' \right].
 \end{align*}
 
-Given the identification results above, we derive the EIFs for $\xi_{dg}$ and $\xi_{dgg'}$, which provide the basis for flexible yet efficient one-step estimators.
-\begin{prop}
-Under assumptions A.1, A.2, and A.3, the EIF of $\xi_{dg}$ is
+These identification results then enable us to derive the EIFs for $\xi_{dg}$ and $\xi_{dgg'}$.
+\begin{prop}[EIF]
+Under assumptions 1, 2, and 3, the EIF of $\xi_{dg}$ is
 $$\phi_{dg}(Y,\X) \defeq \frac{\one(G=g)}{p_g} \left\{ \frac{\one(D=d)}{\pi(d, \X,g)} [Y-\mu(d,\X,g)] + \mu(d,\X,g) - \xi_{dg} \right\},$$ 
 and the EIF of $\xi_{dgg'}$ is
 \begin{align*}
     \phi_{dgg'}(Y,\X) &\defeq \frac{\one(G=g)}{p_g}  \left\{\frac{\one(D=d)}{\pi(d,\X,g)}[Y-\mu(d,\X,g)] + \mu(d,\X,g) \right\} \E \left(D \mid G=g' \right) \\
     &\phantom{{}={}} + \frac{\one(G=g')}{p_{g'}} \E \left(Y_d \mid G=g \right) \left[D - \E \left(D \mid G=g' \right) \right] - \frac{\one(G=g)}{p_g} \xi_{dgg'}.
 \end{align*}
-In appendix B, we also derive the EIFs for the general case with survey weights for both unconditional and conditional decompositions. 
+In Appendix B, we derive the EIFs for the general case with survey weights for both unconditional and conditional decompositions. 
 \end{prop}
 It follows that the one-step estimators are
 \begin{align*}
     \Psi_{dg}(Y,\X) &\defeq \frac{1}{n} \sum \frac{\one(G=g)}{p_g} \left\{ \frac{\one(D=d)}{\pi(d, \X,g)} [Y-\mu(d,\X,g)] + \mu(d,\X,g)\right\} \\
     \Psi_{dgg'}(Y,\X) &\defeq \frac{1}{n} \sum \frac{\one(G=g)}{p_g}  \left\{\frac{\one(D=d)}{\pi(d,\X,g)}[Y-\mu(d,\X,g)] + \mu(d,\X,g) \right\} \E \left(D \mid G=g' \right).
 \end{align*}
-For any $g$ and $d$, there are two nuisance functions, $\pi(d,\X,g)$, and $\mu(d,\X,g)$. In order to relax the conditions required of nuisance function estimators \citep{kennedy_semiparametric_2022, chernozhukov_double/debiased_2018}, we use cross-fitting to estimate all nuisance functions. In particular, we first divide the sample randomly into two subsamples. Then we fit the nuisance functions using each subsample. Finally, we evaluate the fitted nuisance functions using data not in the subsample that is used to fit the functions. In practice, to improve the finite-sample performance of the estimator, we may stabilize the weights by dividing $\frac{\one(D=d)}{\pi(d,\X,g)}$ by its sample average.  
+There are two nuisance functions, $\pi(d,\X,g)$ and $\mu(d,\X,g)$. In order to relax the conditions required of nuisance function models \citep{kennedy_semiparametric_2022, chernozhukov_double/debiased_2018}, we use cross-fitting to estimate all nuisance functions. In particular, we first divide the sample randomly into two subsamples. Then we fit the nuisance functions using each subsample. Finally, we evaluate the fitted nuisance functions using data not in the subsample used to fit the functions. In practice, to improve the finite-sample performance of the estimator, we may stabilize the weights by dividing $\frac{\one(D=d)}{\pi(d,\X,g)}$ by its sample average.  
 
-To study the asymptotic behavior of the one-step estimators for the unconditional decomposition, we invoke three additional sets of assumptions, \footnote{Throughout this paper, the consistent estimation of $p_g$ and $\E(D \mid G=g), \forall g,$ are left implicit.} which are consistent with assumptions required for the double ML estimator of ATE \citep{kennedy_semiparametric_2022, chernozhukov_double/debiased_2018}. We let $\| \cdot \|$ denote the $L_2$-norm. 
+To study the asymptotic behavior of the one-step estimators for the unconditional decomposition, we invoke three additional assumptions,\footnote{Throughout this paper, the consistent estimation of $p_g$ and $\E(D \mid G=g), \forall g,$ are left implicit.} which are consistent with assumptions required for the double ML estimator of ATE \citep{kennedy_semiparametric_2022, chernozhukov_double/debiased_2018}. We let $\| \cdot \|$ denote the $L_2$-norm. 
 
-(A.4.a) (Boundedness): With probability 1, $\hat{\pi}(d,\X,g) \geq \eta$, $\pi(d,\X,g) \geq \eta$, and $|Y-\hat{\mu}(d,\X,g)| \leq \zeta$, for some $\eta>0$ and some $\zeta < \infty$, $\forall d, g$.
+Assumption 4a (Boundedness). With probability 1, $\hat{\pi}(d,\X,g) \geq \eta$, $\pi(d,\X,g) \geq \eta$, and $|Y-\hat{\mu}(d,\X,g)| \leq \zeta$, for some $\eta>0$ and some $\zeta < \infty$, $\forall d, g$.
 
-(A.5.a) (Consistency):  $\| \hat{\mu}(d,\X,g) - \mu(d,\X,g) \| =o_p(1)$ and $\| \hat{\pi}(d,\X,g) - \pi(d,\X,g) \| =o_p(1)$, $\forall d, g$.
+Assumption 5a (Consistency).  $\| \hat{\mu}(d,\X,g) - \mu(d,\X,g) \| =o_p(1)$ and $\| \hat{\pi}(d,\X,g) - \pi(d,\X,g) \| =o_p(1)$, $\forall d, g$.
 
-(A.6.a) (Convergence rate):  $\|\hat{\pi}(d,\X,g)-\pi(d,\X,g)\| \|\hat{\mu}(d,\X,g)-\mu(d,\X,g)\|=o_p(n^{-1/2})$, $\forall d, g$.
+Assumption 6a (Convergence rate).  $\|\hat{\pi}(d,\X,g)-\pi(d,\X,g)\| \|\hat{\mu}(d,\X,g)-\mu(d,\X,g)\|=o_p(n^{-1/2})$, $\forall d, g$.
 
-\begin{prop}
-Under assumptions A.1, A.2, A.3, A.4.a, A.5.a, and A.6.a, the one step estimators for components of the unconditional decomposition are asymptotically normal and semiparametrically efficient, i.e., $\sqrt{n}(\Psi_{dg} - \xi_{dg}) \xrightarrow{d} \mathcal{N}(0, \sigma^2_{dg})$, and $\sqrt{n}(\Psi_{dgg'} - \xi_{dgg'}) \xrightarrow{d} \mathcal{N}(0, \sigma^2_{dgg'})$, where $\sigma^2_{dg}=\E[\phi_{dg}(Y,\X)^2]$ and $\sigma^2_{dgg'}=\E[\phi_{dgg'}(Y,\X)^2]$ are the respective semiparametric efficiency bounds. 
+\begin{prop}[Asymptotic distribution]
+Under assumptions 1, 2, 3, 4a, 5a, and 6a, the one step estimators for components of the unconditional decomposition are asymptotically normal and semiparametrically efficient, i.e., $\sqrt{n}(\Psi_{dg} - \xi_{dg}) \xrightarrow{d} \mathcal{N}(0, \sigma^2_{dg})$, and $\sqrt{n}(\Psi_{dgg'} - \xi_{dgg'}) \xrightarrow{d} \mathcal{N}(0, \sigma^2_{dgg'})$, where $\sigma^2_{dg}=\E[\phi_{dg}(Y,\X)^2]$ and $\sigma^2_{dgg'}=\E[\phi_{dgg'}(Y,\X)^2]$ are the respective semiparametric efficiency bounds. 
 \end{prop}
-Assumptions A.4.a through A.6.a are mild in the sense that it is often possible to use ML to estimate the nuisance functions and still attain desirable asymptotic properties. These asymptotic properties also carry over from $\Psi_{dg}$ and $\Psi_{dgg'}$ to the estimators of the decomposition components. We estimate $\sigma^2_{dg}$ and $\sigma^2_{dgg'}$ using the  averages of squared estimated EIFs. The asymptotic distributions can then be used to construct hypothesis testing and confidence intervals. For example, a Wald-style $1-\alpha$ confidence interval for the prevalence component is $$\Psi_{1ba}-\Psi_{1bb}-\Psi_{0ba}+\Psi_{0bb} \pm z_{1-\alpha/2} \cdot \frac{1}{n} \left[\sum  \left(\hat{\phi}_{1ba}-\hat{\phi}_{1bb}-  \hat{\phi}_{0ba}+\hat{\phi}_{0bb}\right)^2 \right]^{1/2}.$$ Furthermore, our estimators also have a doubly robustness property. 
+Assumptions 4a through 6a are mild in the sense that they are often satisfied by popular ML models. The desirable asymptotic properties also carry over from $\Psi_{dg}$ and $\Psi_{dgg'}$ to the final estimators of the decomposition components. We consistently estimate $\sigma^2_{dg}$ and $\sigma^2_{dgg'}$ using the  averages of squared estimated EIFs. The asymptotic distributions can then be used to construct hypothesis testing and confidence intervals. For example, a Wald-style $1-\alpha$ confidence interval for the prevalence component is $$\Psi_{1ba}-\Psi_{1bb}-\Psi_{0ba}+\Psi_{0bb} \pm z_{1-\alpha/2} \cdot \frac{1}{n} \left[\sum  \left(\hat{\phi}_{1ba}-\hat{\phi}_{1bb}-  \hat{\phi}_{0ba}+\hat{\phi}_{0bb}\right)^2 \right]^{1/2}.$$ Furthermore, our estimators also have a double robustness property. 
 
 \begin{prop}[Double robustness]
 Either consistent estimation of $\mu(d,\X,g)$ or $\pi(d,\X,g)$ for all $d$ and $g$ is sufficient for the consistency of $\Psi_{dg}$ and $\Psi_{dgg'}$.  
 \end{prop}
-Hence, our unconditional decomposition estimator essentially only requires the same conditions as the classic augmented inverse probability weighting estimator for ATE \citep{robins_estimation_1994, hirano_efficient_2003} to be consistent. 
+Hence, our unconditional decomposition estimator only requires the same conditions as the classic augmented inverse probability weighting estimator for ATE \citep{robins_estimation_1994, hirano_efficient_2003} to be consistent. 
 
 \subsection{The conditional decomposition}
 Relative to the unconditional case, we only need to additionally consider one generic function:
@@ -453,108 +446,116 @@ where $(d, g, g', g'')$ is any combination of treatment status and group members
     &\phantom{{}={}} - \text{Conditional Prevalence} - \text{Conditional Effect} - \Q \text{ Distribution}.
 \end{align*}
 Hence, in this subsection, we focus on the inference of $\xi_{dgg'g''}$. The EIFs,  one-step estimators, and their asymptotic distributions for components of the conditional decomposition will then straightforwardly follow. Moreover, we thereby also provide nonparametric inference for the reduction in disparity component in the CRED of \citet{jackson_meaningful_2021}, which can be represented as $\xi_{0b}+\xi_{1bab}-\xi_{0bab}-\E_b(Y)$.
-Under assumptions A.1, A.2, and A.3, we identify $\xi_{dgg'g''}$ as $$\E \left\{\E \left[ \E(Y \mid d,\X,\Q,g)   \mid \Q, g \right] \E \left(D \mid \Q, g' \right) \mid G=g'' \right\}.$$
+Under assumptions 1, 2, 3, we identify $\xi_{dgg'g''}$ as $$\E \left\{\E \left[ \E(Y \mid d,\X,\Q,g)   \mid \Q, g \right] \E \left(D \mid \Q, g' \right) \mid G=g'' \right\}.$$
 
-\begin{prop}
-Under assumptions A.1, A.2, and A.3, the EIF of $\xi_{dgg'g''}$ is 
+\begin{prop}[EIF]
+Under assumptions 1, 2, 3, the EIF of $\xi_{dgg'g''}$ is 
 \begin{align*}
      &\phantom{{}={}} \phi_{dgg'g''}(Y,\X,\Q) \\
     &=\frac{\one(G=g'')}{p_{g''}} \left[ \E \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
     &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \\
     &\phantom{{}={}} + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \E\left( Y_d \mid \Q, g \right).
 \end{align*}
-The general case with survey weights is derived in Appendix B.
 \end{prop}
-We again construct one-step estimators based on the EIFs. 
+We again construct the one-step estimators based on the EIF. 
 \begin{align*}
     &\phantom{{}={}} \Psi_{dgg'g''}(Y,\X,\Q) \\
     &=\frac{\one(G=g'')}{p_{g''}} \E \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \E\left( Y_d \mid \Q, g \right) \\
     &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right).
 \end{align*}
-For this estimator, there are five nuisance functions: $p_g(\Q)$, $\pi(d,\X,\Q,g)$, $\mu(d,\X,\Q,g)$, $\E(D \mid \Q, G=g)$, and $\E(Y_d \mid \Q,g)$, for any $d$ and $g$. We cross-fit these nuisance functions using nonparametric methods. This estimator can be weight-stabilized by dividing $\frac{\one(D=d)}{\pi(d,\X,\Q,g)}$, $\frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}}$, and $\frac{\one(G=g)p_{g''}(\Q)}{p_g(\Q)p_{g''}}$ by their respective sample averages. The estimation of $\E(Y_d \mid \Q,g)=\E[\mu(d,\X,\Q,g) \mid \Q,g]$ requires a more involved procedure. We adopt a pseudo-outcome approach \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}, where the pseudo outcome is defined as the decentered EIF for $\E(Y_d)$, i.e., 
-$$ \frac{\one(D=d)}{\pi(d, \X,G)} [Y-\mu(d,\X,G)] + \mu(d,\X,G).$$
-We first estimate $\pi(d, \X,G)$ and $\mu(d,\X,G)$ in the pseudo outcome for each individual within two random subsamples of the data \emph{without} cross-fitting. Then,  we nonparametrically regress the estimated pseudo outcome on $\Q$ and $G$. The resulting predictions become estimates of $\E(Y_d \mid \Q,g)$. We use cross-fitting in the second step, i.e., when one subsample is used to fit $\E(Y_d \mid \Q,g)$, the $\Q$ and $G$ values of the other subsample are plugged in to obtain predictions. Using this procedure, we ensure that the fitting of the function $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
+For this estimator, there are five nuisance functions: $p_g(\Q)$, $\pi(d,\X,\Q,g)$, $\mu(d,\X,\Q,g)$, $\E(D \mid \Q, G=g)$, and $\E(Y_d \mid \Q,g)$. We again cross-fit these nuisance functions using nonparametric methods. This estimator can be weight-stabilized by dividing $\frac{\one(D=d)}{\pi(d,\X,\Q,g)}$, $\frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}}$, and $\frac{\one(G=g)p_{g''}(\Q)}{p_g(\Q)p_{g''}}$ by their respective sample averages. The estimation of $\E(Y_d \mid \Q,g)=\E[\mu(d,\X,\Q,g) \mid \Q,g]$ requires a more involved procedure. We adopt a pseudo-outcome approach \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}, where the pseudo outcome for each $d$ is defined as the decentered EIF for $\E(Y_d)$, i.e., 
+$$ \delta_d \left(Y, \X, \Q, G \right) \defeq \frac{\one(D=d)}{\pi(d, \X,\Q,G)} [Y-\mu(d,\X,G)] + \mu(d,\X,\Q,G).$$
+We first estimate $\pi(d, \X,\Q,G)$ and $\mu(d,\X,\Q,G)$ within two random subsamples of the data \emph{without} cross-fitting and obtain the estimated pseudo outcome $\hat{\delta}_d \left(Y, \X, \Q, G \right)$. Then, using $\hat{\delta}_d \left(Y, \X, \Q, G \right)$ as a proxy of $Y_d$, we estimate $\E\left[Y_d \mid \Q, g \right]$ \emph{with} cross-fitting, i.e., we fit $\E\left[\hat{\delta}_d \left(Y, \X, \Q, G \right) \mid \Q, g \right]$ in one subsample and plug in values of $\Q$ in the other subsample. Using this procedure, we ensure that the fitting of $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
 
 The asymptotic theory of the one-step estimator for $\xi_{dgg'g''}$ is less general than the theories for $\xi_{dg}$ and $\xi_{dgg'}$, in that some conditions differ by the specific configuration of $g, g'$ and $g''$. Note that  $g=g''$ for the conditional prevalence component, and $g'=g''$ for the conditional effect component. For $\sqrt{n}$-consistency, asymptotic normality, and efficiency, we need three assumptions. 
 
-(A.4.b) (Boundedness): With probability 1,  $\hat{\pi}(d,\X,\Q,g) \geq \eta$, $\pi(d,\X,\Q,g) \geq \eta$, $\hat{p}_g(\Q) \geq \eta$, $p_g(\Q) \geq \eta$, 
+Assumption 4b (Boundedness). With probability 1,  $\hat{\pi}(d,\X,\Q,g) \geq \eta$, $\pi(d,\X,\Q,g) \geq \eta$, $\hat{p}_g(\Q) \geq \eta$, $p_g(\Q) \geq \eta$, 
 $|Y-\hat{\mu}(d,\X,\Q,g)| \leq \zeta$, 
 $|Y-\mu(d,\X,\Q,g)| \leq \zeta$, 
 $|\mu(d,\X,\Q,g)| \leq \zeta$,
 $|\E(Y_d \mid \Q,g)| \leq \zeta$, and $\left| \frac{\hat{p}_g(\Q)}{\hat{p}_{g'}(\Q)} \right| \leq \zeta$, for some $\eta>0$ and $\zeta < \infty$, $\forall d,g,g'$.
 
-(A.5.b) (Consistency): $\| \hat{\mu}(d,\X,\Q,g) - \mu(d,\X,\Q,g) \| =o_p(1)$, $\| \hat{\pi}(d,\X,\Q,g) - \pi(d,\X,\Q,g) \| =o_p(1)$, $\left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g) \right\| =o_p(1)$, $\left\| \hat{\E}(D \mid \Q,g) - \E(D \mid \Q,g) \right\| =o_p(1)$, and $\left\| \hat{p}_g(\Q) -p_g(\Q) \right\|=o_p(1)$, $\forall d,g$.
+Assumption 5b (Consistency). $\| \hat{\mu}(d,\X,\Q,g) - \mu(d,\X,\Q,g) \| =o_p(1)$, $\| \hat{\pi}(d,\X,\Q,g) - \pi(d,\X,\Q,g) \| =o_p(1)$, $\left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g) \right\| =o_p(1)$, $\left\| \hat{\E}(D \mid \Q,g) - \E(D \mid \Q,g) \right\| =o_p(1)$, and $\left\| \hat{p}_g(\Q) -p_g(\Q) \right\|=o_p(1)$, $\forall d,g$.
 
-(A.6.b) (Convergence rate): $\left\|\hat{\pi}(d,\X,\Q,g)-\pi(d,\X,\Q,g) \right\| \|\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)\|=o_p(n^{-1/2})$, $\left\| \one(G=g) \E(Y_d \mid \Q,g) - \one(G=g')\frac{\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)} \hat{\E}( Y_d \mid \Q, g ) \right\| \left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\| = o_p(n^{-1/2})$, and $\left\| \one(G=g') \E(D \mid \Q,g') - \one(G=g) \frac{\hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) } \hat{\E}(D \mid \Q,g') \right\| \left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g)  \right\| = o_p(n^{-1/2})$, $\forall d,g,g'$.
+Assumption 6b (Convergence rate). $\left\|\hat{\pi}(d,\X,\Q,g)-\pi(d,\X,\Q,g) \right\| \|\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)\|=o_p(n^{-1/2})$, $\left\| \one(G=g) \E(Y_d \mid \Q,g) - \one(G=g')\frac{\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)} \hat{\E}( Y_d \mid \Q, g ) \right\| \left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\| = o_p(n^{-1/2})$, and $\left\| \one(G=g') \E(D \mid \Q,g') - \one(G=g) \frac{\hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) } \hat{\E}(D \mid \Q,g') \right\| \left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g)  \right\| = o_p(n^{-1/2})$, $\forall d,g,g'$.
 
-\begin{prop}
-Under assumptions A.1, A.2, A.3, A.4.b, A.5.b, and A.6.b, the one step estimator for components of the conditional decomposition is asymptotically normal and semiparametrically efficient, i.e., $\sqrt{n} \left( \Psi_{dgg'g''} - \xi_{dgg'g''} \right) \xrightarrow{} \mathcal{N}(0, \sigma^2_{dgg'g''})$, where $\sigma^2_{dgg'g''}=\E[\phi_{dgg'g''}(Y,\X,\Q)^2]$ is the semiparametric efficiency bound.
+\begin{prop}[Asymptotic distribution]
+Under assumptions 1, 2, 3, 4b, 5b, 6b, the one step estimator for components of the conditional decomposition is asymptotically normal and semiparametrically efficient, i.e., $\sqrt{n} \left( \Psi_{dgg'g''} - \xi_{dgg'g''} \right) \xrightarrow{} \mathcal{N}(0, \sigma^2_{dgg'g''})$, where $\sigma^2_{dgg'g''}=\E[\phi_{dgg'g''}(Y,\X,\Q)^2]$ is the semiparametric efficiency bound.
 \end{prop}
-Some further insights can be gained about the second and third convergence rate assumptions . For a specific $\xi_{dgg'g''}$, first, when $g=g'=g''$, $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\| \left\| \hat{\E}(D \mid \Q, g) - \E(D \mid \Q, g)  \right\| = o_p(n^{-1/2})$ is sufficient. Hence, we obtain a form of rate double robustness with respect to $\E(Y_d \mid \Q,g)$ and $\E(D \mid \Q, g)$. Second, when $g= g'' \neq g'$, the following set of conditions is sufficient: for a constant $\zeta>0$, $\frac{\hat{p}_g(\Q)}{\hat{p}_{g'}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(n^{-1/2})$, and $ \left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g) \right\|=o_p(1)$. Third, when $g'=g'' \neq g$, a sufficient set is: for a constant $\zeta>0$, $ \frac{\hat{p}_{g'}(\Q)}{\hat{p}_{g}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(1)$, and $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\|=o_p(n^{-1/2})$. Therefore, the assumption is weaker for the inference of the conditional prevalence component, which is also the case for Theorem 6 below.
+Some further insights can be gained about the second and third convergence rate assumptions. For a specific $\xi_{dgg'g''}$, first, when $g=g'=g''$, $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\| \left\| \hat{\E}(D \mid \Q, g) - \E(D \mid \Q, g)  \right\| = o_p(n^{-1/2})$ is sufficient. Hence, we obtain a form of rate double robustness with respect to $\E(Y_d \mid \Q,g)$ and $\E(D \mid \Q, g)$. Second, when $g= g'' \neq g'$, the following set of conditions is sufficient: for a constant $\zeta>0$, $\frac{\hat{p}_g(\Q)}{\hat{p}_{g'}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(n^{-1/2})$, and $ \left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g) \right\|=o_p(1)$. Third, when $g'=g'' \neq g$, a sufficient set is: for a constant $\zeta>0$, $ \frac{\hat{p}_{g'}(\Q)}{\hat{p}_{g}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(1)$, and $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\|=o_p(n^{-1/2})$. Therefore, the assumption is weaker for the inference of the conditional prevalence component, which is also the case for Theorem 6 below.
 
 \begin{prop}[Double robustness]
-Assuming consistent estimation of $\E(D \mid \Q, g), \forall g$, for a $\xi_{dgg'g''}$, if $g=g''$, either consistent estimation of $\mu(d,\X,g)$ or $\pi(d,\X,g)$ is sufficient for the consistency of $\Psi_{dgg'g''}$; If $g \neq g''$, if, additionally, the consistent estimation of $\E(Y_d \mid \Q,g)$ is doubly robust with respect to $\mu(d,\X,g)$ and $\pi(d,\X,g)$, then $\Psi_{dgg'g''}$ is still doubly robust with respect to $\mu(d,\X,g)$ and $\pi(d,\X,g)$.
+We assume consistent estimation of $\E(D \mid \Q, g), \forall g$. For a $\xi_{dgg'g''}$, when $g=g''$, consistent estimation of either $\mu(d,\X,\Q,g)$ or $\pi(d,\X,\Q,g)$ is sufficient for the consistency of $\Psi_{dgg'g''}$; when $g \neq g''$, if the estimation of $\E(Y_d \mid \Q,g)$ is doubly robust with respect to $\mu(d,\X,\Q,g)$ and $\pi(d,\X,\Q,g)$, then consistent estimation of either $\mu(d,\X,\Q,g)$ or $\pi(d,\X,\Q,g)$ is still sufficient for the consistency of $\Psi_{dgg'g''}$.
 \end{prop}
 Note that consistent estimation of $\hat{p}_g(\Q)$ is not required for the consistency of $\Psi_{dgg'g''}$. The double robustness condition for $\E(Y_d \mid \Q,g)$ in the case of $g \neq g''$ motivates our pseudo-outcome estimator of $\E(Y_d \mid \Q,g)$, which is built on both $\mu(d,\X,\Q,g)$ and $\pi(d,\X,\Q,g)$.
 
 We have released an R package named cgdg to implement both the unconditional and conditional decompositions. It offers various options for nuisance function estimation, including various ML methods, a parametric option with linear and logistic regressions, and an option that allows users to manually plug in nuisance function estimates. The cdgd package can be installed from Github using \url{devtools::install_github("ang-yu/cdgd")}.
 
 
-\section{Case study}
+\section{Application}
 \subsection{Overview}
-We apply our causal decomposition to investigate the role of college graduation in intergenerational income mobility in the United States. We estimate both the unconditional and conditional decomposition. We focus on the unconditional decomposition in the main text, since it allows us to more closely engage the previous social science literature. We discuss results for the conditional decomposition in Appendix F, which also has important policy implications. In this empirical setting, groups, $G$, are defined by parental income, the outcome, $Y$, is adult income, and treatment, $D$, is college graduation. 
+We apply our causal decomposition to investigate the role of college graduation in intergenerational income mobility in the United States. In this empirical setting, groups are defined by parental income, the outcome  is adult income, and the treatment is college graduation. 
 Previous research has touched upon the components of our unconditional decomposition to various degrees, but this is the first study to comprehensively evaluate the three distinct ways in which college graduation might contribute to the intergenerational transmission of income advantages. 
 
-The baseline component represents the part of the income attainment disparity that is unaccounted for by the multifaceted role of a college credential. Apart from college completion, parental income is associated with a variety of pre-college characteristics that have bearings on income attainment, such as academic achievement, cognitive skills, and noncognitive traits in adolescence \citep{reardon_widening_2011, heckman_effects_2006, farkas_cognitive_2003}. Any intervention imposed on the credentialing process in college cannot eliminate the influence of these characteristics on adult income.
+The baseline component represents the part of the income attainment disparity that is unaccounted for by college graduation. Apart from college completion, parental income is associated with a variety of pre-college characteristics that have bearings on income attainment, such as academic achievement, cognitive skills, and noncognitive traits in adolescence \citep{reardon_widening_2011, heckman_effects_2006, farkas_cognitive_2003}. Moreover, in adulthood, people from more privileged backgrounds may continue to benefit from various resources passed on within their families regardless of formal educational attainment. Any intervention imposed on the post-secondary credentialing process cannot eliminate channels of income persistence that are independent of college graduation. 
 
-%For example, people from more privileged  background may benefit from social and cultural capital passed on within their families hence would obtain higher incomes in adulthood regardless of formal educational attainment. Higher socioeconomic origin may also be conducive to advantages in assortative mating, which can improve income prospects. Income inequalities in cognitive and noncognitive abilities prior to post-secondary education may also be a channel of intergenerational income association that operates independently of the acquisition of college credential.
+In a way conceptually consistent with the prevalence component in our decomposition, social scientists have construed education as a mediator of the intergenerational reproduction of SES inequalities (\citealp[chapter 4 \& 5]{blau_american_1978}; \citealp[p.255-9]{featherman_opportunity_1978}; \citealp{ishida_class_1995}; \citealp{breen_educational_2010}). In particular, researchers have documented a large and increasing income gap in college graduation \citep{ziol-guest_parent_2016, bailey_gains_2011}. Moreover, using a simulation based on descriptive models, \citet{bloome_educational_2018} concluded that rising educational inequality strengthened intergenerational income persistence over time. 
 
-Resembling the prevalence component in our decomposition, education has been construed by social scientists as a mediator of the intergenerational reproduction of SES inequalities (\citealp[chapter 4 \& 5]{blau_american_1978}; \citealp[p.255-9]{featherman_opportunity_1978}; \citealp{ishida_class_1995}; \citealp{breen_educational_2010}). In particular, a large and increasing income gap in college graduation has been documented \citep{ziol-guest_parent_2016, bailey_gains_2011}. Using models that do not have causal and prescriptive implications, social scientists have attributed income persistence specifically to inequality in college completion \citep{bloome_educational_2018}. 
+There is also an active literature on the heterogeneity of the college effect on SES attainment by SES origin, which underpins our effect component. Brand et al. (\citeyear{brand_uncovering_2021}) and Cheng et al. (\citeyear{cheng_heterogeneous_2021}) found that the college premiums on wage and income outcomes are larger for people who are economically disadvantaged in adolescence. However, Zhou (\citeyear{zhou_equalization_2019}) and Fiel (\citeyear{fiel_great_2020}) found only insignificant heterogeneity in the effect of college completion on income by parental income. However, these works did not evaluate the extent to which income disparities can be attributed to groupwise differential effects of college.
 
-There is also an active literature on effect heterogeneity of college on SES attainment by SES origin, which underpins our effect component. Brand et al. (\citeyear{brand_uncovering_2021}) and Cheng et al. (\citeyear{cheng_heterogeneous_2021}) found that the college premiums on wage and income outcomes are larger for people who are economically disadvantaged during adolescence. However, Zhou (\citeyear{zhou_equalization_2019}) and Fiel (\citeyear{fiel_great_2020}) found only insignificant heterogeneity in the effect of college completion on income by parental income. However, these works did not evaluate the extent to which income disparities can be attributed to groupwise differential effects of college.
-
-Finally, the literature on college effects on later SES status has yielded mixed findings regarding whether selection on the treatment effect is positive or negative overall in the US. Brand and Xie (\citeyear{brand_who_2010}) and Brand et al. (\citeyear{brand_uncovering_2021}) concluded that there is positive selection into college. However, Breen et al. (\citeyear{breen_heterogeneous_2015}) warned that Brand and Xie's (\citeyear{brand_who_2010}) result may be biased from unobserved confounding. The instrumental variable analysis of Heckman et al. (\citeyear{heckman_returns_2018}), on the other hand, reveals positive selection. This line of inquiry does not estimate group-specific selection patterns, hence missing the linkage between group-differentiated selection component and outcome disparities. In Appendix E, we clarify and synthesize the differences and connections between various concepts of `selection into college' in the social science literatures. 
+Finally, the literature on college effects on later SES status has yielded mixed findings regarding whether selection on the treatment effect is positive or negative overall in the US. Brand and Xie (\citeyear{brand_who_2010}) and Brand et al. (\citeyear{brand_uncovering_2021}) concluded that there is negative selection into college. However, Breen et al. (\citeyear{breen_heterogeneous_2015}) warned that Brand and Xie's (\citeyear{brand_who_2010}) result may be biased from unobserved confounding. The instrumental variable analysis of Heckman et al. (\citeyear{heckman_returns_2018}), on the other hand, reveals positive selection. This line of inquiry does not estimate group-specific selection patterns, thereby missing the linkage between group-differentiated selection and outcome disparities. In Appendix E, we clarify and synthesize the differences and connections between various concepts of ``selection into college'' in the social science literature. 
 
 \subsection{Data, variables and estimation details}
-We analyze the National Longitudinal Survey of Youth 1979 (NLSY79), which is nationally representative for a cohort of young men and women who were born between 1957 and 1964 and were living in the United States at the baseline survey in 1979.
-We  limit the analysis to respondents who were between 14 to 17 years old in 1979 to assure that income origin is measured prior to the time at which respondents might have had a chance to graduate from college. 
+We analyze the National Longitudinal Survey of Youth 1979 (NLSY79), which is a nationally representative dataset for a cohort of young men and women who were born between 1957 and 1964 and were living in the United States at the baseline survey in 1979.
+We  limit the analysis to respondents who were between 14 to 17 years old in 1979 to ensure that income origin is measured before the respondents had a chance to graduate from college. 
 
-We contrast income-origin groups defined as the top and bottom quartiles of family incomes averaged over the first three waves of the survey (1979, 1980, and 1981), divided by the square root of the family size. The respondents were 14 to 20 years old during that time. The treatment variable is a binary indicator of whether the respondent graduates from college by the age of 31. We measure the outcome by the percentile rank of adult income, averaged over five survey waves between age 35 and 44, again divided by the square root of family size. For the conditional decomposition, we define $\Q$ as the Armed Forces Qualification Test (AFQT) score measured in 1980, which reflects academic achievement in high school. 
+We contrast income-origin groups defined as the top 60\% and bottom 40\% of family incomes averaged over the first three waves of the survey (1979, 1980, and 1981), divided by the square root of the family size. The respondents were 14 to 20 years old during that time. The treatment variable is a binary indicator of whether the respondent graduated from college by the age of 31. We measure the outcome by the percentile rank of adult income, averaged over five survey waves between age 35 and 44, again divided by the square root of family size. For the conditional decomposition, we define $\Q$ to be the Armed Forces Qualification Test (AFQT) score measured in 1980, which reflects academic achievement in high school. 
 
-Covariates include gender, race, parental education, parental presence, number of siblings, urban residence, own educational expectation, friends' educational expectations, influential person's attitude regarding the respondent's college education, AFQT score, age at baseline survey, the Rotter locus of control scale score, the Rosenberg esteem item response score, language spoken at home, SMSA residence, living with mother, school curriculum, school satisfaction, foreign-born parents, region of residence, and mother's working status. 
+Covariates used for causal identification include gender, race, parental income percentile, parental education, parental presence, the number of siblings, urban residence, educational expectation, friends' educational expectation, AFQT score, age at baseline survey, the Rotter locus of control scale score, the Rosenberg esteem item response score, language spoken at home, urban/rural residence, presence of mother, school satisfaction, region of residence, and mother's working status. 
 
-We fit the nuisance functions using three alternative ML methods, Gradient Boosting Machine (GBM), Neural Networks and Random Forests, for which we use 10-fold cross-validation to tune hyper-parameters. For comparison, we also fit the nuisance functions using parametric regressions. For outcome models, we use linear regressions with all two-way interactions between the group indicator and baseline covariates, along with the constituting main effects. For propensity score models and models predicting $G$, the covariates are entered linearly. \footnote{Code for this analysis is posted at \url{https://github.com/ang-yu/causal_decomposition_case_study}.}
+We fit the nuisance functions using three alternative ML methods, gradient boosting machine (GBM), neural networks and random forests. For comparison, we also fit the nuisance functions using parametric regressions. The parametric models are set up as follows. For models predicting $Y$, we use linear regressions with all two-way interactions between the treatment and baseline variables including the group indicator, along with their main effects. For propensity score models and models predicting $G$, the covariates are entered linearly. For other models, where only $G$ and $\Q$ are predictors, we include all main effects and two-way interactions between $G$ and $\Q$.\footnote{Code for this analysis is available at \url{https://github.com/ang-yu/causal_decomposition_case_study}.}
 
 \subsection{Results}
-% Sun Feb 12 22:16:09 2023
-\begin{table}[ht]
+
+\begin{figure}
 \centering
-\caption{Unconditional Decomposition Estimates} 
-\begin{tabular}{lllll}
-  \hline
-   & GBM & Neural Networks & Random Forests & Parametric \\ 
-  \hline
-Total              & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ \\
-Baseline           & $0.241^{***}$ & $0.250^{***}$ & $0.246^{***}$ & $0.245^{***}$ \\
-Prevalence         & $0.054^{*}$   & $0.098^{**}$  & $0.065^{***}$ & $0.069^{**}$  \\
-Effect             & $-0.014$      & $-0.058$      & $-0.022$      & $-0.030$      \\
-Selection          & $0.004$       & $-0.005$      & $-0.003$      & $0.001$       \\
-Jackson reduction  & $0.060^{*}$   & $0.096^{**}$  & $0.065^{***}$ & $0.069^{**}$  \\
-   \hline
-  \multicolumn{5}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\ For ML-based estimators, cross-fitting is used.}}
-\end{tabular}
-\end{table}
 
-We present results of the unconditional decomposition in Table 1. To begin with, according to the total disparity estimate, people from the bottom income quartile on average achieve almost 30 percentiles lower incomes in their 30s and 40s. This confirms the well-established pattern of integenerational income persistence. Our decomposition reveals some novel facts about the formation of this persistence. Across nuisance estimators, the baseline component constitutes at least 89\% of the total disparity. This suggests that income advantages are transmitted between generations via many channels other than inequalities related to college degree. The baseline component hence demarcates a limit for interventions at the post-secondary stage.
+\subfigure[Unconditional decomposition]
+{
+\begin{tikzpicture}[scale = 1] 
+    \node at (0,0) {};
+    \node at (1,1) {};
+    
+    \node[anchor=center, align=center, inner sep=0pt] at (0,0) {\includegraphics[width=.48\textwidth]{unconditional_2023-04-11.jpg}};
+\end{tikzpicture}
+}
+\subfigure[Conditional decomposition]
+{
+\begin{tikzpicture}[scale = 1]  
+    \node at (0,0) {};
+    \node at (1,1) {};
+    
+    \node[anchor=center, align=center, inner sep=0pt] at (0,0) {\includegraphics[width=.48\textwidth]{conditional_2023-04-15.jpg}}; 
+\end{tikzpicture}
+}
 
-Nevertheless, differential prevalence of college degrees across different income origin groups plays a substantial and statistically significant role in explaining the income disparity during adulthood. The prevalence component causally accounts for about one third of the total disparity in adult income. Therefore, if an intervention could equalize college graduation rates across income origins, the between-group disparity would be reduced by that much. What underlies the prevalence component is the vast inequality in college graduation by parental income: 42\% in the top income quartile obtained a college degree by age 31 while only 4\% in the bottom quartile did so (see Table A1). On the other hand, the contribution of the effect component is smaller in magnitude and not consistently significant in statistical terms across nuisance estimators. 
+\caption*{Figure 2. Decomposition estimates. Cond=conditional, Para=parametric models, Nnet=neural networks, GBM=generalized boosting machine, Ranger=random forests. Error bars indicate 95\% confidence intervals. Baseline component is omitted in panel (b) as the baseline component estimates for the conditional decomposition are, by definition, the same as those for the unconditional decomposition.} \label{fig:Result}
+\end{figure}
 
-Interestingly, all three ML nuisance estimators agree that the selection component is negative and statistically significant, offsetting at least one third of the disparity caused by differential prevalence. Indeed, selection into college is positive in the disadvantaged group and negative in the advantaged group (see Table A1). This echos the view that obtaining a college degree is more of a rational decision and less of a cultural norm among the disadvantaged than among the advantaged \citep{mare_social_1980, hout_social_2012}. Also noteworthy is the fact that when the nuisance components are fitted by parametric models, the selection component is estimated to be effectively zero. This highlights the value of nonparametric estimation, as the selection component reflects granular variation in treatment effects within groups, which likely requires flexible models to capture.
+We illustrate estimates of the decomposition components in Figure 1, while the numeric estimates are presented in Appendix Table A2 and A3. To aid the interpretation of the decomposition components, in Appendix Table A1, we additionally report estimates of group-specific means of baseline potential outcome, treatment proportions, ATEs, and covariances between treatment and treatment effects, as well as group differences in these quantities. 
 
-Finally, we also nonparametrically estimate the reduction in disparity component in Jackson and VanderWeele's (\citeyear{jackson_decomposition_2018}) random equalization decomposition. Selection into college is positive in the lower-income group, therefore, by randomizing college degree within the lower-income group, the intervention underlying the random equalization decomposition would be less powerful in reducing the outcome disparity than the intervention corresponding to our prevalence component. Indeed, the reduction in disparity component is smaller than our prevalence component and underestimates the contribution of differential prevalence. 
+To begin with, according to the estimated total disparity, people from lower income origin on average achieve 18 percentiles lower incomes in their 30s and 40s. This confirms the well-established pattern of integenerational income persistence. Our decompositions reveal aspects of the formation of this persistence. Across models for the nuisance functions, the baseline component constitutes around 90\% of the total disparity. This suggests that income advantages are transmitted between generations via many channels other than inequalities related to a college degree. The baseline component hence demarcates an upper limit for interventions aiming at  post-secondary education.
+
+Nevertheless, differential prevalence of college degrees across income origin groups plays a substantial and statistically significant role in explaining the income disparity in adulthood. In the unconditional decomposition, the prevalence component causally accounts for about 15\% of the total disparity in adult income. Therefore, if an intervention could equalize college graduation rates across income origins, the outcome disparity would be reduced by 15\%. What underlies the prevalence component is the vast inequality in college graduation by parental income: 29\% in the higher-income group obtained a college degree by age 31 while only 9\% in the lower-income group did so (see Appendix Table A1). The conditional prevalence component in the conditional decomposition remains statistically significant in all models, although it has much smaller magnitudes and only accounts for 3\% to 7\% of the total disparity. Therefore, equalizing chances of graduating college within levels of prior achievement would still make a difference, even small.
+
+The contribution of the effect components in both unconditional and conditional decompositions is small in magnitude and generally not statistically significant. This is due to minimal between-group effect heterogeneity, either unconditionally or conditionally. In Appendix A1, we show that across models, the group-specific ATEs range from 12 to 15 percentiles and are all statistically significant. However, the groupwise difference is always insignificant. This is consistent with findings of \citet{zhou_equalization_2019} and \citet{fiel_great_2020}, which are also based on NLSY79. 
+
+All three ML models are in agreement that the selection component in the unconditional decomposition is significantly negative, offsetting 48\% to 65\% of the outcome disparity caused by differential prevalence. Had the selection component been zero, the total disparity would be around 6\% higher. In fact, selection into college is positive in the disadvantaged group and negative in the advantaged group, although not significantly. This echos the view that obtaining a college degree is more of a rational decision based on expected returns and less of a cultural norm among the disadvantaged than among the advantaged \citep{mare_social_1980, hout_social_2012}. On the other hand, the conditional selection component does not notably contribute to the disparity in income attainment. 
+
+Descriptively, the $\Q$ distribution component also plays an important role in the generation of the outcome disparity, because of a large income gap in academic achievement in high school. Finally, we also estimate the reduction in disparity components in the unconditional and conditional random equalization decompositions \citep{jackson_decomposition_2018, jackson_meaningful_2021} and present the results in Appendix Table A2 and A3. In the unconditional case, relative to our prevalence component, the random equalization decomposition underestimates the extent to which differential college graduation rates contribute to the outcome disparity. This is because selection into college is positive in the lower-income group. By randomizing college degrees within the lower-income group, the intervention underlying the random equalization decomposition would be less powerful in reducing the outcome disparity than the pure equalization intervention corresponding to our prevalence component. 
 
 \section{Discussion}
-We provide a new decomposition approach for quantifying the  ways in which a treatment variable affects outcome disparities between ascriptive groups. Our decompositions improve on previous approaches of explaining group disparities and reveal novel policy levers for ameliorating disparities. Our decompositions are expressed as model-free estimands. We introduced nonparametric estimators that are efficient, asymptotically normal, and doubly robust. We applied our decompositions to study the role of college education in integenerational income persistence. 
+We provide a new decomposition approach for quantifying the ways in which a treatment variable affects outcome disparities between ascriptive groups. Our decompositions improve on previous approaches of explaining group disparities and reveal novel policy levers for ameliorating disparities. Our decompositions are expressed as model-free estimands. We introduced nonparametric estimators that are efficient, asymptotically normal, and doubly robust. We applied our decompositions to study the role of college education in integenerational income persistence. We highlight that differential prevalence of the college degree significantly contributes to the income disparity, even conditional on academic achievement in high school. Conversely, differential selection into college graduation plays a significantly compensatory role and reduces the income disparity.
 
 Our approach can be extended in multiple directions. 
 First, it is possible to develop analogous decompositions for non-binary treatments. For multi-valued categorical treatments, the basic form of equation (\ref{eqt1}) can be retained, with prevalence, effect, and selection components replaced with sums of category-specific contrasts.
@@ -567,9 +568,9 @@ First, it is possible to develop analogous decompositions for non-binary treatme
 \end{align*}
 \end{comment}
 For continuous treatments, the randomization and equalization interventions, as well as their conditional versions, remain well-defined and may serve as bases of decompositions. 
-Second, our framework can be extended to accommodate multiple temporally-ordered treatments. In the case of two treatments, $D_1$ and $D_2$, such extension can be based on the following decomposition of outcomes:
+Second, our framework can be extended to accommodate multiple temporally-ordered treatments. In the case of two treatments, $D_1$ and $D_2$, such extension can be based on the following decomposition of the outcome:
 \begin{equation*}
-    Y= Y(0,0)+D_1(Y(1,0)-Y(0,0)) + D_2(Y(0,1)-Y(0,0)) + D_1 D_2 [Y(1,1)-Y(1,0)-(Y(0,1)-Y(0,0))],
+    Y= Y(0,0)+D_1[Y(1,0)-Y(0,0)] + D_2[Y(0,1)-Y(0,0)] + D_1 D_2 [Y(1,1)-Y(1,0)-Y(0,1)+Y(0,0)],
 \end{equation*}
 where $Y(d_1,d_2)$ denotes the potential outcome of $Y$ under the assignment of $D_1=d_1$ and $D_2=d_2$.
 Third, as an alternative to the double ML-style estimators in this paper, targeted learning \citep{van_der_laan_targeted_2011} could also be employed for estimation, which may have better finite-sample performance when the outcome is bounded. 
@@ -687,14 +688,10 @@ We use the Gateaux derivative approach to derive the EIFs \citep{ichimura_influe
 
 Let $\one_{\Tilde{o}}(o)$ be the point mass density at a single empirical observation,  $\Tilde{o}$. We also use $\one(\cdot)$ as the indicator function. Let subscript $\mathcal{P}_t$ indicate a regular parametric submodel indexed by $t$. When the true model is invoked, the subscript is omitted. By construction, $f_{\mathcal{P}_t}(o)=t \one_{\Tilde{o}}(o) + (1-t)f(o)$, i.e., the submodel is the true model perturbed in the direction of a single observation $\Tilde{o}$. Under this construction, the EIF of an estimand, $\xi$, is the Gateaux derivative at the truth, i.e., $\phi(\xi)=\frac{\partial \xi_{\mathcal{P}_t}}{\partial t} \big|_{t=0}$. For convenience, for an arbitrary function $g(o)$, we denote $ \frac{\partial g_{\mathcal{P}_t}(o)}{\partial t} \big|_{t=0}$ as $\partial g(o)$. 
 
-We derive the EIFs for the general case of  weighted estimands. Let $w(\X, \Q, G)$ be the  survey weights. Following \citet{hirano_efficient_2003}, we assume the survey weight is a known function of the covariates. When no survey weights are needed, $w(\X,\Q, G)$ reduces to 1 for every individual. For the unconditional decomposition, we omit $\Q$ from the expression.
+We derive the EIFs for the general case of  weighted estimands. Let $w(\X, \Q, G)$ be the  survey weight. Following \citet{hirano_efficient_2003}, we assume the survey weight is a known function of the covariates. When no survey weights are needed, $w(\X,\Q, G)$ reduces to 1 for every individual. For the unconditional decomposition, we omit $\Q$ from the expression.
 
 In this derivation, we will also use the following definitions:
 \begin{align*}
-    \mu(D,\X,\Q,G)&=\E(Y \mid D, \X, \Q, G) \\
-    \pi(D,\X, \Q, G) &= \Pro(D \mid \X, \Q, G) \\
-    p_g &= \Pro(G=g) \\
-    p_g(\Q) &= \Pro(G=g \mid \Q) \\
     h_g &= \E(w(\X, \Q, G) \mid G=g) \\
     h_g(\Q) &= \E(w(\X, \Q, G) \mid \Q, G=g).
 \end{align*}
@@ -1066,65 +1063,113 @@ Third, a literature on effect heterogeneity by propensity score \citep{brand_who
 \end{align*}
 Hence, under conditional ignorability, our selectivity term equals the covariance between the propensity score and the mean treatment effect conditional on the propensity score. Due to this relationship, the estimators we developed for the generic functions underlying our unconditional decomposition can also be used to nonparametrically estimate effect heterogeneity by propensity score. 
 
-\subsection*{Appendix F. Supplemental empirical results}
-\begin{table}[htb]
+\subsection*{Appendix F. Numeric estimates}
+\begin{table}[htbp]
 \centering
-\caption*{Table A1: Group-specific Estimates for the Unconditional Decomposition} 
+\caption*{Table A1. Group-specific Estimates for the Unconditional Decomposition} 
 \begin{tabular}{lccc}
   \hline
-   &  Top income quartile & Bottom income quartile  & Top-Bottom \\ 
+   &  Top 60\% income & Bottom 40\% income  & Top-Bottom \\ 
   \hline
-  Treatment proportion & $0.418^{***}$ & $0.041^{***}$ & $0.377^{***}$ \\ 
+  Treatment proportion & 0.290 & 0.086 & 0.204 \\ 
+   & (0.269, 0.312) & (0.066, 0.107) & (0.174, 0.234) \\
   & \multicolumn{3}{c}{Gradient Boosted Machine}  \\
-  Baseline outcome & $0.627^{***}$ & $0.386^{***}$ & $0.241^{***}$ \\ 
-  ATE & $0.111^{***}$ & $0.144^{*}$ & $-0.033$ \\ 
-  $\Cov(D, \tau)$ & $-0.002$ & $-0.005$ & $0.004$ \\ 
+  Baseline outcome & 0.575 & 0.410 & 0.165 \\ 
+   & (0.553, 0.597) & (0.392, 0.427) & (0.137, 0.194) \\
+  ATE & 0.146 & 0.128 & 0.018 \\ 
+  & (0.108, 0.184) & (0.048, 0.208) & (-0.071, 0.106) \\
+  $\Cov(D, \tau)$ & -0.013 & 0.004 & -0.017 \\ 
+  & (-0.028, 0.001) & (-0.003, 0.011) & (-0.033, -0.001) \\
   & \multicolumn{3}{c}{Neural Networks}  \\
-  Baseline outcome & $0.624^{***}$ & $0.374^{***}$ & $0.250^{***}$ \\ 
-  ATE & $0.122^{*}$ & $0.260^{**}$ & $-0.138$ \\ 
-  $\Cov(D, \tau)$ & $-0.003$ & $0.002$ & $-0.005$ \\ 
+  Baseline outcome & 0.569 & 0.408 & 0.161 \\ 
+  & (0.555, 0.584) & (0.389, 0.427) & (0.137, 0.185) \\
+  ATE & 0.152 & 0.141 & 0.011 \\ 
+  & (0.118, 0.187) & (0.074, 0.208) & (-0.064, 0.087) \\
+  $\Cov(D, \tau)$ & -0.009 & 0.004 & -0.014 \\ 
+  & (-0.018, 0.000) & (-0.002, 0.010) & (-0.024, -0.003) \\
   & \multicolumn{3}{c}{Random Forests}  \\
-  Baseline outcome & $0.626^{***}$ & $0.379^{***}$ & $0.246^{***}$ \\ 
-  ATE & $0.119^{***}$ & $0.172^{***}$ & $-0.053$ \\ 
-  $\Cov(D, \tau)$ & $-0.003$ & $0.000$ & $-0.003$ \\ 
+  Baseline outcome & 0.570 & 0.410 & 0.161 \\ 
+  & (0.557, 0.584) & (0.390, 0.429) & (0.137, 0.184) \\
+  ATE & 0.139 & 0.115 & 0.024 \\ 
+  & (0.109, 0.169) & (0.025, 0.205) & (-0.071, 0.119) \\
+  $\Cov(D, \tau)$ & -0.006 & 0.005 & -0.011 \\ 
+  & (-0.013, 0.001) & (-0.001, 0.012) & (-0.021, -0.002) \\
   & \multicolumn{3}{c}{Parametric Regressions}  \\
-  Baseline outcome & $0.624^{***}$ & $0.379^{***}$ & $0.245^{***}$ \\ 
-  ATE & $0.113^{***}$ & $0.184^{**}$ & $-0.071$ \\ 
-  $\Cov(D, \tau)$ & $-0.001$ & $0.000$ & $0.001$ \\ 
+  Baseline outcome & 0.570 & 0.410 & 0.160 \\ 
+  & (0.556, 0.584) & (0.391, 0.429) & (0.136, 0.184) \\
+  ATE & 0.142 & 0.141 & 0.001 \\ 
+  & (0.107, 0.177) & (0.041, 0.241) & (-0.105, 0.107) \\
+  $\Cov(D, \tau)$ & -0.007 & 0.003 & -0.009 \\ 
+  & (-0.016, 0.003) & (-0.005, 0.011) & (-0.022, 0.003) \\
    \hline
-   \multicolumn{4}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\For ML-based estimators, cross-fitting is used.}} \\
+   \multicolumn{4}{l} {\makecell{Note: 95\% confidence intervals are in the parentheses. Weight stabilization is used. \\For ML models, cross-fitting is used.}} \\
 \end{tabular}
 \label{tab:elements}
 \end{table}
 
 % Sun Feb 12 22:16:09 2023
-\begin{table}[htb]
+\begin{table}[htbp]
 \centering
-\caption*{Table A2: Conditional Decomposition Estimates} 
+\caption*{Table A2. Unconditional Decomposition Estimates} 
+\begin{tabular}{lllll}
+  \hline
+   & GBM & Neural Networks & Random Forests & Parametric \\ 
+  \hline
+Total & 0.180 & 0.180 & 0.180 & 0.180 \\ 
+& (0.158, 0.201) & (0.158, 0.201) & (0.158, 0.201) & (0.158, 0.201) \\ 
+Baseline & 0.165 & 0.161 & 0.161 & 0.160 \\ 
+& (0.137, 0.194) & (0.137, 0.185) & (0.137, 0.184) & (0.136, 0.184) \\ 
+Prevalence & 0.026 & 0.029 & 0.023 & 0.029 \\ 
+& (0.010, 0.043) & (0.014, 0.043) & (0.005, 0.042) & (0.008, 0.050) \\ 
+Effect & 0.005 & 0.003 & 0.007 & 0.000 \\ 
+& (-0.021, 0.031) & (-0.018, 0.025) & (-0.021, 0.034) & (-0.030, 0.031) \\ 
+Selection & -0.017 & -0.014 & -0.011 & -0.009 \\ 
+& (-0.033, -0.001) & (-0.024, -0.003) & (-0.021, -0.002) & (-0.022, 0.003) \\ 
+Jackson reduction & 0.022 & 0.025 & 0.018 & 0.026 \\ 
+& (0.001, 0.043) & (0.007, 0.042) & (-0.006, 0.042) & (-0.001, 0.054) \\ 
+   \hline
+  \multicolumn{5}{l} {\makecell{Note: 95\% confidence intervals are in the parentheses. Weight stabilization is used. \\ For ML models, cross-fitting is used.}}
+\end{tabular}
+\end{table}
+
+% Sun Feb 12 22:16:09 2023
+\begin{table}[htbp]
+\centering
+\caption*{Table A3: Conditional Decomposition Estimates} 
 \begin{tabular}{lllll}
   \hline
  & GBM & Neural Networks & Random Forests & Parametric \\ 
   \hline
-Total                       & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ & $0.286^{***}$ \\
-Baseline                    & $0.241^{***}$ & $0.250^{***}$ & $0.246^{***}$ & $0.245^{***}$ \\
-Conditional prevalence      & $0.016^{*}$   & $0.026^{**}$  & $0.031^{***}$ & $0.016^{**}$  \\
-Conditional effect          & $0.012$       & $-0.038$      & $-0.019$      & $-0.018$      \\
-Conditional selection       & $-0.001$      & $-0.006$      & $-0.011^{*}$  & $-0.001$      \\
-$\Q$ distribution              & $0.017$       & $0.053^{*}$   & $0.038$       & $0.044$       \\
-Conditional Jackson reduction & $0.019^{**}$  & $0.027^{**}$  & $0.031^{***}$ & $0.015^{**}$  \\ \hline
-  \multicolumn{5}{l} {\makecell{Note: P value $<$ 0.05: *, $<$ 0.01: **, $<$ 0.001: ***. Weight stabilization is used. \\ For ML-based estimators, cross-fitting is used.}}
+Total & 0.180 & 0.180 & 0.180 & 0.180 \\
+& (0.158,0.201) & (0.158,0.201) & (0.158,0.201) & (0.158,0.201) \\
+Baseline & 0.165 & 0.161 & 0.161 & 0.160 \\
+& (0.137,0.194) & (0.137,0.185) & (0.137,0.184) & (0.136,0.184) \\
+Conditional prevalence & 0.006 & 0.007 & 0.013 & 0.009 \\
+& (0.002,0.011) & (0.002,0.012) & (0.008,0.018) & (0.003,0.015) \\
+Conditional effect & -0.021 & -0.015 & -0.047 & -0.018 \\
+& (-0.052,0.011) & (-0.040,0.009) & (-0.091,-0.003) & (-0.044,0.007) \\
+Conditional selection & -0.003 & -0.005 & -0.006 & -0.005 \\
+& (-0.011,0.004) & (-0.011,0.001) & (-0.013,0.002) & (-0.012,0.003) \\
+Q distribution & 0.032 & 0.032 & 0.059 & 0.033 \\
+& (0.011,0.052) & (0.017,0.048) & (0.022,0.096) & (0.016,0.050) \\
+Conditional Jackson reduction & 0.007 & 0.006 & 0.011 & 0.007 \\
+& (-0.001,0.014) & (0.000,0.013) & (0.003,0.020) & (-0.003,0.016) \\
+\hline
+  \multicolumn{5}{l} {\makecell{Note: 95\% confidence intervals are in the parentheses. Weight stabilization is used. \\ For ML models, cross-fitting is used.}}
 \end{tabular}
 \end{table}
-We present estimates of the conditional decomposition in Table A2. The conditional prevalence component is positive and statistically significant across nuisance estimators, attesting the effectiveness of an equalization intervention within levels of prior achievement. The conditional effect component, on the other hand, is significantly negative under all three ML estimators. The $\Q$ distribution component is unsurprisingly positive, given that prior achievement is positively associated with both educational attainment and adult income. Finally, we also nonparametrically estimate the reduction in disparity component in Jackson's (\citeyear{jackson_meaningful_2021}) CRED, which is again smaller than our conditional prevalence component. 
 
-Comparing Table A2 with Table 1, it is noteworthy that the conditional prevalence component is larger than the unconditional prevalence component. This may appear counterintuitive, as the income gap in college completion should be smaller conditional on prior achievement. We shed some light on this phenomenon by noting that the conditional prevalence component can be represented as 
-\begin{equation*}
-    \E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] + \Cov_b[\E_b(\tau \mid \Q), \E_a(D \mid \Q)]-\Cov_b[\E_b(\tau \mid \Q), \E_b(D \mid \Q)].
-\end{equation*}
-Therefore, even if $\E_a(D \mid \Q=\q)-\E_b(D \mid \Q=\q) < \E_a(D)-\E_b(D)$ for all $\q$ levels, which implies $\E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] < \E_b(\tau)[\E_a(D)-\E_b(D)]$, the conditional prevalence component may still be larger than the unconditional one, since $\Cov_b[\E_b(\tau \mid \Q), \E_a(D \mid \Q)]-\Cov_b[\E_b(\tau \mid \Q), \E_b(D \mid \Q)]$ may be positive and larger in magnitude. The intuition is that, by transferring the conditional distribution of $D$ given $\Q$ from group $a$ to group $b$, the conditional equalization intervention would also change the relationship between $\tau$ and $D$ across levels of $\Q$ in group $b$, which is also related to the outcome disparity. To avoid this phenomenon altogether, one may alternatively define a conditional prevalence component equal to $\E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] $. However, it might be the case that this phenomenon is unavoidable if we want the component to correspond to a clearly-defined conditional intervention.
+\newpage
 
 \setstretch{1}
 \bibliography{Causal_decomposition}
 
 \end{document}
 
+
+
+    Comparing Table A2 with Table 1, it is noteworthy that the conditional prevalence component is larger than the unconditional prevalence component. This may appear counterintuitive, as the income gap in college completion should be smaller conditional on prior achievement. We shed some light on this phenomenon by noting that the conditional prevalence component can be represented as 
+\begin{equation*}
+    \E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] + \Cov_b[\E_b(\tau \mid \Q), \E_a(D \mid \Q)]-\Cov_b[\E_b(\tau \mid \Q), \E_b(D \mid \Q)].
+\end{equation*}
+Therefore, even if $\E_a(D \mid \Q=\q)-\E_b(D \mid \Q=\q) < \E_a(D)-\E_b(D)$ for all $\q$ levels, which implies $\E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] < \E_b(\tau)[\E_a(D)-\E_b(D)]$, the conditional prevalence component may still be larger than the unconditional one, since $\Cov_b[\E_b(\tau \mid \Q), \E_a(D \mid \Q)]-\Cov_b[\E_b(\tau \mid \Q), \E_b(D \mid \Q)]$ may be positive and larger in magnitude. The intuition is that, by transferring the conditional distribution of $D$ given $\Q$ from group $a$ to group $b$, the conditional equalization intervention would also change the relationship between $\tau$ and $D$ across levels of $\Q$ in group $b$, which is also related to the outcome disparity. To avoid this phenomenon altogether, one may alternatively define a conditional prevalence component equal to $\E_b(\tau)\E_b[\E_a(D \mid \Q)-\E_b(D \mid \Q)] $. However, it might be the case that this phenomenon is unavoidable if we want the component to correspond to a clearly-defined conditional intervention.
