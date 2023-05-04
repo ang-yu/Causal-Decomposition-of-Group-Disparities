@@ -7,6 +7,8 @@
 \usepackage{comment}
 \usepackage{physics}
 
+\usepackage{longtable} %% to make tables span multiple pages
+
 \usepackage{tikz}
 \usetikzlibrary{shapes}
 \usetikzlibrary{matrix}
@@ -58,7 +60,7 @@ singlelinecheck=false
 \def\P{\mathbbm{P}}
 \newcommand{\defeq}{\vcentcolon=}
 
-\def\pheight{\frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')}}
+\def\pheight{\frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')}}
 
 \usepackage{changepage}  % enables changing page margin for a specific part of the text
 
@@ -113,7 +115,7 @@ singlelinecheck=false
 \linespread{1.6}  % double spacing 
 \setlength{\parskip}{0em}  % no paragraph spacing
 
-\title{\Large Nonparametric Causal Decompositions of Group Disparities \thanks{We thank Paul Bauer, Eric Grodsky, Aleksei Opacic, Guanghui Pan, Chan Park, Ben Rosche, and Jiwei Zhao for helpful comments and suggestions. Earlier versions of this paper has been presented at Causality in the Social Sciences Workshop at GESIS in 2021, Population Association of America annual meeting in 2022, and American Causal Inference Conference in 2022. We thank participants at these conferences for constructive discussions, especially our discussant at the first two conferences, Xiang Zhou.}} 
+\title{\Large Nonparametric Causal Decomposition of Group Disparities\thanks{We thank Paul Bauer, Eric Grodsky, Aleksei Opacic, Guanghui Pan, Chan Park, Ben Rosche, Jiwei Zhao, and especially Xiang Zhou for helpful comments and suggestions. Earlier versions of this paper has been presented at Causality in the Social Sciences Workshop at GESIS in 2021, Population Association of America annual meeting in 2022, and American Causal Inference Conference in 2022. We thank participants at these conferences for constructive discussions.}} 
 
 \author{\large Ang Yu\thanks{Department of Sociology, University of Wisconsin-Madison. Email: ayu33@wisc.edu} \and Felix Elwert\thanks{Department of Sociology and Department of Biostatistics and Medical Informatics, University of Wisconsin-Madison}}
 \date{\large \today}
@@ -125,27 +127,31 @@ singlelinecheck=false
 \maketitle
 
 \begin{abstract}
-We propose a nonparametric method for decomposing group disparities in terms of an intermediate treatment variable. Our decomposition contains four components capturing the contributions of group differences in baseline characteristics, treatment prevalence, average treatment effect, and selection into treatment. These components readily inform policy interventions on the treatment and its effect. Our main contribution is to neatly separate the roles of between-group and within-group effect heterogeneity in explaining group disparities, revealing a new lever for reducing disparities. This decomposition reformulates the classic Kitagawa-Blinder-Oaxaca decomposition in causal and model-free terms, supplements causal mediation analysis by targeting group disparities instead of group effects, and resolves conceptual difficulties of recent random equalization decompositions. We also provide a conditional decomposition that allows researchers to incorporates pre-treatment covariates in defining the estimand and potential interventions. Using efficient influence functions and cross-fitting, we propose nonparametric estimators that are $\sqrt{n}$-consistent, asymptotically normal, semiparametrically efficient, and doubly robust. We apply our framework to study the causal role of education in intergenerational income mobility. 
+We propose a nonparametric method for decomposing group disparities in terms of an intermediate treatment variable. Our decomposition contains four components capturing the contributions of group differences in baseline characteristics, treatment prevalence, average treatment effect, and selection into treatment. These components readily inform policy interventions on the treatment and its effect. Our main contribution is to neatly separate the roles of between-group and within-group effect heterogeneity in explaining group disparities, revealing a new lever for reducing disparities. This decomposition reformulates the classic Kitagawa-Blinder-Oaxaca decomposition in causal and model-free terms, supplements causal mediation analysis by targeting group disparities instead of group effects, and resolves conceptual difficulties of recent random equalization decompositions. We also provide a conditional decomposition that allows researchers to incorporates pre-treatment covariates in defining the estimands and the hypothetical interventions. Using efficient influence functions and cross-fitting, we propose nonparametric estimators that are $\sqrt{n}$-consistent, asymptotically normal, semiparametrically efficient, and doubly robust. We apply our framework to study the causal role of education in intergenerational income mobility. 
 \end{abstract}
 %%% AOAS and JASA requirement: abstract less than 200 words
 
 \section{Introduction}
 
-Improving the explanations of inter-group disparities is an urgent task for the social and health sciences. For example, what is the contribution of educational attainment to racial disparities in adult health? How much of the gender wage gap can be explained by occupational sorting? And what is the role of college completion in the relationship between parental income and income during adulthood? 
-The structure of such question is always the same. Researchers compare the outcomes of two groups whose membership is typically established early in life (e.g., race, gender, parental background, birth cohort, country) and ask how differences in outcomes can be attributed to some intermediate treatment variable that occurs between the establishment of group membership and the outcome. 
+Improving the explanations of inter-group disparities is a central task for the social and health sciences. For example, what is the contribution of educational attainment to racial disparities in adult health? How much of the gender wage gap can be explained by occupational sorting? And what is the role of college completion in the relationship between parental income and income during adulthood? 
+The structure of such question is always the same. Researchers compare the outcomes of two groups whose membership is typically established early in life (e.g., race, gender, parental background, birth cohort, country) and ask how the difference in outcome can be attributed to some intermediate treatment variable that occurs between the establishment of group membership and the outcome. 
 
-Questions about explanations, contributions, and attribution \citep[e.g.,][]{morgan_models_2012,barber_black-white_2015,mize_sexual_2016,brady_rethinking_2017, bernardi_compensatory_2020,storer_what_2020,zajacova_pain_2021} are inherently causal. First, researchers often are interested in the \emph{causes} of disparities and ask counterfactual questions about the impact of changing one or more intermediate variables, which is necessary for informing real-world interventions that could alleviate the disparities. It is one thing to observe that racial differences in college completion coexist with wage gaps by college completion status; it is another to establish that differences in college completion are responsible for racial wages gaps, such that intervening to equalize college graduation rates would remediate wage inequality. Second, researchers often also posit counterfactual scenarios where the effects of an intermediate variable in a group were set to different values than they are in reality. At a minimum, the discussion of effects also presumes causal identification. 
+Questions about explanation, contribution, and attribution
+%\citep[e.g.,][]{morgan_models_2012,barber_black-white_2015,mize_sexual_2016,brady_rethinking_2017, bernardi_compensatory_2020,storer_what_2020,zajacova_pain_2021}
+are inherently causal. First, researchers often are interested in the \emph{causes} of disparities and ask counterfactual questions about the impact of changing an intermediate treatment variable, which is necessary for informing interventions that could alleviate the disparities. It is one thing to observe that racial differences in college completion coexist with racial wage gaps; it is another to establish that the former is responsible for the latter, such that intervening to equalize college graduation rates would remediate wage inequality. Second, researchers often also posit counterfactual scenarios where the effects of a treatment variable in a group were set to new values, where the discussion of effects also presumes causality. 
 
 Three prior approaches are concerned with questions of attribution and explanation.  
-First, the Kitagawa-Blinder-Oaxaca (KBO) decomposition \citep{kitagawa_components_1955, blinder_wage_1973, oaxaca_male-female_1973} is a classic tool used for explaining group disparities and remains popular to this day \citep[e.g.,][]{barber_black-white_2015, mize_sexual_2016,laurison_class_2016, storer_what_2020, zajacova_pain_2021}. The KBO decomposition is based on group-specific linear regression models and decomposes the group disparity into an explained component and an unexplained component. The explained component reflects the differential averages of an intermediate variable by group, and the unexplained component captures differential slopes and intercepts. The classic KBO decomposition is thus defined in terms of regression coefficients and not nonparametrically formulated in causal terms. This renders the KBO decomposition inappropriate for explanation and attribution question. In fact, sociologists and economists alike have criticized the KBO decomposition for failing to answer any  counterfactual question by design (\citeauthor{fortin_decomposition_2011}, \citeyear{fortin_decomposition_2011}, p.13; \citeauthor{lundberg_what_2021}, \citeyear{lundberg_what_2021}, p.542). 
+First, the Kitagawa-Blinder-Oaxaca (KBO) decomposition \citep{kitagawa_components_1955, blinder_wage_1973, oaxaca_male-female_1973} is a classic tool used for explaining group disparities and remains popular to this day. 
+%\citep[e.g.,][]{barber_black-white_2015, mize_sexual_2016,laurison_class_2016, storer_what_2020, zajacova_pain_2021}
+The KBO decomposition is based on group-specific linear regression models and decomposes the group disparity into an explained component and an unexplained component. The explained component reflects the differential averages of an intermediate variable by group, and the unexplained component captures differential slopes and intercepts. The KBO decomposition is thus defined in terms of regression coefficients and not nonparametrically formulated in causal terms. This renders the KBO decomposition inappropriate for explanation and attribution questions. In fact, sociologists and economists alike have criticized the KBO decomposition for failing to answer any  counterfactual question by design (\citeauthor{fortin_decomposition_2011}, \citeyear{fortin_decomposition_2011}, p.13; \citeauthor{lundberg_what_2021}, \citeyear{lundberg_what_2021}, p.542). 
 
-Second, causal mediation analysis is also used to attribute the relationship between two variables to an intermediate variable \citep{vanderweele_explanation_2015}. Causal mediation estimands are clearly defined in counterfactual terms, however, they are not designed for explaining group disparities. This is because what they decompose are summary measures of treatment effects, such as the average treatment effect (ATE). However, the discussion of treatment effects is conceptually challenging when it comes to ascriptive variables such as race and gender, as it is not plausible to impose any intervention on these variables \citep{rubin_estimating_1974}. Some group variables, such as early-life socioeconomic status, can theoretically be intervened upon, but not for people who are already later in their life course. Indeed, in numerous applications in social and health sciences, descriptive group disparities, rather than an effect, is what researchers seek to understand and explain. Causal attribution of group disparities thereby requires analytical frameworks more tailored to it than mediation analysis.  
+Second, causal mediation analysis is also used to attribute the relationship between two variables to an intermediate variable \citep{vanderweele_explanation_2015}. Causal mediation estimands are clearly defined in counterfactual terms, however, they are not designed for explaining group disparities. This is because what they decompose are summary measures of treatment effects, such as the average treatment effect (ATE). However, the discussion of treatment effects is conceptually challenging when it comes to immutable attributes such as race and gender, as it is not conceivable to impose any intervention on these variables \citep{rubin_estimating_1974, holland_statistics_1986}. Some group variables, such as early-life socioeconomic status, can theoretically be intervened upon, but not for people who are already later in their life course. Indeed, in numerous applications in social and health sciences, descriptive group disparities, rather than average effects, is what researchers intend to understand and explain. Causal attribution of group disparities thereby requires analytical frameworks more tailored to it than mediation analysis.  
 
-Third, more recently, epidemiologists have developed a causal decomposition of group disparities, which we call the random equalization decomposition \citep{vanderweele_causal_2014, jackson_decomposition_2018}. For this estimand, the extent to which the group disparity can be attributed to the differential prevalence of an intermediate variable is defined as the reduction in disparity brought about by a hypothetical intervention that randomly gives members of the disadvantaged group values of the intermediate variable according to the distribution of the advantaged group. The random equalization decomposition marks a important advancement towards establishing an appropriate framework for causal attribution of group disparities to an intermediate treatment variable. However, as we will show, the random equalization decomposition does not purely capture the contribution of differential prevalence of the intermediate variable. Instead, it also incorporates the influence of differential patterns of selection into treatment across groups, which complicates its interpretation.
+Third, there have recently emerged variants of a causal decomposition of group disparities, which we call the random equalization decomposition \citep{vanderweele_causal_2014, jackson_decomposition_2018, lundberg_gap-closing_2022}. For this decomposition, the extent to which the group disparity can be attributed to the differential prevalence of an intermediate treatment variable is defined as the reduction in disparity brought about by a hypothetical intervention that randomly reassigns values of the treatment such that its prevalence is equalized across groups. The random equalization decomposition marks an important advancement towards establishing an appropriate framework for causal attribution of group disparities to an intermediate treatment variable. However, as we will show, the random equalization decomposition does not purely capture the contribution of differential treatment prevalence. Instead, it also incorporates the influence of selection into treatment within groups, which complicates its interpretation.
 
-In this article, we develop a novel decomposition method for group disparities in terms of an intermediate treatment variable. Our decomposition is defined counterfactually with respect to the treatment variable and descriptively with respect to the group variable. This approach is consistent with common practices in the social sciences and focuses on more modifiable factors in terms of policy intervention. Our decomposition contains four components, respectively capturing the contributions of baseline differences unrelated to the treatment, differential treatment prevalence, differential ATE, and differential selection into the treatment. Compared with the KBO decomposition, our decomposition enables causal attribution and nonparametric estimation. It supplements causal mediation analysis by focusing on explaining group disparities instead of ``effects'' of the group variables. It also improves on the random equalization decomposition by providing components with unambiguous interpretations. The component in our decomposition that captures differential selection is a centerpiece in our contributions. First, this component reveals a novel policy lever for reducing disparities, and it did not appear in any of the previous decompositions. Second, by separating it from the component representing differential prevalence, we clarify the random equalization decomposition and provide a more clearly interpretable decomposition. 
+In this article, we develop a novel decomposition approach for group disparities in terms of an intermediate treatment variable. Our decompositions are defined counterfactually with respect to the treatment variable and descriptively with respect to the group variable. This approach is consistent with common practices in the social sciences and focuses on more modifiable factors in terms of policy intervention. Our unconditional decomposition contains four components, respectively capturing the contributions of baseline differences unrelated to the treatment, differential treatment prevalence, differential ATE, and differential selection into the treatment. Compared with the KBO decomposition, our decomposition enables causal attribution and nonparametric estimation. It supplements causal mediation analysis by focusing on explaining group disparities instead of ``effects'' of the group variables. It also improves on the random equalization decomposition by providing components with unambiguous interpretations. The component in our decomposition that captures differential selection is a centerpiece in our contributions. First, this component reveals a novel policy lever for reducing disparities, and it did not appear in any of the previous decompositions. Second, by separating it from the component representing differential prevalence, we clarify the random equalization decomposition and provide a more clearly interpretable decomposition. 
 
-Our paper proceeds as follows. Section 2 formally introduces our decomposition and interventional interpretations. We also formally relate our decomposition to the classic KBO decomposition, a causal mediation estimand, and the random equalization decomposition, through which we explicate the contributions of our framework. We also extend the decomposition to a conditional version, which allows researchers to take pre-treatment covariates into account in defining the estimand and potential interventions. In section 3, under the conditional igorability assumption, we develop nonparametric estimators for the unconditional and conditional decompositions based on their efficient influence functions. These estimators can be implemented via data-adaptive methods such as ML and accommodate high-dimensional confounders. We also derive conditions under which the estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. In addition, they have double-robustness properties. In section 4, we apply our decompositions to study the causal role of college graduation in intergenerational income mobility. Section 5 concludes with possible extensions. 
+Our paper proceeds as follows. Section 2 introduces our unconditional decomposition and its interventional interpretations. We also formally relate our decomposition to the classic KBO decomposition, a causal mediation estimand, and the random equalization decomposition, through which we explicate the contributions of our framework. We also extend the unconditional decomposition to a conditional version, which allows researchers to take pre-treatment covariates into account in defining the estimands and the hypothetical interventions. In section 3, under the conditional ignorability assumption, we develop nonparametric estimators for the unconditional and conditional decompositions based on their efficient influence functions. These estimators can be implemented via data-adaptive methods such as machine learning (ML) models and accommodate high-dimensional confounders. We also derive the conditions under which the estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. In addition, they have double-robustness properties. In section 4, we apply our decompositions to study the causal role of college graduation in intergenerational income mobility. Section 5 concludes with possible future extensions. 
 
 %[This para someplace] Intervening variables can ``contribute" to disparities in multiple ways. Prior to determining the value of the exposure, the groups may or may not already experience baseline disparities. Next, one can ask to what extent differences in the effect of the exposure on members of the two groups contribute to outcome disparities; how differences in the prevalence of the exposure in the two groups.... ; and to what extent it matters which members of each group are selected to receive the exposure.  
     %[OR:] Exposures can `contribute' to outcome disparities in several different ways. It matters how many members of each group receive the treatment, which members of each group receive the treatment, and what the effect of the treatment is on the outcome. 
@@ -153,7 +159,7 @@ Our paper proceeds as follows. Section 2 formally introduces our decomposition a
 
 %When asking about the ‘contribution’ of a variable to an ‘explanation’ of disparities, one needs to define contribution and explanation. Following a long tradition in sociology-reaching back to Weber—we believe that explanations call for a causal account. Contribution…  
 
-\section{The estimands}
+\section{Estimands}
 \subsection{Unconditional decomposition}
 For each individual $i$, consider a binary treatment variable $D_i \in \left\lbrace 0,1 \right\rbrace$. Let $Y_{i0}$ and $Y_{i1}$ be the potential outcomes \citep{rubin_estimating_1974} of $Y_i$ under the hypothetical intervention to set $D_i=0$ and $D_i=1$, respectively. Let $\tau_i \coloneqq Y_{i1} - Y_{i0}$ denote the individual-level treatment effect. Henceforth, we largely suppress individual level subscripts on all variables to unburden notation. Suppose that the population contains two disjoint groups, $g \in \left\lbrace a,b \right\rbrace$, where $a$ denotes the advantaged group and $b$ denotes the disadvantaged group. We use subscripts $g$ to indicate group-specific quantities, for example, $\E_g(Y) \coloneqq \E(Y \mid G=g)$.  
 
@@ -193,7 +199,7 @@ Then it follows that our decomposition components can be re-written in the rando
 This points to a two-step intervention. In the first step, the pre-intervention disparity is $\E_a(Y) - \E_b(Y)$, and the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$. Hence, this step internally randomizes the treatment in both groups without changing its prevalence, and the selection component represents the reduction in disparity resulting from this randomization intervention. In the second step, the pre-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right) - \E_b \left(Y_{R(D \mid G=b)}\right)$, while the post-intervention disparity is $\E_a \left(Y_{R(D \mid G=a)} \right)-\E_b \left(Y_{R(D \mid G=a)} \right)$. This step equalizes treatment prevalence by giving group $b$ the treatment prevalence of group $a$. Therefore, the prevalence component is the reduction in disparity of an equalization intervention. Importantly, this equalization intervention is independent of the randomization intervention in the first step. Finally, the remaining disparity at the end of the two-step intervention is the sum of the baseline and the effect components. 
 
 \subsection{Relation to the KBO decomposition}
-Our decomposition expands on the classic KBO decomposition in two ways. First, our decomposition is presented explicitly as a causal estimand, which can be estimated nonparametrically. 
+Our decomposition expands on the classic KBO decomposition in two ways. First, our decomposition is presented explicitly as a causal estimand, which can be estimated nonparametrically and interpreted interventionally. 
 By contrast, the KBO decomposition is defined in terms of linear regressions and coincides with our decomposition only under a very strong assumption. Second, our decomposition contains an additional selection component as a novel disparity-producing mechanism, which is assumed away in the KBO decomposition. 
 
 Consider a form of the KBO decomposition of the outcome disparity between groups $a$ and $b$ with respect to a treatment variable, $D$, 
@@ -207,7 +213,7 @@ which is based on estimates of the group-specific linear regressions:
 \begin{gather*}
 Y=\alpha_g+\beta_g D + \epsilon.
 \end{gather*}
-Under a strong ignorability assumption, $Y_d \indep D \mid  G=g$, $\forall d, g$, in addition to assumption 1, the intercept, characteristic, and slope components in the KBO decomposition are unbiased estimators for our baseline, prevalence, and effect components, respectively. However, the strong ignorability assumption requires random assignment of treatment conditional on group membership. It also directly rules out the selection component in group disparities.
+Under a strong ignorability assumption, $Y_d \indep D \mid  G=g$, $\forall d, g$, in addition to assumption 1, the intercept, characteristic, and slope components in the KBO decomposition are unbiased estimators for our baseline, prevalence, and effect components, respectively. However, the strong ignorability assumption requires random assignment of treatment conditional only on group membership. It also directly rules out the selection component in group disparities. Hence, our decomposition is both more expansive and interventionally interpretable under far less stringent assumptions. Although components of the KBO decomposition have commonly been given counterfactual and intervenional interpretations \citep[e.g.,][]{jann_blinderoaxaca_2008}, our decomposition should be preferred for its more plausibly causal interpretability.  
 
 Before the current article, several studies have constructed or inferred causal estimands for the KBO decomposition. A methodological literature centers around interpreting the unexplained component (the sum of the intercept and the slope components) as an estimator for the treatment effect on the treated (ATT) \citep{fortin_decomposition_2011, kline_oaxaca-blinder_2011, yamaguchi_decomposition_2015}.\footnote{Also see \citet{chernozhukov_sorted_2018}, which interprets a version of the unexplained component as an average partial effect.} This literature addresses how an outcome difference associated with a treatment variable can be accounted for by \emph{pre}-treatment confounders. By contrast, our decomposition focuses on a very different question, i.e., the extent to which an outcome difference between groups is explained by a \emph{post}-group variable. \citet{huber_causal_2015} proposes an interpretation of the KBO components as causal mediation estimands, where the characteristic component is interpreted as the natural indirect effect \citep{pearl_direct_2001} of the group indicator via an intermediate variable and the unexplained component as the corresponding natural direct effect. The next section contrasts our decomposition with causal mediation analysis.
 
@@ -292,7 +298,7 @@ Second, there is no decomposition in the causal mediation literature that contai
 
 
 \subsection{Relation to unconditional random equalization}
-In recent years, there have emerged two variants of what we call the unconditional random equalization decomposition, which decomposes the observed disparity into two components. One is the reduction in disparity that could be brought about by randomly reassigning the treatment such that the treatment prevalence is equalized across groups. The other is correspondingly a component of remaining disparity \citep{vanderweele_causal_2014, jackson_decomposition_2018, sudharsanan_educational_2021, lundberg_gap-closing_2022}. Like our approach, the random equalization decomposition seeks to identify the causal effect of the treatment, not that of group membership. However, the random equalization decomposition is a two-way decomposition that contains less information than our four-way decomposition. Moreover, the reduction in disparity in the random equalization decomposition combines the selection component and the prevalence component of our decomposition, impeding a clear interpretation.
+In recent years, there have emerged two variants of what we call the unconditional random equalization decomposition, which decomposes the observed disparity into two components. One is the reduction in disparity that could be brought about by randomly reassigning the treatment such that the treatment prevalence is equalized across groups. The other is correspondingly a component of remaining disparity \citep{vanderweele_causal_2014, jackson_decomposition_2018, sudharsanan_educational_2021, lundberg_gap-closing_2022,park_sensitivity_2023}. Like our approach, the random equalization decomposition seeks to identify the causal effect of the treatment, not that of group membership. However, the random equalization decomposition is a two-way decomposition that contains less information than our four-way decomposition. Moreover, the reduction in disparity in the random equalization decomposition combines the selection component and the prevalence component of our decomposition, impeding a clear interpretation.
 
 %%%%% The random equalization decomposition was pioneered by \citet{vanderweele_causal_2014}. \citet{jackson_meaningful_2021} extended it to a conditional version, where the random equalization is only conceived within each level of some conditioning variables $\boldsymbol{Q}$. \citet{lundberg_gap-closing_2022} further proposed a slightly different estimand, where both group $a$ and group $b$ are given $D$ values randomly drawn from the entire sample. For the random equalization decomposition, estimators have been constructed based on regression \citep{vanderweele_causal_2014, jackson_decomposition_2018}, weighting \citep{jackson_meaningful_2021}, Monte Carlo integration \citep{sudharsanan_educational_2021}, as well as the doubly-robust augmented inverse probability weighting \citep{lundberg_gap-closing_2022}, which combines regression with weighting.  %%%%%
 
@@ -344,7 +350,7 @@ It then follows that components of the conditional decomposition can be written 
     &\phantom{{}={}} + \text{$\Q$ distribution}.
 \end{align}
 
-Therefore, a two-step intervention again underlies our conditional decomposition. In the first step, the treatment is randomized within each $\Q$ level for members of both groups. The reduction in disparity resulting from this step is then the conditional selection component. The second step is an equalization intervention independent of the previous randomization step. For the second step, the pre-intervention disparity is $\E_a(Y_{R(D \mid G=a,\Q)})-\E_b(Y_{R(D \mid G=b,\Q)})$, and the post-intervention disparity is $\E_a(Y_{R(D \mid G=a,\Q)}) - \E_b(Y_{R(D \mid G=a,\Q)})$. Hence, the conditional prevalence component is the reduction in disparity brought about by giving group $b$ random draws of treatment from group $a$ within $\Q$ levels. What would remain after this two-step intervention is the sum of the conditional effect, the conditional selection, and the $\Q$ distribution components.
+Therefore, a two-step intervention again underlies our conditional decomposition. In the first step, the treatment is randomized within each $\Q$ level for members of both groups. The reduction in disparity resulting from this step is then the conditional selection component. The second step is an equalization intervention independent of the previous randomization step. For the second step, the pre-intervention disparity is $\E_a(Y_{R(D \mid G=a,\Q)})-\E_b(Y_{R(D \mid G=b,\Q)})$, and the post-intervention disparity is $\E_a(Y_{R(D \mid G=a,\Q)}) - \E_b(Y_{R(D \mid G=a,\Q)})$. Hence, the conditional prevalence component is the reduction in disparity brought about by giving group $b$ random draws of treatment from group $a$ within $\Q$ levels. What would remain after this two-step intervention is the sum of the conditional effect, the conditional selection, and the $\Q$ distribution components.\footnote{For equation (4) to hold, we only require $\text{supp}_g(\Q) 	\subseteq \text{supp}_{g'}(\Q)$, not necessarily $\text{supp}_g(\Q) = \text{supp}_{g'}(\Q)$ required for the decomposition (3) itself. This implies that the interventional interpretations for conditional selection and conditional prevalence in equation (5) hold as long as $\text{supp}_b(\Q) \subseteq \text{supp}_{a}(\Q)$. Intuitively, at each level of $\Q$ in group $b$, we must be able to find members of group $a$ with the same $\Q$ values in order to conduct the equalization intervention.}
 
 Similar to the unconditional random equalization decompositions, \citet{jackson_meaningful_2021} and \citet{lundberg_gap-closing_2022} proposed two variants of what can be called the conditional random equalization decomposition (CRED), which decomposes outcome disparities into a reduction in disparity component and a remaining disparity component. The hypothetical intervention underlying the CRED is a random re-distribution of treatment values among people with the same $\Q$ values such that the treatment prevalence would be equalized within $\Q$ levels. Analogous to the unconditional case, we show that the reduction in disparity component in both variants of CRED conditionally mixes the prevalence component with the selection component, thus the conditional prevalence component in our decomposition should be preferred for its clearer interpretation. 
 
@@ -367,17 +373,17 @@ where the left hand side is the reduction in disparity in Lundberg's (\citeyear{
 \section{Estimation and Inference}
 We identify the components of our decompositions using two standard assumptions as follows.\footnote{Our unconditional decomposition can also be identified using the marginal treatment effect approach based on an instrumental variable \citep{heckman_structural_2005, zhou_heterogeneous_2020}, as identifying group-specific ATTs and ATEs is sufficient (see Appendix E).}
 \begin{itemize}
-    \item[] Assumption 2 (Conditional ignorability). $Y_d \indep D \mid \X=\x, \Q=\q, G=g$, $\forall d, \x, \q, g$;
-    \item[] Assumption 3 (Overlap). $0 < \E(D \mid \X=\x, \Q=\q, G=g) <1$, $\forall \x, \q, g$,
+    \item[] Assumption 2 (Conditional ignorability). $Y_d \indep D \mid \X=\x, G=g$, $\forall d, \x, g$;
+    \item[] Assumption 3 (Overlap). $0 < \E(D \mid \X=\x, G=g) <1$, $\forall \x, g$.
 \end{itemize}
-where $\Q$ is omitted for the unconditional decomposition. 
+Without loss of generality, we assume $\Q \in \X$. 
 We develop nonparametric and efficient estimators for components of our unconditional and conditional decompositions.\footnote{Various regression, weighting, or matching estimators can also be used. In particular, under constant treatment effect, the prevalence component in the unconditional decomposition can be estimated using the traditional ``product method'' for the indirect effect of $G$ through $D$ on $Y$ \citep{baron_moderator-mediator_1986}. This again explicates the kinship between our decomposition and mediation analysis. }
 These estimators are ``one-step'' estimators based on the EIFs of the decomposition components, which remove the bias from naive substitution estimators \citep{bickel_efficient_1998, van_der_vaart_asymptotic_2000,hines_demystifying_2022}. The estimators contain some nuisance functions, which can be estimated using flexible ML methods coupled with cross-fitting. Under specified conditions, our estimators are $\sqrt{n}$-consistent, asymptotically normal, and semiparametrically efficient. Thus, we are able to construct asymptotically accurate Wald-type confidence intervals and hypothesis tests. Our estimators also have double robustness properties.  
 
 To introduce the EIFs, we define the following functions:
 \begin{align*}
-    \mu(d,\X,\Q, g)&=\E(Y \mid D, \X, \Q, G=g) \\
-    \pi(d,\X, \Q, g) &= \Pro(D=d \mid \X, \Q, G=g) \\
+    \mu(d,\X, g)&=\E(Y \mid D, \X, G=g) \\
+    \pi(d,\X, g) &= \Pro(D=d \mid \X, G=g) \\
     p_g &= \Pro(G=g) \\
     p_g(\Q) &= \Pro(G=g \mid \Q).
 \end{align*}
@@ -446,14 +452,14 @@ where $(d, g, g', g'')$ is any combination of treatment status and group members
     &\phantom{{}={}} - \text{Conditional Prevalence} - \text{Conditional Effect} - \Q \text{ Distribution}.
 \end{align*}
 Hence, in this subsection, we focus on the inference of $\xi_{dgg'g''}$. The EIFs,  one-step estimators, and their asymptotic distributions for components of the conditional decomposition will then straightforwardly follow. Moreover, we thereby also provide nonparametric inference for the reduction in disparity component in the CRED of \citet{jackson_meaningful_2021}, which can be represented as $\xi_{0b}+\xi_{1bab}-\xi_{0bab}-\E_b(Y)$.
-Under assumptions 1, 2, 3, we identify $\xi_{dgg'g''}$ as $$\E \left\{\E \left[ \E(Y \mid d,\X,\Q,g)   \mid \Q, g \right] \E \left(D \mid \Q, g' \right) \mid G=g'' \right\}.$$
+Under assumptions 1, 2, 3, we identify $\xi_{dgg'g''}$ as $$\E \left\{\E \left[ \E(Y \mid d,\X,g)   \mid \Q, g \right] \E \left(D \mid \Q, g' \right) \mid G=g'' \right\}.$$
 
 \begin{prop}[EIF]
 Under assumptions 1, 2, 3, the EIF of $\xi_{dgg'g''}$ is 
 \begin{align*}
      &\phantom{{}={}} \phi_{dgg'g''}(Y,\X,\Q) \\
     &=\frac{\one(G=g'')}{p_{g''}} \left[ \E \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
-    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \\
+    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)]+\mu(d,\X,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \\
     &\phantom{{}={}} + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \E\left( Y_d \mid \Q, g \right).
 \end{align*}
 \end{prop}
@@ -461,23 +467,23 @@ We again construct the one-step estimators based on the EIF.
 \begin{align*}
     &\phantom{{}={}} \Psi_{dgg'g''}(Y,\X,\Q) \\
     &=\frac{\one(G=g'')}{p_{g''}} \E \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \E\left( Y_d \mid \Q, g \right) \\
-    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right).
+    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)]+\mu(d,\X,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right).
 \end{align*}
-For this estimator, there are five nuisance functions: $p_g(\Q)$, $\pi(d,\X,\Q,g)$, $\mu(d,\X,\Q,g)$, $\E(D \mid \Q, G=g)$, and $\E(Y_d \mid \Q,g)$. We again cross-fit these nuisance functions using nonparametric methods. This estimator can be weight-stabilized by dividing $\frac{\one(D=d)}{\pi(d,\X,\Q,g)}$, $\frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}}$, and $\frac{\one(G=g)p_{g''}(\Q)}{p_g(\Q)p_{g''}}$ by their respective sample averages. The estimation of $\E(Y_d \mid \Q,g)=\E[\mu(d,\X,\Q,g) \mid \Q,g]$ requires a more involved procedure. We adopt a pseudo-outcome approach \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}, where the pseudo outcome for each $d$ is defined as the decentered EIF for $\E(Y_d)$, i.e., 
-$$ \delta_d \left(Y, \X, \Q, G \right) \defeq \frac{\one(D=d)}{\pi(d, \X,\Q,G)} [Y-\mu(d,\X,G)] + \mu(d,\X,\Q,G).$$
-We first estimate $\pi(d, \X,\Q,G)$ and $\mu(d,\X,\Q,G)$ within two random subsamples of the data \emph{without} cross-fitting and obtain the estimated pseudo outcome $\hat{\delta}_d \left(Y, \X, \Q, G \right)$. Then, using $\hat{\delta}_d \left(Y, \X, \Q, G \right)$ as a proxy of $Y_d$, we estimate $\E\left[Y_d \mid \Q, g \right]$ \emph{with} cross-fitting, i.e., we fit $\E\left[\hat{\delta}_d \left(Y, \X, \Q, G \right) \mid \Q, g \right]$ in one subsample and plug in values of $\Q$ in the other subsample. Using this procedure, we ensure that the fitting of $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
+For this estimator, there are five nuisance functions: $p_g(\Q)$, $\pi(d,\X,g)$, $\mu(d,\X,g)$, $\E(D \mid \Q, g)$, and $\E(Y_d \mid \Q,g)$. We again cross-fit these nuisance functions using nonparametric methods. This estimator can be weight-stabilized by dividing $\frac{\one(D=d)}{\pi(d,\X,g)}$, $\frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}}$, and $\frac{\one(G=g)p_{g''}(\Q)}{p_g(\Q)p_{g''}}$ by their respective sample averages. The estimation of $\E(Y_d \mid \Q,g)=\E[\mu(d,\X,g) \mid \Q,g]$ requires a more involved procedure. We adopt a pseudo-outcome approach \citep[e.g.,][]{van_der_laan_statistical_2006,semenova_debiased_2021}, where the pseudo outcome for each $d$ is defined as the decentered EIF for $\E(Y_d)$, i.e., 
+$$ \delta_d \left(Y, \X,  G \right) \defeq \frac{\one(D=d)}{\pi(d, \X,G)} [Y-\mu(d,\X,G)] + \mu(d,\X,G).$$
+We first estimate $\pi(d, \X,G)$ and $\mu(d,\X,G)$ within two random subsamples of the data \emph{without} cross-fitting and obtain the estimated pseudo outcome $\hat{\delta}_d \left(Y, \X,  G \right)$. Then, using $\hat{\delta}_d \left(Y, \X,  G \right)$ as a proxy of $Y_d$, we estimate $\E\left[Y_d \mid \Q, g \right]$ \emph{with} cross-fitting, i.e., we fit $\E\left[\hat{\delta}_d \left(Y, \X,  G \right) \mid \Q, g \right]$ in one subsample and plug in values of $\Q$ in the other subsample. Using this procedure, we ensure that the fitting of $\E(Y_d \mid \Q,g)$, which relies on estimating the pseudo outcome, is done separately in each subsample. 
 
 The asymptotic theory of the one-step estimator for $\xi_{dgg'g''}$ is less general than the theories for $\xi_{dg}$ and $\xi_{dgg'}$, in that some conditions differ by the specific configuration of $g, g'$ and $g''$. Note that  $g=g''$ for the conditional prevalence component, and $g'=g''$ for the conditional effect component. For $\sqrt{n}$-consistency, asymptotic normality, and efficiency, we need three assumptions. 
 
-Assumption 4b (Boundedness). With probability 1,  $\hat{\pi}(d,\X,\Q,g) \geq \eta$, $\pi(d,\X,\Q,g) \geq \eta$, $\hat{p}_g(\Q) \geq \eta$, $p_g(\Q) \geq \eta$, 
-$|Y-\hat{\mu}(d,\X,\Q,g)| \leq \zeta$, 
-$|Y-\mu(d,\X,\Q,g)| \leq \zeta$, 
-$|\mu(d,\X,\Q,g)| \leq \zeta$,
+Assumption 4b (Boundedness). With probability 1,  $\hat{\pi}(d,\X,g) \geq \eta$, $\pi(d,\X,g) \geq \eta$, $\hat{p}_g(\Q) \geq \eta$, $p_g(\Q) \geq \eta$, 
+$|Y-\hat{\mu}(d,\X,g)| \leq \zeta$, 
+$|Y-\mu(d,\X,g)| \leq \zeta$, 
+$|\mu(d,\X,g)| \leq \zeta$,
 $|\E(Y_d \mid \Q,g)| \leq \zeta$, and $\left| \frac{\hat{p}_g(\Q)}{\hat{p}_{g'}(\Q)} \right| \leq \zeta$, for some $\eta>0$ and $\zeta < \infty$, $\forall d,g,g'$.
 
-Assumption 5b (Consistency). $\| \hat{\mu}(d,\X,\Q,g) - \mu(d,\X,\Q,g) \| =o_p(1)$, $\| \hat{\pi}(d,\X,\Q,g) - \pi(d,\X,\Q,g) \| =o_p(1)$, $\left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g) \right\| =o_p(1)$, $\left\| \hat{\E}(D \mid \Q,g) - \E(D \mid \Q,g) \right\| =o_p(1)$, and $\left\| \hat{p}_g(\Q) -p_g(\Q) \right\|=o_p(1)$, $\forall d,g$.
+Assumption 5b (Consistency). $\| \hat{\mu}(d,\X,g) - \mu(d,\X,g) \| =o_p(1)$, $\| \hat{\pi}(d,\X,g) - \pi(d,\X,g) \| =o_p(1)$, $\left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g) \right\| =o_p(1)$, $\left\| \hat{\E}(D \mid \Q,g) - \E(D \mid \Q,g) \right\| =o_p(1)$, and $\left\| \hat{p}_g(\Q) -p_g(\Q) \right\|=o_p(1)$, $\forall d,g$.
 
-Assumption 6b (Convergence rate). $\left\|\hat{\pi}(d,\X,\Q,g)-\pi(d,\X,\Q,g) \right\| \|\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)\|=o_p(n^{-1/2})$, $\left\| \one(G=g) \E(Y_d \mid \Q,g) - \one(G=g')\frac{\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)} \hat{\E}( Y_d \mid \Q, g ) \right\| \left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\| = o_p(n^{-1/2})$, and $\left\| \one(G=g') \E(D \mid \Q,g') - \one(G=g) \frac{\hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) } \hat{\E}(D \mid \Q,g') \right\| \left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g)  \right\| = o_p(n^{-1/2})$, $\forall d,g,g'$.
+Assumption 6b (Convergence rate). $\left\|\hat{\pi}(d,\X,g)-\pi(d,\X,g) \right\| \|\hat{\mu}(d,\X,g)-\mu(d,\X,g)\|=o_p(n^{-1/2})$, $\left\| \one(G=g) \E(Y_d \mid \Q,g) - \one(G=g')\frac{\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)} \hat{\E}( Y_d \mid \Q, g ) \right\| \left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\| = o_p(n^{-1/2})$, and $\left\| \one(G=g') \E(D \mid \Q,g') - \one(G=g) \frac{\hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) } \hat{\E}(D \mid \Q,g') \right\| \left\| \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g)  \right\| = o_p(n^{-1/2})$, $\forall d,g,g'$.
 
 \begin{prop}[Asymptotic distribution]
 Under assumptions 1, 2, 3, 4b, 5b, 6b, the one step estimator for components of the conditional decomposition is asymptotically normal and semiparametrically efficient, i.e., $\sqrt{n} \left( \Psi_{dgg'g''} - \xi_{dgg'g''} \right) \xrightarrow{} \mathcal{N}(0, \sigma^2_{dgg'g''})$, where $\sigma^2_{dgg'g''}=\E[\phi_{dgg'g''}(Y,\X,\Q)^2]$ is the semiparametric efficiency bound.
@@ -485,11 +491,11 @@ Under assumptions 1, 2, 3, 4b, 5b, 6b, the one step estimator for components of 
 Some further insights can be gained about the second and third convergence rate assumptions. For a specific $\xi_{dgg'g''}$, first, when $g=g'=g''$, $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\| \left\| \hat{\E}(D \mid \Q, g) - \E(D \mid \Q, g)  \right\| = o_p(n^{-1/2})$ is sufficient. Hence, we obtain a form of rate double robustness with respect to $\E(Y_d \mid \Q,g)$ and $\E(D \mid \Q, g)$. Second, when $g= g'' \neq g'$, the following set of conditions is sufficient: for a constant $\zeta>0$, $\frac{\hat{p}_g(\Q)}{\hat{p}_{g'}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(n^{-1/2})$, and $ \left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g) \right\|=o_p(1)$. Third, when $g'=g'' \neq g$, a sufficient set is: for a constant $\zeta>0$, $ \frac{\hat{p}_{g'}(\Q)}{\hat{p}_{g}(\Q)} \leq \zeta$ with probability 1, $\left\| \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right\|=o_p(1)$, and $\left\| \hat{\E}\left( Y_d \mid \Q, g \right) - \E(Y_d \mid \Q,g)  \right\|=o_p(n^{-1/2})$. Therefore, the assumption is weaker for the inference of the conditional prevalence component, which is also the case for Theorem 6 below.
 
 \begin{prop}[Double robustness]
-We assume consistent estimation of $\E(D \mid \Q, g), \forall g$. For a $\xi_{dgg'g''}$, when $g=g''$, consistent estimation of either $\mu(d,\X,\Q,g)$ or $\pi(d,\X,\Q,g)$ is sufficient for the consistency of $\Psi_{dgg'g''}$; when $g \neq g''$, if the estimation of $\E(Y_d \mid \Q,g)$ is doubly robust with respect to $\mu(d,\X,\Q,g)$ and $\pi(d,\X,\Q,g)$, then consistent estimation of either $\mu(d,\X,\Q,g)$ or $\pi(d,\X,\Q,g)$ is still sufficient for the consistency of $\Psi_{dgg'g''}$.
+We assume consistent estimation of $\E(D \mid \Q, g), \forall g$. For a $\xi_{dgg'g''}$, when $g=g''$, consistent estimation of either $\mu(d,\X,g)$ or $\pi(d,\X,g)$ is sufficient for the consistency of $\Psi_{dgg'g''}$; when $g \neq g''$, if the estimation of $\E(Y_d \mid \Q,g)$ is doubly robust with respect to $\mu(d,\X,g)$ and $\pi(d,\X,g)$, then consistent estimation of either $\mu(d,\X,g)$ or $\pi(d,\X,g)$ is still sufficient for the consistency of $\Psi_{dgg'g''}$.
 \end{prop}
-Note that consistent estimation of $\hat{p}_g(\Q)$ is not required for the consistency of $\Psi_{dgg'g''}$. The double robustness condition for $\E(Y_d \mid \Q,g)$ in the case of $g \neq g''$ motivates our pseudo-outcome estimator of $\E(Y_d \mid \Q,g)$, which is built on both $\mu(d,\X,\Q,g)$ and $\pi(d,\X,\Q,g)$.
+Note that consistent estimation of $\hat{p}_g(\Q)$ is not required for the consistency of $\Psi_{dgg'g''}$. The double robustness condition for $\E(Y_d \mid \Q,g)$ in the case of $g \neq g''$ motivates our pseudo-outcome estimator of $\E(Y_d \mid \Q,g)$, which is built on both $\mu(d,\X,g)$ and $\pi(d,\X,g)$.
 
-We have released an R package named cgdg to implement both the unconditional and conditional decompositions. It offers various options for nuisance function estimation, including various ML methods, a parametric option with linear and logistic regressions, and an option that allows users to manually plug in nuisance function estimates. The cdgd package can be installed from Github using \url{devtools::install_github("ang-yu/cdgd")}.
+Both the unconditional and conditional decompositions are implemented in the R \citep{R_core_team_2023} package cdgd \citep{yu_2023}, available from CRAN. The package offers various options for nuisance function estimation, including various ML methods, a parametric option with linear and logistic regressions, and an option that allows users to manually plug in nuisance function estimates.
 
 
 \section{Application}
@@ -619,21 +625,22 @@ For the sum of the RIA of RIE and the RIA of the MIE,
      &= [ \E(Y_{D=1} \mid  G=a) - \E(Y_{D=0} \mid  G=a) - \E(Y_{D=1} \mid  G=b) + \E(Y_{D=0} \mid  G=b) ] \E(D \mid  G=a) \\
      &= [\E_a(\tau)-\E_b(\tau)]E_a(D),
 \end{align*}
-where the first equality holds by unconditional ignorability of $G$, and the second by consistency.
+where the first equality holds by unconditional ignorability of $G$ and the second by consistency.
 
 \subsubsection*{A.3. Equation (3)}
 \begin{align*}
     \E_a(Y)-\E_b(Y) &= \E_a(Y_0) + \E_b(Y_0) \\
-    &\phantom{{}={}}  + \E_a(D\tau) - \E_b(D\tau) + \E_a[\E_a(D \mid \Q) \E_a(\tau \mid \Q)]- \E_b[\E_b(D \mid \Q) \E_b(\tau \mid \Q)] \\
-    &\phantom{{}={}}  - \E_a[\E_a(D \mid \Q) \E_a(\tau \mid \Q)] + \E_b[\E_b(D \mid \Q) \E_b(\tau \mid \Q)]   \\
-    &= \E_a(Y_0) + \E_b(Y_0) + \Cov_a(D, \tau \mid \Q) - \Cov_b(D, \tau \mid \Q) \\
-    &\phantom{{}={}}  - \int \E_a(D \mid \Q=\q) \E_a(\tau \mid \Q=\q) f_a(\q) \dd \q + \int \E_b(D \mid \Q=\q) \E_b(\tau \mid \Q=\q) f_(\q) \dd \q \\
+    &\phantom{{}={}}  + \E_a(D\tau) - \E_b(D\tau) - \E_a[\E_a(D \mid \Q) \E_a(\tau \mid \Q)] + \E_b[\E_b(D \mid \Q) \E_b(\tau \mid \Q)] \\
+    &\phantom{{}={}} + \E_a[\E_a(D \mid \Q) \E_a(\tau \mid \Q)] - \E_b[\E_b(D \mid \Q) \E_b(\tau \mid \Q)]   \\
+    &= \E_a(Y_0) + \E_b(Y_0) + \E_a[\Cov_a(D, \tau \mid \Q)] - \E_b[\Cov_b(D, \tau \mid \Q)] \\
+    &\phantom{{}={}} + \int \E_a(D \mid \Q=\q) \E_a(\tau \mid \Q=\q) f_a(\q) \dd \q - \int \E_b(D \mid \Q=\q) \E_b(\tau \mid \Q=\q) f_b(\q) \dd \q \\
     &= \E_a(Y_0)-\E_b(Y_0) \\
     &\phantom{{}={}}  + \int [\E_a(D \mid \Q=\q)-\E_b(D \mid \Q=\q)]\E_b(\tau \mid \Q=\q) f_b(\q) \dd \q  \\
     &\phantom{{}={}}  + \int \E_a(D \mid \Q=\q) \E_b(\tau \mid \Q=\q) [f_a(\q)-f_b(\q)] \dd \q \\
     &\phantom{{}={}}  + \int [\E_a(\tau \mid \Q=\q)-\E_b(\tau \mid \Q=\q)] \E_a(D \mid \Q=\q) f_a(\q) \dd \q \\
     &\phantom{{}={}}  + \E_a[\Cov_a(D, \tau \mid \Q)] - \E_b[\Cov_b(D, \tau \mid \Q)] .
 \end{align*}
+Note that the last equality uses the assumption that $\text{supp}_a(\Q)=\text{supp}_b(\Q)$. 
 
 \subsubsection*{A.4. Equation (4)}
 \begin{align*}
@@ -644,6 +651,7 @@ where the first equality holds by unconditional ignorability of $G$, and the sec
     &= \int [\E_g(Y_1 \mid \Q=\q) \E_{g'}(D \mid \Q=\q) + \E_g(Y_0 \mid \Q=\q)(1-\E_{g'}(D \mid \Q=\q)) ] f_g(\q) \dd \q  \\
     &= \E_g(Y_0) + \int \E_g(\tau \mid \Q=\q) \E_{g'}(D \mid \Q=\q) f_g(\q) \dd \q .
 \end{align*}
+All expectations are taken over $\q \in \text{supp}_g(\Q)$. For $\E_g(Y_{R(D \mid G=g',\Q)})$ to be well-defined, we require $\text{supp}_g(\Q) \subseteq \text{supp}_{g'}(\Q)$. 
 
 \subsubsection*{A.5. Equation (5)}
 \begin{align*}
@@ -686,24 +694,23 @@ Other results in Equation (5) follow directly from Equation (4).
 \subsection*{Appendix B: Efficient Influence Functions}
 We use the Gateaux derivative approach to derive the EIFs \citep{ichimura_influence_2022}, which results in more succinct derivation than the approach traditionally used in the semiparametric causal inference literature \citep[e.g.,][]{hahn_role_1998}. To further simplify the derivation, we leverage some practical rules of calculating Gateaux derivatives \citep{hines_demystifying_2022, kennedy_semiparametric_2022}.
 
-Let $\one_{\Tilde{o}}(o)$ be the point mass density at a single empirical observation,  $\Tilde{o}$. We also use $\one(\cdot)$ as the indicator function. Let subscript $\mathcal{P}_t$ indicate a regular parametric submodel indexed by $t$. When the true model is invoked, the subscript is omitted. By construction, $f_{\mathcal{P}_t}(o)=t \one_{\Tilde{o}}(o) + (1-t)f(o)$, i.e., the submodel is the true model perturbed in the direction of a single observation $\Tilde{o}$. Under this construction, the EIF of an estimand, $\xi$, is the Gateaux derivative at the truth, i.e., $\phi(\xi)=\frac{\partial \xi_{\mathcal{P}_t}}{\partial t} \big|_{t=0}$. For convenience, for an arbitrary function $g(o)$, we denote $ \frac{\partial g_{\mathcal{P}_t}(o)}{\partial t} \big|_{t=0}$ as $\partial g(o)$. 
+Let $\one_{\Tilde{o}}(o)$ be the point mass density at a single empirical observation,  $\Tilde{o}$. We also use $\one(\cdot)$ as the indicator function. Let subscript $\mathcal{P}_t$ indicate a regular parametric submodel indexed by $t$. When the true model is invoked, the subscript is omitted. By construction, $f_{\mathcal{P}_t}(o)=t \one_{\Tilde{o}}(o) + (1-t)f(o)$, i.e., the submodel is the true model perturbed in the direction of a single observation $\Tilde{o}$. Under this construction, the EIF of an estimand, $\xi$, is the Gateaux derivative at the truth, i.e., $\phi(\xi)=\frac{\partial \xi_{\mathcal{P}_t}}{\partial t} \big|_{t=0}$. For an arbitrary function $g(o)$, we denote $ \frac{\partial g_{\mathcal{P}_t}(o)}{\partial t} \big|_{t=0}$ as $\partial g(o)$. 
 
-We derive the EIFs for the general case of  weighted estimands. Let $w(\X, \Q, G)$ be the  survey weight. Following \citet{hirano_efficient_2003}, we assume the survey weight is a known function of the covariates. When no survey weights are needed, $w(\X,\Q, G)$ reduces to 1 for every individual. For the unconditional decomposition, we omit $\Q$ from the expression.
+We derive the EIFs for the general case of  weighted estimands. Let $w(\X,  G)$ be the  survey weight. Following \citet{hirano_efficient_2003}, we assume the survey weight is a known function of the covariates. When no survey weights are needed, $w(\X, G)$ reduces to 1 for every individual.
 
-In this derivation, we will also use the following definitions:
+In this derivation, we also use the following definitions:
 \begin{align*}
-    h_g &= \E(w(\X, \Q, G) \mid G=g) \\
-    h_g(\Q) &= \E(w(\X, \Q, G) \mid \Q, G=g).
+    h_g & \defeq \E(w(\X,  G) \mid G=g) \\
+    h_g(\Q) & \defeq \E(w(\X,  G) \mid \Q, G=g).
 \end{align*}
-For unconditional decomposition, $\Q$ is omitted.
 
 \subsubsection*{B.1. EIFs for the unconditional decomposition}
-First of all, note that we only need to derive EIFs for two generic functions, $\xi_{dg} \defeq \E \left(Y_d \frac{ w(\X,g)}{h_g} \mid G=g  \right)$ for an arbitrary group $g$; and $\xi_{dgg'} \defeq \E \left(Y_d \frac{ w(\X,g)}{h_g} \mid G=g \right)\E \left(D \frac{ w(\X,g')}{h_{g'}}  \mid G=g' \right)$ for two arbitrary groups $g$ and $g'$, which may be the same group, and an arbitrary treatment status $d$. The EIFs for the decomposition components then follow from adding and subtracting these functions evaluated at appropriate $g$, $g'$, and $d$ values. Under conditional ignorability and consistency assumptions, these estimands can be written as the following functionals:
+First of all, note that we only need to derive EIFs for two generic functions, $\xi_{dg} \defeq \E \left(Y_d \frac{ w(\X,g)}{h_g} \mid G=g  \right)$ for an arbitrary group $g$; and $\xi_{dgg'} \defeq \E \left(Y_d \frac{ w(\X,g)}{h_g} \mid G=g \right)\E \left(D \frac{ w(\X,g')}{h_{g'}}  \mid G=g' \right)$ for two arbitrary groups $g$ and $g'$, which may be the same group, and an arbitrary treatment status $d$. The EIFs for the decomposition components then follow from adding and subtracting these functions evaluated at appropriate $g$, $g'$, and $d$ values. Under conditional ignorability and SUTVA assumptions, these estimands can be written as the following functionals:
 \begin{align*}
     \xi_{dg} &= \E \left[\mu(d,\X,g) \frac{ w(\X,g)}{h_g} \mid G=g \right] \\
     \xi_{dgg'} &= \E \left[\mu(d,\X,g) \frac{ w(\X,g)}{h_g} \mid G=g \right] \E \left[D \frac{ w(\X,g')}{h_{g'}}  \mid G=g' \right].
 \end{align*}
-We will also rely on the overlap assumption below, as the propensity score $\pi(\X,g)$ or $\pi(\X,\Q,g)$ will appear in the denominator.
+We will also rely on the overlap assumption below, as $\pi(d,\X,g)$ will appear in the denominator.
 
 We start with $\xi_{dg}$.
 
@@ -711,8 +718,7 @@ We start with $\xi_{dg}$.
     \phi(\xi_{dg}) &= \partial \E_{\mathcal{P}_t} \left[\mu_{\mathcal{P}_t}(d,\X,g) \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid G=g)}  \mid G=g \right] \\
     &= \frac{1}{h_g} \partial \E_{\mathcal{P}_t} \left[\mu_{\mathcal{P}_t}(d,\X,g) w(\X,g)  \mid G=g \right] +  \E[\mu(d,\X,g)w(\X,g) \mid G=g] \partial \frac{1}{\E_{\mathcal{P}_t}(w(\X,g)\mid G=g)} \\
     &= \frac{1}{h_g}\frac{\one_{\Tilde{g}}(g)}{p_g}  \{\mu(d,\Tilde{\x},g)w(\Tilde{\x},g) -\E[\mu(d,\X,g)w(\X,g) \mid G=g]\}  \\
-    &\phantom{{}={}} + \frac{1}{h_g} \E[\partial  \mu_{\mathcal{P}_t}(d,\X,g)w(\X,g) \mid G=g ]  \\ 
-    &\phantom{{}={}} - \frac{1}{(h_g)^2}\frac{\one_{\Tilde{g}}(g)}{p_g}[w(\Tilde{\x},g)-h_g]\E[\mu(d,\X,g)w(\X,g) \mid G=g] \\
+    &\phantom{{}={}} + \frac{1}{h_g} \E[\partial  \mu_{\mathcal{P}_t}(d,\X,g)w(\X,g) \mid G=g ] - \frac{1}{(h_g)^2}\frac{\one_{\Tilde{g}}(g)}{p_g}[w(\Tilde{\x},g)-h_g]\E[\mu(d,\X,g)w(\X,g) \mid G=g] \\
     &= \frac{\one_{\Tilde{g}}(g)}{p_g}  \frac{w(\Tilde{\x},g)}{h_g} [\mu(d,\Tilde{\x},g)-\xi_{dg}] + \frac{1}{h_g} \E[\partial  \mu_{\mathcal{P}_t}(d,\X,g)w(\X,g) \mid G=g ] \\
     &= \frac{\one_{\Tilde{g}}(g)}{p_g}  \frac{w(\Tilde{\x},g)}{h_g} [\mu(d,\Tilde{\x},g)-\xi_{dg}] + \frac{1}{h_g} \E \left\{ \frac{\one_{\Tilde{d},\Tilde{\x},\Tilde{g}}(d,\X,g)}{f(d,\X,g)} [\Tilde{y}-\mu(d,\X,g)] w(\X,g) \mid G=g \right\} \\
         &= \frac{\one_{\Tilde{g}}(g)}{p_g}  \frac{w(\Tilde{\x},g)}{h_g} [\mu(d,\Tilde{\x},g)-\xi_{dg}] + \frac{\one_{\Tilde{g}}(g)}{p_g} \frac{w(\Tilde{\x},g)}{h_g} \frac{\one_{\Tilde{d}}(d)}{\pi(d, \Tilde{\x},g)} [\Tilde{y}-\mu(d,\Tilde{\x},g)] \\
@@ -769,55 +775,52 @@ Finally, the EIFs for the unconditional decomposition components are
 
 \subsubsection*{B.2. EIFs for the conditional decomposition}
 Similarly to the unconditional case, we focus on the generic function
-$$\xi_{dgg'g''} \defeq \E \left[\E \left(Y_d \frac{w(\X,\Q,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \frac{w(\X,\Q,g'')}{h_{g''}}  \mid G=g'' \right],$$
-where $(g,g',g'')$ is an arbitrary combination of group memberships out of the 8 possible combinations. We still maintain the conditional ignorability, consistency, and overlap assumptions.  
+$$\xi_{dgg'g''} \defeq \E \left[\E \left(Y_d \frac{w(\X,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \frac{w(\X,g'')}{h_{g''}}  \mid G=g'' \right],$$
+where $(g,g',g'')$ is an arbitrary combination of group memberships out of the 8 possible combinations. We still maintain the conditional ignorability, SUTVA, and overlap assumptions.  
 \begin{align*}
     &\phantom{{}={}} \phi(\xi_{dgg'g''}) \\
-    &= \partial \E_{\mathcal{P}_t} \left[\E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
+    &= \partial \E_{\mathcal{P}_t} \left[\E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
     &\phantom{{}={}} \left. \vphantom{\pheight}
-    w(\X,\Q,g'') \mid G=g'' \right] \frac{1}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid g'')} \\
-    &= \partial \E_{\mathcal{P}_t} \left[\E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
+    w(\X,g'') \mid G=g'' \right] \frac{1}{\E_{\mathcal{P}_t}(w(\X,g) \mid g'')} \\
+    &= \partial \E_{\mathcal{P}_t} \left[\E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
     &\phantom{{}={}} \left. \vphantom{\pheight}
-    w(\X,\Q,g'') \mid G=g'' \right] \frac{1}{h_{g''}} \\
-    &\phantom{{}={}} + \E \left[\E \left(Y_d \frac{w(\X,\Q,g)}{\E(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{\E(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) 
-    w(\X,\Q,g'') \mid G=g'' \right] \\
-    &\phantom{{}={}} \partial \frac{1}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid g'')} \\
-    &=\frac{\one_{\Tilde{g}(g'')}}{p_{g''}}\frac{w(\X,\Q,g'')}{h_{g''}} \E \left(Y_d \frac{w(\X,\Q,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \frac{\one_{\Tilde{g}}(g'')}{p_{g''}}\xi_{dgg'g''} \\
-    &\phantom{{}={}} + \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
+    w(\X,g'') \mid G=g'' \right] \frac{1}{h_{g''}} \\
+    &\phantom{{}={}} + \E \left[\E \left(Y_d \frac{w(\X,g)}{\E(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{\E(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) 
+    w(\X,g'') \mid G=g'' \right] \\
+    &\phantom{{}={}} \partial \frac{1}{\E_{\mathcal{P}_t}(w(\X,g) \mid g'')} \\
+    &=\frac{\one_{\Tilde{g}(g'')}}{p_{g''}}\frac{w(\X,g'')}{h_{g''}} \E \left(Y_d \frac{w(\X,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \frac{\one_{\Tilde{g}}(g'')}{p_{g''}}\xi_{dgg'g''} \\
+    &\phantom{{}={}} + \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
     &\phantom{{}={}} \left. \vphantom{\pheight}
-    w(\X,\Q,g'') \mid G=g'' \right] \frac{1}{h_{g''}}  -  \xi_{dgg'g''}h_{g''}\frac{1}{(h_{g''})^2}\frac{\one_{\Tilde{g}(g'')}}{p_{g''}}\left[w(\X,\Q,g'')-h_{g''}\right] \\
-    &= \frac{\one(G=g'')}{p_{g''}}\frac{w(\X,\Q,g'')}{h_{g''}} \left[ \E \left(Y_d \frac{w(\X,\Q,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
-    &\phantom{{}={}} + \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
+    w(\X,g'') \mid G=g'' \right] \frac{1}{h_{g''}}  -  \xi_{dgg'g''}h_{g''}\frac{1}{(h_{g''})^2}\frac{\one_{\Tilde{g}(g'')}}{p_{g''}}\left[w(\X,g'')-h_{g''}\right] \\
+    &= \frac{\one(G=g'')}{p_{g''}}\frac{w(\X,g'')}{h_{g''}} \left[ \E \left(Y_d \frac{w(\X,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
+    &\phantom{{}={}} + \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\ 
     &\phantom{{}={}} \left. \vphantom{\pheight}
-    w(\X,\Q,g'') \mid G=g'' \right] \frac{1}{h_{g''}}.
+    w(\X,g'') \mid G=g'' \right] \frac{1}{h_{g''}}.
 \end{align*}
 
 And
 \begin{align*}
-    &\phantom{{}={}} \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(w(\X,\Q,g') \mid \Q,g')} \mid \Q, g' \right) \right. \\
-    &\phantom{{}={}} \left. \vphantom{\pheight}
-    w(\X,\Q,g'') \mid G=g'' \right] \frac{1}{h_{g''}} \\
-    &= \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,\Q,g)}{\E_{\mathcal{P}_t}(w(\X,\Q,g) \mid \Q,g)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) w(\X,\Q,g'') \mid G=g'' \right]\frac{1}{h_{g''}} \\
-    &\phantom{{}={}} + \E \left[\E \left(Y_d \frac{w(\X,\Q,g)}{h_g(\Q)}  \mid \Q, g \right) \partial  \E_{\mathcal{P}_t} \left(D \frac{w(\X,\Q,g')}{\E_{\mathcal{P}_t}(\X,\Q,g')} \mid \Q, g' \right) w(\X,\Q,g'') \mid G=g'' \right]\frac{1}{h_{g''}} \\
-    &= \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \frac{w(\X,\Q,g)}{h_g(\Q)} \frac{w(\X,\Q,g'')}{h_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) \right. \\
+    &\phantom{{}={}} \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(w(\X,g') \mid \Q,g')} \mid \Q, g' \right) 
+    w(\X,g'') \mid G=g'' \right] \frac{1}{h_{g''}} \\
+    &= \E \left[\partial \E_{\mathcal{P}_t} \left(Y_d \frac{w(\X,g)}{\E_{\mathcal{P}_t}(w(\X,g) \mid \Q,g)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) w(\X,g'') \mid G=g'' \right]\frac{1}{h_{g''}} \\
+    &\phantom{{}={}} + \E \left[\E \left(Y_d \frac{w(\X,g)}{h_g(\Q)}  \mid \Q, g \right) \partial  \E_{\mathcal{P}_t} \left(D \frac{w(\X,g')}{\E_{\mathcal{P}_t}(\X,g')} \mid \Q, g' \right) w(\X,g'') \mid G=g'' \right]\frac{1}{h_{g''}} \\
+    &= \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \frac{w(\X,g)}{h_g(\Q)} \frac{w(\X,g'')}{h_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)]+\mu(d,\X,g) \right. \\
     &\phantom{{}={}} \left. - \E \left(Y_d \frac{w(X,Q,g)}{h_g(\Q)} \mid \Q,g \right) \right\} \E \left(D \frac{w(\X,Q,g')}{h_{g'}(\Q)} \mid \Q,g' \right) \\
-    &\phantom{{}={}} + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \frac{w(\X,\Q,g'')}{h_{g''}} \left[ D-\E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \right] \\
-    &\phantom{{}={}} \E\left( Y_d \frac{w(\X,\Q,g)}{h_g(\Q)} \mid \Q, g \right).
+    &\phantom{{}={}} + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \frac{w(\X,g')}{h_{g'}(\Q)} \frac{w(\X,g'')}{h_{g''}} \left[ D-\E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \right]\E\left( Y_d \frac{w(\X,g)}{h_g(\Q)} \mid \Q, g \right).
 \end{align*}
 
 Hence,
 \begin{align*}
     &\phantom{{}={}} \phi(\xi_{dgg'g''}) \\
-    &= \frac{\one(G=g'')}{p_{g''}}\frac{w(\X,\Q,g'')}{h_{g''}} \left[ \E \left(Y_d \frac{w(\X,\Q,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
-    &\phantom{{}={}} + \frac{w(\X,\Q,g'')}{h_{g''}}  \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \frac{w(\X,\Q,g)}{h_g(\Q)} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) \right. \\
+    &= \frac{\one(G=g'')}{p_{g''}}\frac{w(\X,g'')}{h_{g''}} \left[ \E \left(Y_d \frac{w(\X,g)}{h_{g}(\Q)}  \mid \Q, g \right) \E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
+    &\phantom{{}={}} + \frac{w(\X,g'')}{h_{g''}}  \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \frac{w(\X,g)}{h_g(\Q)} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)]+\mu(d,\X,g) \right. \\
     &\phantom{{}={}} \left. - \E \left(Y_d \frac{w(X,Q,g)}{h_g(\Q)} \mid \Q,g \right) \right\} \E \left(D \frac{w(\X,Q,g')}{h_{g'}(\Q)} \mid \Q,g' \right) \\
-    &\phantom{{}={}} + \frac{w(\X,\Q,g'')}{h_{g''}}  \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \left[ D-\E \left(D \frac{w(\X,\Q,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \right] \\
-    &\phantom{{}={}} \E\left( Y_d \frac{w(\X,\Q,g)}{h_g(\Q)} \mid \Q, g \right), 
+    &\phantom{{}={}} + \frac{w(\X,g'')}{h_{g''}}  \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \frac{w(\X,g')}{h_{g'}(\Q)} \left[ D-\E \left(D \frac{w(\X,g')}{h_{g'}(\Q)} \mid \Q, g' \right) \right] \E\left( Y_d \frac{w(\X,g)}{h_g(\Q)} \mid \Q, g \right), 
 \end{align*}
 which, in the case of no survey weights, simplifies to 
 \begin{align*}
     &\phantom{{}={}} \frac{\one(G=g'')}{p_{g''}} \left[ \E \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) - \xi_{dgg'g''} \right] \\
-    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)]+\mu(d,\X,\Q,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \\
+    &\phantom{{}={}} + \frac{\one(G=g) p_{g''}(\Q)}{p_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)]+\mu(d,\X,g) - \E \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \\
     &\phantom{{}={}} + \frac{\one(G=g')p_{g''}(\Q)}{p_{g'}(\Q)p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \E\left( Y_d \mid \Q, g \right).
 \end{align*}
 
@@ -830,8 +833,8 @@ I've double checked the proof in appendix B. AY. 08/24/2022
 We follow the procedure of using the von Mises expansion to prove asymptotic properties of cross-fitting EIF-based one-step estimators \citep{hines_demystifying_2022, kennedy_semiparametric_2022, fisher_visually_2021}. In order for the cross-fitting one-step estimator to be  $\sqrt{n}-$consistent, asymptotically normal, and semiparametrically efficient, we just need two conditions to hold. That is, both the empirical process term and the ``remainder term" in the von Mises expansion are $o_p(n^{-1/2})$.
 
 We use the notation $\P(f(O)) \defeq \int f(O)d\P(O)$, and $\P_n$ denotes the corresponding sample average. Also let $\| \cdot \|$ denote the $L_2$-norm, such that $\| f(O) \|^2=\P(f(O)^2)$. And $\hat{\xi}$ is defined to be a substitution estimator for $\xi$.
-Formally, for all $d,g$ and $\xi$, we need $(\P-\P_n) \left[ \hat{\phi}(Y,d,\X,\Q,g)-\phi(Y,d,\X,\Q,g) \right]=o_p(n^{-1/2})$, 
-and $ \hat{\xi} + \P[\hat{\phi}(Y,d,\X,\Q,g)] - \xi =o_p(n^{-1/2})$ ($\Q$ is omitted for $\xi_{dg}$ and $\xi_{dgg'}$). In this appendix, we prove that the assumptions specified in the main text are sufficient for the unconditional and conditional decomposition to attain this convergence result. By cross-fitting, all of $\hat{\mu}(d,\X,\Q,g), \hat{\pi}(d,\X,\Q,g), \hat{p}_g(\Q)$, $\hat{\E}(Y_d \mid \Q,g)$, and $\hat{\E}(D \mid \Q,g)$ are estimated using data not in the current fold, which we implicitly condition on throughout.
+Formally, for all $d,g$ and $\xi$, we need $(\P-\P_n) \left[ \hat{\phi}(Y,d,\X,g)-\phi(Y,d,\X,g) \right]=o_p(n^{-1/2})$, 
+and $ \hat{\xi} + \P[\hat{\phi}(Y,d,\X,g)] - \xi =o_p(n^{-1/2})$. In this appendix, we prove that the assumptions specified in the main text are sufficient for the unconditional and conditional decomposition to attain this convergence result. By cross-fitting, all of $\hat{\mu}(d,\X,g), \hat{\pi}(d,\X,g), \hat{p}_g(\Q)$, $\hat{\E}(Y_d \mid \Q,g)$, and $\hat{\E}(D \mid \Q,g)$ are fitted using data not in the current subsample, which we implicitly condition on throughout.
 
 \subsubsection*{C.1. Inference for the unconditional decomposition}
 
@@ -925,10 +928,10 @@ For the empirical process term,
     &\phantom{{}={}} + \one(G=g)\frac{p_{g''}(\Q)}{p_g(\Q)}\frac{\hat{p}_{g''}-p_{g''}}{\hat{p}_{g''}p_{g''}} \E(Y_d \mid \Q,g)\E(D \mid \Q,g') \\
     &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}}\frac{1}{\hat{p}_g(\Q)}\left[p_{g''}(\Q)-\hat{p}_{g''}(\Q) \right] \E(Y_d \mid \Q,g)\E(D \mid \Q,g') \\
     &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}} \frac{\hat{p}_g(\Q)-p_g(\Q)}{\hat{p}_g(\Q)p_g(\Q)} p_{g''}(\Q)\E(Y_d \mid \Q,g)\E(D \mid \Q,g') \\
-    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}}\frac{\hat{p}_{g''}(\Q)}{\hat{p}_{g}(\Q)} \left[ 1-\frac{\one(D=d)}{\pi(d,\X,\Q,g)} \right] \left[\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)\right] \\
-    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}}\frac{\hat{p}_{g''}(\Q)}{\hat{p}_{g}(\Q)} \frac{\one(D=d)[Y-\hat{\mu}(d,\X,\Q,g)]}{\hat{\pi}(d,\X,\Q,g)\pi(d,\X,\Q,g)}\left[\pi(d,\X,\Q,g)-\hat{\pi}(d,\X,\Q,g)\right] \\
-    &\phantom{{}={}} + \one(G=g)\frac{p_{g''}-\hat{p}_{g''}}{p_{g''}\hat{p}_{g''}} \frac{p_{g''}(\Q)}{p_g(\Q)} \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)] + \mu(d,\X,\Q,g) \right\} \\
-    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}} \frac{p_g(\Q)-\hat{p}_g(\Q)}{p_g(\Q)\hat{p}_g(\Q)}p_{g''}(\Q) \left\{ \frac{\one(D=d)}{\pi(d,\X,\Q,g)} [Y-\mu(d,\X,\Q,g)] + \mu(d,\X,\Q,g) \right\} \\
+    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}}\frac{\hat{p}_{g''}(\Q)}{\hat{p}_{g}(\Q)} \left[ 1-\frac{\one(D=d)}{\pi(d,\X,g)} \right] \left[\hat{\mu}(d,\X,g)-\mu(d,\X,g)\right] \\
+    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}}\frac{\hat{p}_{g''}(\Q)}{\hat{p}_{g}(\Q)} \frac{\one(D=d)[Y-\hat{\mu}(d,\X,g)]}{\hat{\pi}(d,\X,g)\pi(d,\X,g)}\left[\pi(d,\X,g)-\hat{\pi}(d,\X,g)\right] \\
+    &\phantom{{}={}} + \one(G=g)\frac{p_{g''}-\hat{p}_{g''}}{p_{g''}\hat{p}_{g''}} \frac{p_{g''}(\Q)}{p_g(\Q)} \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)] + \mu(d,\X,g) \right\} \\
+    &\phantom{{}={}} + \frac{\one(G=g)}{\hat{p}_{g''}} \frac{p_g(\Q)-\hat{p}_g(\Q)}{p_g(\Q)\hat{p}_g(\Q)}p_{g''}(\Q) \left\{ \frac{\one(D=d)}{\pi(d,\X,g)} [Y-\mu(d,\X,g)] + \mu(d,\X,g) \right\} \\
     &\phantom{{}={}} + \frac{\one(G=g')\hat{p}_{g''}(\Q)}{\hat{p}_{g'}(\Q)\hat{p}_{g''}} D \left[ \hat{\E}(Y_d \mid \Q,g)-\E(Y_d \mid \Q,g) \right] \\
     &\phantom{{}={}} + \one(G=g')\frac{p_{g''}-\hat{p}_{g''}}{p_{g''}\hat{p}_{g''}} \frac{p_{g''}(\Q)}{p_{g'}(\Q)}D\E(Y_d \mid \Q,g) \\
     &\phantom{{}={}} + \frac{\one(G=g')}{\hat{p}_{g''}} \frac{1}{\hat{p}_{g'}(\Q)} \left[ \hat{p}_{g''}(\Q)-p_{g''}(\Q) \right] D \E(Y_d \mid \Q,g) \\
@@ -948,14 +951,14 @@ Note that for the conditional prevalence component, all $\xi$ terms satisfy $g=g
 &\phantom{{}={}} R_{2,dgg'g''} \\
 &= \hat{\xi}_{dgg'g} - \xi_{dgg'g} \\
     &\phantom{{}={}} + \P \left\{- \frac{\one(G=g)}{\hat{p}_{g}}  \hat{\xi}_{dgg'g} \right\} \\
-    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}} \left\{ \frac{\one(D=d)}{\hat{\pi}(d,\X,\Q,g)} [Y-\hat{\mu}(d,\X,\Q,g)]+\hat{\mu}(d,\X,\Q,g) \right\} \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}} \left\{ \frac{\one(D=d)}{\hat{\pi}(d,\X,g)} [Y-\hat{\mu}(d,\X,g)]+\hat{\mu}(d,\X,g) \right\} \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
     &\phantom{{}={}} + \P \left\{ \frac{\one(G=g')\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)\hat{p}_{g}} \left[ D-\hat{\E} \left(D \mid \Q, g' \right) \right] \hat{\E}\left( Y_d \mid \Q, g \right) \right\} \\
     &=  \left(1-\frac{p_g}{\hat{p}_g}\right)\hat{\xi}_{dgg'g} - \xi_{dgg'g} \\
-    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}}  \left[ 1-\frac{\pi(d,\X,\Q,g)}{\hat{\pi}(d,\X,\Q,g)} \right]  [\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}}  \left[ 1-\frac{\pi(d,\X,g)}{\hat{\pi}(d,\X,g)} \right]  [\hat{\mu}(d,\X,g)-\mu(d,\X,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
     &\phantom{{}={}}  + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}} \E(Y_d \mid \Q,g) \hat{\E}(D \mid \Q, g') \right\}\\
     &\phantom{{}={}} + \P \left\{ \frac{\one(G=g')\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)\hat{p}_{g}} \left[ \E(D \mid \Q, g')-\hat{\E} \left(D \mid \Q, g' \right) \right] \hat{\E}\left( Y_d \mid \Q, g \right) \right\} \\
     &= \left(1-\frac{p_g}{\hat{p}_g}\right)\left(\hat{\xi}_{dgg'g} - \xi_{dgg'g} \right) \\
-    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}} \left[ 1-\frac{\pi(d,\X,\Q,g)}{\hat{\pi}(d,\X,\Q,g)} \right]  [\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) }{\hat{p}_{g}} \left[ 1-\frac{\pi(d,\X,g)}{\hat{\pi}(d,\X,g)} \right]  [\hat{\mu}(d,\X,g)-\mu(d,\X,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
     &\phantom{{}={}} + \P \left\{ \left[ \frac{\one(G=g) }{\hat{p}_{g}} \E(Y_d \mid \Q,g) - \frac{\one(G=g')\hat{p}_{g}(\Q)}{\hat{p}_{g'}(\Q)\hat{p}_{g}} \hat{\E}\left( Y_d \mid \Q, g \right) \right] \left[ \hat{\E}(D \mid \Q, g') - \E(D \mid \Q, g') \right] \right\}.
 \end{align*}
 Then it follows from similar arguments as above that $R_{2,dgg'g''}=o_p(n^{-1/2})$ under stated conditions.
@@ -985,10 +988,10 @@ Note that all $\xi$ terms satisfy $g'=g''$ for the conditional effect component.
     &\phantom{{}={}} R_{2,dgg'g''} \\
     &= \hat{\xi}_{dgg'g'} - \xi_{dgg'g'} \\
     &\phantom{{}={}} + \P \left\{- \frac{\one(G=g')}{\hat{p}_{g'}} \hat{\xi}_{dgg'g'} \right\} \\
-    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) \hat{p}_{g'}(\Q)}{\hat{p}_g(\Q)\hat{p}_{g'}} \left\{ \frac{\one(D=d)}{\hat{\pi}(d,\X,\Q,g)} [Y-\hat{\mu}(d,\X,\Q,g)]+\hat{\mu}(d,\X,\Q,g) - \hat{\E} \left(Y_d \mid \Q,g \right) \right\} \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &\phantom{{}={}} + \P \left\{ \frac{\one(G=g) \hat{p}_{g'}(\Q)}{\hat{p}_g(\Q)\hat{p}_{g'}} \left\{ \frac{\one(D=d)}{\hat{\pi}(d,\X,g)} [Y-\hat{\mu}(d,\X,g)]+\hat{\mu}(d,\X,g) - \hat{\E} \left(Y_d \mid \Q,g \right) \right\} \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
     &\phantom{{}={}} + \P \left\{ \frac{\one(G=g')}{\hat{p}_{g'}} D \cdot \hat{\E}\left( Y_d \mid \Q, g \right) \right\} \\
     &= \left(1-\frac{p_g}{\hat{p}_g}\right)\left(\hat{\xi}_{dgg'g'} - \xi_{dgg'g'} \right) \\
-    &\phantom{{}={}} + \P\left\{ \frac{\one(G=g) \hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) \hat{p}_{g} } \left[ 1-\frac{\pi(d,\X,\Q,g)}{\hat{\pi}(d,\X,\Q,g)} \right]  [\hat{\mu}(d,\X,\Q,g)-\mu(d,\X,\Q,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &\phantom{{}={}} + \P\left\{ \frac{\one(G=g) \hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) \hat{p}_{g} } \left[ 1-\frac{\pi(d,\X,g)}{\hat{\pi}(d,\X,g)} \right]  [\hat{\mu}(d,\X,g)-\mu(d,\X,g)]  \hat{\E} \left(D \mid \Q,g' \right) \right\} \\
     &\phantom{{}={}} + \P\left\{ \left[ \frac{\one(G=g') }{\hat{p}_{g'}}\E(D \mid \Q,g') - \frac{\one(G=g) \hat{p}_{g'}(\Q) }{\hat{p}_g(\Q) \hat{p}_{g'} } \hat{\E}(D \mid \Q,g') \right] \left[ \hat{\E}(Y_d \mid \Q,g) - \E(Y_d \mid \Q,g) \right] \right\}.
 \end{align*}
 Under stated conditions, $R_{2,dgg'g''}=o_p(n^{-1/2})$. 
@@ -1001,33 +1004,32 @@ note that when $g'=g'' \neq g$, the following conditions are sufficient: for a c
 The proof for Theorem 3, i.e., the double robustness of $\Psi_{dg}$ and $\Psi_{dgg'}$, is omitted. It is similar to the proof of the double robustness of the AIPW estimator of ATE \citep{robins_estimation_1994, tsiatis_semiparametric_2006}.
 
 Below, we prove the double robustness of $\Psi_{dgg'g''}$, which is stated in Theorem 6. 
-We use a tilde to denote the probability limit of a nuisance estimator, i.e., for example, $\hat{\mu}(d,\X,\Q,g)$ converges to $\Tilde{\mu}(d,\X,\Q,g)$. 
+We use a tilde to denote the probability limit of a nuisance estimator, i.e., for example, $\hat{\mu}(d,\X,g)$ converges to $\Tilde{\mu}(d,\X,g)$. 
 Under consistent estimation of $p_g$ and $\E(D \mid \Q, g)$, the one-step estimator $\Psi_{dgg'g''}$ converges in probability to 
 \begin{align*}
     &\phantom{{}={}} \E \left\{ \frac{\one(G=g'')}{\Tilde{p}_{g''}} \Tilde{\E} \left(Y_d \mid \Q, g \right) \Tilde{\E} \left(D \mid \Q, g' \right) \right\} \\
     &+ \E \left\{ \left( 1- \frac{p_{g''}}{\Tilde{p}_{g''}} \right) \Tilde{\xi}_{dgg'g''} \right\} \\
-    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)\Tilde{p}_{g''}} \left\{ \frac{\one(D=d)}{\Tilde{\pi}(d,\X,\Q,g)} [Y-\Tilde{\mu}(d,\X,\Q,g)]+\Tilde{\mu}(d,\X,\Q,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right\} \Tilde{\E} \left(D \mid \Q,g' \right) \right\} \\
+    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)\Tilde{p}_{g''}} \left\{ \frac{\one(D=d)}{\Tilde{\pi}(d,\X,g)} [Y-\Tilde{\mu}(d,\X,g)]+\Tilde{\mu}(d,\X,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right\} \Tilde{\E} \left(D \mid \Q,g' \right) \right\} \\
     &+ \E \left\{ \frac{\one(G=g')\Tilde{p}_{g''}(\Q)}{\Tilde{p}_{g'}(\Q)\Tilde{p}_{g''}} \left[ D-\Tilde{\E} \left(D \mid \Q, g' \right) \right] \Tilde{\E}\left( Y_d \mid \Q, g \right) \right\} 
     \\
     &= \E \left\{ \frac{\one(G=g'')}{p_{g''}} \Tilde{\E} \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) \right\} \\
-    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\Tilde{\pi}(d,\X,\Q,g)} [Y-\Tilde{\mu}(d,\X,\Q,g)]+\Tilde{\mu}(d,\X,\Q,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \right\} \\
+    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}} \left\{ \frac{\one(D=d)}{\Tilde{\pi}(d,\X,g)} [Y-\Tilde{\mu}(d,\X,g)]+\Tilde{\mu}(d,\X,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right\} \E \left(D \mid \Q,g' \right) \right\} \\
     &+ \E \left\{ \frac{\one(G=g')\Tilde{p}_{g''}(\Q)}{\Tilde{p}_{g'}(\Q) p_{g''}} \left[ D-\E \left(D \mid \Q, g' \right) \right] \Tilde{\E}\left( Y_d \mid \Q, g \right) \right\} \\
     &= \E \left\{ \frac{\one(G=g'')}{p_{g''}} \Tilde{\E} \left(Y_d \mid \Q, g \right) \E \left(D \mid \Q, g' \right) \right\} \\
-    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}}  \frac{\pi(d,\X,\Q,g)}{\Tilde{\pi}(d,\X,\Q,g)} [\mu(d,\X,\Q,g)-\Tilde{\mu}(d,\X,\Q,g)]  \E \left(D \mid \Q,g' \right) \right\} \\
-    &+ \E  \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}} \left[ \Tilde{\mu}(d,\X,\Q,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right]  \E \left(D \mid \Q,g' \right) \right\}
+    &+ \E \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}}  \frac{\pi(d,\X,g)}{\Tilde{\pi}(d,\X,g)} [\mu(d,\X,g)-\Tilde{\mu}(d,\X,g)]  \E \left(D \mid \Q,g' \right) \right\} \\
+    &+ \E  \left\{ \frac{\one(G=g) \Tilde{p}_{g''}(\Q)}{\Tilde{p}_g(\Q)p_{g''}} \left[ \Tilde{\mu}(d,\X,g) - \Tilde{\E} \left(Y_d \mid \Q,g \right) \right]  \E \left(D \mid \Q,g' \right) \right\}
 \end{align*}
 Now, note that when $g=g''$, this probability limit becomes 
 \begin{align*}
-    &\phantom{{}={}} \E \left\{ \frac{\one(G=g)}{p_{g}} \left\{ \frac{\pi(d,\X,\Q,g)}{\Tilde{\pi}(d,\X,\Q,g)} [\mu(d,\X,\Q,g)-\Tilde{\mu}(d,\X,\Q,g)]+\Tilde{\mu}(d,\X,\Q,g) \right\} \E \left(D \mid \Q,g' \right) \right\}.
+    &\phantom{{}={}} \E \left\{ \frac{\one(G=g)}{p_{g}} \left\{ \frac{\pi(d,\X,g)}{\Tilde{\pi}(d,\X,g)} [\mu(d,\X,g)-\Tilde{\mu}(d,\X,g)]+\Tilde{\mu}(d,\X,g) \right\} \E \left(D \mid \Q,g' \right) \right\}.
 \end{align*}
 Hence, in this case, the double-robustness is achieved without requiring consistent estimation of $p_g(\Q)$ and $\E(Y_d \mid \Q, g)$ for any $d$ and $q$.
-When $g \neq g''$, further assuming that $\Tilde{\E}(Y_d \mid \Q,g)=\E(Y_d \mid \Q,g)$ if either $\Tilde{\pi}(d,\X,\Q,g)=\pi(d,\X,\Q,g)$ or $\Tilde{\mu}(d,\X,\Q,g)=\mu(d,\X,\Q,g)$, then it is easy to see that the probability limit of $\Psi_{dgg'g''}$ is still $\xi_{dgg'g''}$. Note that consistent estimation of $p_g(\Q)$ is still not required for any $g$.
+When $g \neq g''$, further assuming that $\Tilde{\E}(Y_d \mid \Q,g)=\E(Y_d \mid \Q,g)$ if either $\Tilde{\pi}(d,\X,g)=\pi(d,\X,g)$ or $\Tilde{\mu}(d,\X,g)=\mu(d,\X,g)$, then the probability limit of $\Psi_{dgg'g''}$ will still be $\xi_{dgg'g''}$. Note that consistent estimation of $p_g(\Q)$ is still not required in either case.
 
-\subsection*{Appendix E. Relations between selection concepts}
+\subsection*{Appendix E. Relation between selection concepts}
 Various concepts of `selection', `sorting', and `selectivity' have appeared in the social science literature on the effects of education on later-life attainments. Below, we clarify the relationship between our selection concept and those appearing in prior works. In our framework, group-specific selectivity is defined as 
 \begin{align*}
- &\phantom{{}={}} \Cov_g(D,\tau) \\
-   &= [\E_g(\tau \mid  D=1)-\E_g(\tau)]\E_g(D).
+ &\phantom{{}={}} \Cov_g(D,\tau) = [\E_g(\tau \mid  D=1)-\E_g(\tau)]\E_g(D).
 \end{align*}
 First, our definition is closely related to the ``sorting on gains'' concept in \citet{heckman_returns_2018}, which is defined as the difference between ATT and ATE, i.e., 
 \begin{equation*}
@@ -1035,35 +1037,36 @@ First, our definition is closely related to the ``sorting on gains'' concept in 
 \end{equation*}
 Since $\E_g(D)$ is always positive, the sign of our group-specific selectivity is always the same as that of sorting on gains in Heckman et al. (\citeyear{heckman_returns_2018}).
 
-Second, akin to our framework, recent contributions in the `great equalizer' literature  \citep{zhou_equalization_2019, fiel_great_2020, karlson_college_2019} have discussed \emph{differential} selection into college completion by parental income. Implicitly, these authors define group-specific selection as 
+Second, akin to our framework, recent works in the ``great equalizer'' literature  \citep{zhou_equalization_2019, fiel_great_2020, karlson_college_2019} have discussed \emph{differential} selection into college completion by parental income. Implicitly, these authors define group-specific selection as 
 \begin{equation*}
     \E_g(Y \mid  D=1) - \E_g(Y \mid  D=0) - \E_g(\tau).
 \end{equation*}
-In Zhou's (\citeyear{zhou_equalization_2019}) jargon, $\E_g(Y \mid  D=1) - \E_g(Y \mid  D=0)$ is the conditional mobility, and $\E_g(\tau)$ is the controlled mobility. 
-Hence, when
+This implicit definition can be validated by rewriting the group difference in this selection term.
 \begin{align*}
     \phantom{{}={}}& \E_a(Y \mid  D=1) - \E_a(Y  \mid  D=0) - \E_a(\tau) - [\E_b(Y \mid  D=1) - \E_b(Y  \mid  D=0) - \E_b(\tau)] \\
     =& \underbrace{\E_a(Y \mid  D=1)-\E_b(Y \mid  D=1) - [ \E_a(Y \mid  D=0)-\E_b(Y \mid  D=0)]}_{\text{The descriptive test of the great equalizer thesis}}  \\
-    \phantom{{}={}}&- \underbrace{\lbrace \E_a(Y_1)-\E_b(Y_1) - [\E_a(Y_0)-\E_b(Y_0)] \rbrace}_{\text{The causal test of the great equalizer thesis}}  < 0,
+    \phantom{{}={}}&- \underbrace{\lbrace \E_a(Y_1)-\E_b(Y_1) - [\E_a(Y_0)-\E_b(Y_0)] \rbrace}_{\text{The causal test of the great equalizer thesis}} 
 \end{align*}
-these authors would conclude that members of the advantaged group are less selected than their disadvantaged peers in the transition to college completion. 
+If the descriptive test returns a smaller value than the causal test, these authors will conclude that members of the advantaged group are less selected than their disadvantaged peers in the transition to college completion. 
 
 Taking the difference between the selectivity term in the great equalizer literature and sorting on gains, we obtain $\E_g(Y_0 \mid  D=1)-\E_g(Y_0 \mid  D=0)$, which is selection on baseline outcome.
 Therefore, the selectivity term in the great equalizer literature captures  selection on baseline outcome, on the top of selection on treatment effect captured in sorting on gains and our selectivity term \citep[See][p.58-9]{morgan_counterfactuals_2014}. 
 
-Third, a literature on effect heterogeneity by propensity score \citep{brand_who_2010, xie_estimating_2012, brand_uncovering_2021} is  closely aligned with our framework in its conceptualization of selection into treatment. Originally developed in the context of education effects, the framework of effect heterogeneity by propensity score has been applied in a wide array of topics \citep[e.g.,][]{brand_parental_2019, schafer_childhood_2013,choi_shadow_2016,musick_variation_2012, brand_impact_2011}. Let $\pi_g(\X) \coloneqq \E_g(D \mid \X)$ be the propensity score, then under a conditional ignorability assumption, $\tau \indep D \mid \X, G$,
+Third, a literature on the effect heterogeneity by propensity score \citep{brand_who_2010, xie_estimating_2012, brand_uncovering_2021} is  closely aligned with our framework in its conceptualization of selection into treatment. Originally developed in the context of education effects, this framework has been applied in a wide array of topics.
+%\citep[e.g.,][]{brand_parental_2019, schafer_childhood_2013,choi_shadow_2016,musick_variation_2012, brand_impact_2011}
+Recall that $\pi(1,\X,g)$ denotes the propensity score, then under Assumption 2,
 \begin{align*}
 &\phantom{{}={}} \Cov_g(D,\tau)  \\
 &= \E_g[\Cov_g(D,\tau \mid \X)] + \Cov_g[\E_g(D \mid \X),\E_g(\tau \mid \X)] \\
-&= \Cov_g[\pi_g(\X), \E_g(\tau \mid \X)] \\
-&= \E_g [\pi_g(\X) \E_g(\tau \mid \X)] - \E_g(D)\E_g(\tau) \\
-&= \E_g \lbrace \E_g [\pi_g(\X) \E_g(\tau \mid \X) \mid \pi_g(\X)] \rbrace - \E_g(D)\E_g(\tau) \\
-&= \E_g \lbrace \pi_g(\X) \E_g[\tau \mid \pi_g(\X)] \rbrace - \E_g[\pi_g(\X)]\E_g\lbrace\E_g[\tau \mid \pi_g(\X)]\rbrace \\
-&= \Cov_g [\pi_g(\X), \E_g(\tau \mid \pi_g(\X)].
+&= \Cov_g[\pi(1,\X,g), \E_g(\tau \mid \X)] \\
+&= \E_g [\pi(1,\X,g) \E_g(\tau \mid \X)] - \E_g(D)\E_g(\tau) \\
+&= \E_g \lbrace \E_g [\pi(1,\X,g) \E_g(\tau \mid \X) \mid \pi(1,\X,g)] \rbrace - \E_g(D)\E_g(\tau) \\
+&= \E_g \lbrace \pi(1,\X,g) \E_g[\tau \mid \pi(1,\X,g)] \rbrace - \E_g[\pi(1,\X,g)]\E_g\lbrace\E_g[\tau \mid \pi(1,\X,g)] \rbrace \\
+&= \Cov_g [\pi(1,\X,g), \E_g(\tau \mid \pi(1,\X,g)].
 \end{align*}
-Hence, under conditional ignorability, our selectivity term equals the covariance between the propensity score and the mean treatment effect conditional on the propensity score. Due to this relationship, the estimators we developed for the generic functions underlying our unconditional decomposition can also be used to nonparametrically estimate effect heterogeneity by propensity score. 
+Hence, under conditional ignorability, our selectivity term equals the covariance between the propensity score and the conditional treatment effect given the propensity score. Due to this relationship, the estimators we developed for the generic functions underlying our unconditional decomposition can also be used to nonparametrically estimate effect heterogeneity by propensity score. 
 
-\subsection*{Appendix F. Numeric estimates}
+\subsection*{Appendix F. Supplemental tables}
 \begin{table}[htbp]
 \centering
 \caption*{Table A1. Group-specific Estimates for the Unconditional Decomposition} 
